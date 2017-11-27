@@ -269,8 +269,10 @@ ga('send', 'pageview');
 <p>—分割—</p>
 <hr>
 <p>正式函数：</p>
-<p>int callback_function(int message,void<em> message_data,void</em> user_data)//scanfile需要调用一个callback函数<br>{</p>
-<pre><code>if(message==1)
+<pre><code>int callback_function(int message,void* message_data,void* user_data)//scanfile需要调用一个callback函数
+{
+
+if(message==1)
 {
     printf(&quot;find\n&quot;);//扫到一个就不再扫了。
     isVirus = 8;
@@ -284,12 +286,43 @@ if(message==3)
 {
     printf(&quot;done&quot;);
 }
-return 0;
-</code></pre><p>}</p>
-<p>int loadScanModule(const char <em> path_str)//主要逻辑。<br>{<br>            //        //输出匹配字符串。。。只是留个备份 实现起来好查阅。<br>        //YR_RULE </em> sub_rule;<br>        //YR_RULES <em>rule;<br>        //yr_rules_foreach(rule,sub_rule)<br>        //{<br>        //     YR_STRING</em> string;<br>        //yr_rule_strings_foreach(sub_rule, string)<br>  //    {<br>  //      YR_MATCH* match;</p>
-<p>  //      yr_string_matches_foreach(string, match)<br>  //      {<br>        //    printf(“%p”,match);<br>  //        //printf(“0x%” PRIx64 “:%s: “,<br>  //        //    match-&gt;base + match-&gt;offset,<br>  //        //    string-&gt;identifier);</p>
-<p>  //        //if (STRING_IS_HEX(string))<br>  //        //  print_hex_string(match-&gt;data, match-&gt;data_length);<br>  //        //else<br>  //        //  print_string(match-&gt;data, match-&gt;data_length);<br>  //      }<br>  //    }<br>        //<br>        //}<br>        ////yr_string_matches_foreach(str,match)<br>        ////{<br>        ////    ;//printf(“%p”,match);<br>        ////}<br>    YR_COMPILER <em> compiler= NULL;<br>    FILE </em>file= NULL;<br>    YR_RULES *rule = NULL;</p>
-<pre><code>if(yr_initialize()!=ERROR_SUCCESS)
+return 0;}
+int loadScanModule(const char * path_str)
+{
+            //        //输出匹配字符串。。。只是留个备份 实现起来好查阅。
+        //YR_RULE * sub_rule;
+        //YR_RULES *rule;
+        //yr_rules_foreach(rule,sub_rule)
+        //{
+        //     YR_STRING* string;
+        //yr_rule_strings_foreach(sub_rule, string)
+  //    {
+  //      YR_MATCH* match;
+
+  //      yr_string_matches_foreach(string, match)
+  //      {
+        //    printf(&quot;%p&quot;,match);
+  //        //printf(&quot;0x%&quot; PRIx64 &quot;:%s: &quot;,
+  //        //    match-&gt;base + match-&gt;offset,
+  //        //    string-&gt;identifier);
+
+  //        //if (STRING_IS_HEX(string))
+  //        //  print_hex_string(match-&gt;data, match-&gt;data_length);
+  //        //else
+  //        //  print_string(match-&gt;data, match-&gt;data_length);
+  //      }
+  //    }
+        //    
+        //}
+        ////yr_string_matches_foreach(str,match)
+        ////{
+        ////    ;//printf(&quot;%p&quot;,match);
+        ////}
+YR_COMPILER * compiler= NULL;
+FILE *file= NULL;
+YR_RULES *rule = NULL;
+
+if(yr_initialize()!=ERROR_SUCCESS)
 {
     try
     {
@@ -373,8 +406,8 @@ if(yr_compiler_get_rules(compiler,&amp;rule)!=ERROR_SUCCESS)
  yr_compiler_destroy(compiler);
  yr_finalize();
 return 0;
-</code></pre><p>}</p>
-
+}
+</code></pre>
       
 
       
