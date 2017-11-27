@@ -41,6 +41,30 @@
   </entry>
   
   <entry>
+    <title>yara c api exmple</title>
+    <link href="im1gd.me/2017/11/27/yara/"/>
+    <id>im1gd.me/2017/11/27/yara/</id>
+    <published>2017-11-27T13:17:43.000Z</published>
+    <updated>2017-11-27T13:25:57.668Z</updated>
+    
+    <content type="html"><![CDATA[<p>有一些特殊的需求，需要用调用yara的 api ，网上有demo的比较少，特此记录。</p><p>引入 #include “yara.h” </p><p>需要注意的是 要自行编译 lib  如果是用vs的话也是要指定include目录和导入编译的lib的。</p><p>其中有 rules.h 这个头文件 可以查看一下。</p><p>#define CALLBACK_MSG_RULE_MATCHING              1</p><p>#define CALLBACK_MSG_RULE_NOT_MATCHING          2</p><p>#define CALLBACK_MSG_SCAN_FINISHED              3</p><p>#define CALLBACK_MSG_IMPORT_MODULE              4</p><p>#define CALLBACK_MSG_MODULE_IMPORTED            5</p><p>#define CALLBACK_CONTINUE   0</p><p>#define CALLBACK_ABORT      1</p><p>#define CALLBACK_ERROR      2</p><p>scan.h中提供了两种扫描模式，一种是fast scan  还有一种没记错的话是扫描内存。</p><p>—分割—</p><hr><p>正式函数：<br>int callback_function(int message,void<em> message_data,void</em> user_data)//scanfile需要调用一个callback函数<br>{</p><pre><code>if(message==1){    printf(&quot;find\n&quot;);//扫到一个就不再扫了。    isVirus = 8;    return CALLBACK_ABORT;}if(message == 2){    return CALLBACK_CONTINUE;}if(message==3){    printf(&quot;done&quot;);}return 0;</code></pre><p>}</p><p>int loadScanModule(const char <em> path_str)//主要逻辑。<br>{<br>            //        //输出匹配字符串。。。只是留个备份 实现起来好查阅。<br>        //YR_RULE </em> sub_rule;<br>        //YR_RULES <em>rule;<br>        //yr_rules_foreach(rule,sub_rule)<br>        //{<br>        //     YR_STRING</em> string;<br>        //yr_rule_strings_foreach(sub_rule, string)<br>  //    {<br>  //      YR_MATCH* match;</p><p>  //      yr_string_matches_foreach(string, match)<br>  //      {<br>        //    printf(“%p”,match);<br>  //        //printf(“0x%” PRIx64 “:%s: “,<br>  //        //    match-&gt;base + match-&gt;offset,<br>  //        //    string-&gt;identifier);</p><p>  //        //if (STRING_IS_HEX(string))<br>  //        //  print_hex_string(match-&gt;data, match-&gt;data_length);<br>  //        //else<br>  //        //  print_string(match-&gt;data, match-&gt;data_length);<br>  //      }<br>  //    }<br>        //<br>        //}<br>        ////yr_string_matches_foreach(str,match)<br>        ////{<br>        ////    ;//printf(“%p”,match);<br>        ////}</p><pre><code>YR_COMPILER * compiler= NULL;FILE *file= NULL;YR_RULES *rule = NULL;if(yr_initialize()!=ERROR_SUCCESS){    try    {        yr_finalize();    }    catch(...)    {        ;    }    return 0;}if(yr_rules_load(&quot;./rule.dat&quot;,&amp;rule)==ERROR_SUCCESS)//地址要传过来吧，还是默认？算了还是默认吧，毛病都惯出来了。{    //加载配置成功。处理扫描；     yr_rules_scan_file(rule, path_str,SCAN_FLAGS_FAST_MODE, callback_function, NULL, 0);      yr_finalize();     return 0;}if(yr_compiler_create(&amp;compiler)!=ERROR_SUCCESS){    try    {        yr_compiler_destroy(compiler);    }    catch(...)    {        ;    }    yr_finalize();    return 0;}readConfig read_config;//这里明显是要你自己实现一个读取配置文件的功能了。file=fopen(read_config.ScanConfigFile.c_str(),&quot;r&quot;);//这个应该要可以配置这类的。if(!file){    //fclose(file);    file=NULL;    yr_compiler_destroy(compiler);    yr_finalize();    return 0;}if(yr_compiler_add_file(compiler,file,NULL,NULL)!=ERROR_SUCCESS){    fclose(file);    file=NULL;    yr_compiler_destroy(compiler);    yr_finalize();    return 0;}if(yr_compiler_get_rules(compiler,&amp;rule)!=ERROR_SUCCESS){    fclose(file);    file=NULL;    try    {        yr_rules_destroy(rule);    }    catch(...)    {        ;    }    yr_compiler_destroy(compiler);    yr_finalize();    return 0;} yr_rules_scan_file(rule, path_str,SCAN_FLAGS_FAST_MODE, callback_function, NULL, 0);  yr_rules_save(rule,&quot;./rule.dat&quot;);//如果不存在 扫描之后存到某个固定地址。下次也就能直接加载了。 fclose(file); file=NULL; yr_rules_destroy(rule); yr_compiler_destroy(compiler); yr_finalize();return 0;</code></pre><p>}</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;有一些特殊的需求，需要用调用yara的 api ，网上有demo的比较少，特此记录。&lt;/p&gt;
+&lt;p&gt;引入 #include “yara.h” &lt;/p&gt;
+&lt;p&gt;需要注意的是 要自行编译 lib  如果是用vs的话也是要指定include目录和导入编译的lib的。&lt;/p&gt;
+&lt;p
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
     <title>WebShellScanner</title>
     <link href="im1gd.me/2017/09/30/WebShellScanner/"/>
     <id>im1gd.me/2017/09/30/WebShellScanner/</id>
@@ -454,29 +478,6 @@ cat /etc/prof
     
     
       <category term="tools" scheme="im1gd.me/tags/tools/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>一些分析</title>
-    <link href="im1gd.me/2017/02/15/%E4%B8%80%E4%BA%9B%E5%88%86%E6%9E%90/"/>
-    <id>im1gd.me/2017/02/15/一些分析/</id>
-    <published>2017-02-15T11:12:54.000Z</published>
-    <updated>2017-02-20T07:04:40.000Z</updated>
-    
-    <content type="html"><![CDATA[<p><a href="https://mp.weixin.qq.com/s?__biz=MzI0MjA1Mjg2Ng==&amp;mid=2649867173&amp;idx=1&amp;sn=0a9ebfaa3240517967d4bb4a1bf5c364&amp;chksm=f10759c8c670d0de77f7b3161349ae53ef84f1f01177e23781482b1ba36c1826de1e3dc6c399&amp;scene=0&amp;key=2e53d2a27cc88db763fcd252701b5413b1d6e1e1a65aed29851a441d1f3435570b889901c5cbb06329f5978317b1532519d4790ff4820a311ac638f6684bc1a2e9362ba283535d7dd25c3089565be2f1&amp;ascene=0&amp;uin=MTU5MDA1ODU2MA%3D%3D&amp;devicetype=iMac+MacBookPro12%2C1+OSX+OSX+10.12.3+build(16D32" target="_blank" rel="external">职场通病之眼里揉不得沙子</a>)</p><p><a href="http://coolshell.cn/articles/17583.html" target="_blank" rel="external">技术人员的发展之路</a></p><p>前几天华为清退34岁以上的员工。有人说华为是一个巨大的机器，员工就是一颗螺丝钉，负责很窄的面，久而久之，你只能干这样的工作也已经没有了什么竞争力。<br>老一辈人为啥这么推崇考公务员？因为在他们眼里公务员是铁饭碗，稳定。好像所有的都比不过这一点。反之，在外面工作那就是不稳定，有风险公司倒闭的风险。</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;&lt;a href=&quot;https://mp.weixin.qq.com/s?__biz=MzI0MjA1Mjg2Ng==&amp;amp;mid=2649867173&amp;amp;idx=1&amp;amp;sn=0a9ebfaa3240517967d4bb4a1bf5c364&amp;amp;chksm
-      
-    
-    </summary>
-    
-    
-      <category term="about something" scheme="im1gd.me/tags/about-something/"/>
     
   </entry>
   

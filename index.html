@@ -233,6 +233,180 @@ ga('send', 'pageview');
 
 
   
+    <article id="post-yara" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/11/27/yara/">yara c api exmple</a>
+    </h1>
+  
+
+        
+        <a href="/2017/11/27/yara/" class="archive-article-date">
+  	<time datetime="2017-11-27T13:17:43.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-11-27</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>有一些特殊的需求，需要用调用yara的 api ，网上有demo的比较少，特此记录。</p>
+<p>引入 #include “yara.h” </p>
+<p>需要注意的是 要自行编译 lib  如果是用vs的话也是要指定include目录和导入编译的lib的。</p>
+<p>其中有 rules.h 这个头文件 可以查看一下。</p>
+<p>#define CALLBACK_MSG_RULE_MATCHING              1</p>
+<p>#define CALLBACK_MSG_RULE_NOT_MATCHING          2</p>
+<p>#define CALLBACK_MSG_SCAN_FINISHED              3</p>
+<p>#define CALLBACK_MSG_IMPORT_MODULE              4</p>
+<p>#define CALLBACK_MSG_MODULE_IMPORTED            5</p>
+<p>#define CALLBACK_CONTINUE   0</p>
+<p>#define CALLBACK_ABORT      1</p>
+<p>#define CALLBACK_ERROR      2</p>
+<p>scan.h中提供了两种扫描模式，一种是fast scan  还有一种没记错的话是扫描内存。</p>
+<p>—分割—</p>
+<hr>
+<p>正式函数：<br>int callback_function(int message,void<em> message_data,void</em> user_data)//scanfile需要调用一个callback函数<br>{</p>
+<pre><code>if(message==1)
+{
+    printf(&quot;find\n&quot;);//扫到一个就不再扫了。
+    isVirus = 8;
+    return CALLBACK_ABORT;
+}
+if(message == 2)
+{
+    return CALLBACK_CONTINUE;
+}
+if(message==3)
+{
+    printf(&quot;done&quot;);
+}
+return 0;
+</code></pre><p>}</p>
+<p>int loadScanModule(const char <em> path_str)//主要逻辑。<br>{<br>            //        //输出匹配字符串。。。只是留个备份 实现起来好查阅。<br>        //YR_RULE </em> sub_rule;<br>        //YR_RULES <em>rule;<br>        //yr_rules_foreach(rule,sub_rule)<br>        //{<br>        //     YR_STRING</em> string;<br>        //yr_rule_strings_foreach(sub_rule, string)<br>  //    {<br>  //      YR_MATCH* match;</p>
+<p>  //      yr_string_matches_foreach(string, match)<br>  //      {<br>        //    printf(“%p”,match);<br>  //        //printf(“0x%” PRIx64 “:%s: “,<br>  //        //    match-&gt;base + match-&gt;offset,<br>  //        //    string-&gt;identifier);</p>
+<p>  //        //if (STRING_IS_HEX(string))<br>  //        //  print_hex_string(match-&gt;data, match-&gt;data_length);<br>  //        //else<br>  //        //  print_string(match-&gt;data, match-&gt;data_length);<br>  //      }<br>  //    }<br>        //<br>        //}<br>        ////yr_string_matches_foreach(str,match)<br>        ////{<br>        ////    ;//printf(“%p”,match);<br>        ////}</p>
+<pre><code>YR_COMPILER * compiler= NULL;
+FILE *file= NULL;
+YR_RULES *rule = NULL;
+
+if(yr_initialize()!=ERROR_SUCCESS)
+{
+    try
+    {
+        yr_finalize();
+    }
+    catch(...)
+    {
+        ;
+    }
+
+    return 0;
+}
+if(yr_rules_load(&quot;./rule.dat&quot;,&amp;rule)==ERROR_SUCCESS)//地址要传过来吧，还是默认？算了还是默认吧，毛病都惯出来了。
+{
+    //加载配置成功。处理扫描；
+     yr_rules_scan_file(rule, path_str,SCAN_FLAGS_FAST_MODE, callback_function, NULL, 0); 
+     yr_finalize();
+     return 0;
+}
+
+
+if(yr_compiler_create(&amp;compiler)!=ERROR_SUCCESS)
+{
+    try
+    {
+        yr_compiler_destroy(compiler);
+    }
+    catch(...)
+    {
+        ;
+    }
+    yr_finalize();
+    return 0;
+}
+
+readConfig read_config;//这里明显是要你自己实现一个读取配置文件的功能了。
+file=fopen(read_config.ScanConfigFile.c_str(),&quot;r&quot;);//这个应该要可以配置这类的。
+
+if(!file)
+{
+    //fclose(file);
+    file=NULL;
+    yr_compiler_destroy(compiler);
+    yr_finalize();
+    return 0;
+}
+
+if(yr_compiler_add_file(compiler,file,NULL,NULL)!=ERROR_SUCCESS)
+{
+    fclose(file);
+    file=NULL;
+    yr_compiler_destroy(compiler);
+    yr_finalize();
+    return 0;
+}
+
+if(yr_compiler_get_rules(compiler,&amp;rule)!=ERROR_SUCCESS)
+{
+    fclose(file);
+    file=NULL;
+    try
+    {
+        yr_rules_destroy(rule);
+    }
+    catch(...)
+    {
+        ;
+    }
+    yr_compiler_destroy(compiler);
+    yr_finalize();
+    return 0;
+}
+
+ yr_rules_scan_file(rule, path_str,SCAN_FLAGS_FAST_MODE, callback_function, NULL, 0); 
+
+ yr_rules_save(rule,&quot;./rule.dat&quot;);//如果不存在 扫描之后存到某个固定地址。下次也就能直接加载了。
+
+ fclose(file);
+ file=NULL;
+ yr_rules_destroy(rule);
+ yr_compiler_destroy(compiler);
+ yr_finalize();
+return 0;
+</code></pre><p>}</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/11/27/yara/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
     <article id="post-WebShellScanner" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -590,79 +764,6 @@ ga('send', 'pageview');
 
 
   
-    <article id="post-AWVS" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/05/25/AWVS/">AWVS 11 批量扫描</a>
-    </h1>
-  
-
-        
-        <a href="/2017/05/25/AWVS/" class="archive-article-date">
-  	<time datetime="2017-05-25T06:55:33.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-25</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>2017.8.23更新:</p>
-<hr>
-<p>刚才我遇到了一个问题。。。反正如果你也遇到了，直接把你的key替换进去吧。。这点我没有考虑周全。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div><div class="line">203</div><div class="line">204</div><div class="line">205</div><div class="line">206</div><div class="line">207</div><div class="line">208</div><div class="line">209</div><div class="line">210</div><div class="line">211</div><div class="line">212</div><div class="line">213</div><div class="line">214</div><div class="line">215</div><div class="line">216</div><div class="line">217</div><div class="line">218</div><div class="line">219</div><div class="line">220</div><div class="line">221</div><div class="line">222</div><div class="line">223</div><div class="line">224</div><div class="line">225</div><div class="line">226</div><div class="line">227</div><div class="line">228</div><div class="line">229</div><div class="line">230</div><div class="line">231</div><div class="line">232</div><div class="line">233</div><div class="line">234</div><div class="line">235</div><div class="line">236</div><div class="line">237</div><div class="line">238</div><div class="line">239</div><div class="line">240</div><div class="line">241</div><div class="line">242</div><div class="line">243</div><div class="line">244</div><div class="line">245</div><div class="line">246</div><div class="line">247</div><div class="line">248</div><div class="line">249</div><div class="line">250</div><div class="line">251</div><div class="line">252</div><div class="line">253</div><div class="line">254</div><div class="line">255</div><div class="line">256</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div><div class="line">__author__ = <span class="string">'yoo'</span></div><div class="line"></div><div class="line"><span class="keyword">import</span> requests</div><div class="line"><span class="keyword">import</span> json</div><div class="line"><span class="keyword">import</span> requests.packages.urllib3</div><div class="line">requests.packages.urllib3.disable_warnings()</div><div class="line"><span class="keyword">import</span> queue</div><div class="line"><span class="keyword">from</span> concurrent.futures <span class="keyword">import</span> ThreadPoolExecutor <span class="keyword">as</span> Pool</div><div class="line"><span class="keyword">import</span> argparse</div><div class="line"></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">AWVSScan</span><span class="params">()</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, key=<span class="string">'1986ad8c0a5b3df4d7028d5f3c06e936cb5890c4efda14eec8e4a86074a97259a'</span>, targetUrl=<span class="string">'https://127.0.0.1:3443/'</span>, ScanModule=<span class="string">'sql'</span>)</span>:</span></div><div class="line">        self.key = key</div><div class="line">        self.target_id_Queue = queue.Queue()</div><div class="line">        self.Scan_id_Queue = queue.Queue()</div><div class="line">        <span class="comment">#self.task_id = None</span></div><div class="line">        self.target_id = <span class="keyword">None</span></div><div class="line">        self.scan_id = <span class="keyword">None</span></div><div class="line">        self.pool = Pool(<span class="number">20</span>)</div><div class="line">        <span class="keyword">if</span> self.key == <span class="keyword">None</span>:</div><div class="line">            <span class="keyword">return</span></div><div class="line">        self.headers = &#123;<span class="string">"X-Auth"</span>: self.key, <span class="string">"content-type"</span>: <span class="string">"application/json"</span>&#125;</div><div class="line">        self.targetUrl = targetUrl</div><div class="line">        self.scan_id_list = []</div><div class="line">        self.target_id_list = []</div><div class="line">        <span class="keyword">if</span> ScanModule.lower() == <span class="string">'high'</span>:</div><div class="line">            self.scanType = <span class="string">'11111111-1111-1111-1111-111111111112'</span></div><div class="line">        <span class="keyword">elif</span> ScanModule.lower() == <span class="string">'weakpwd'</span>:</div><div class="line">            self.scanType = <span class="string">'11111111-1111-1111-1111-111111111115'</span></div><div class="line">        <span class="keyword">elif</span> ScanModule.lower() == <span class="string">'crawler'</span>:</div><div class="line">            self.scanType = <span class="string">'11111111-1111-1111-1111-111111111117'</span></div><div class="line">        <span class="keyword">elif</span> ScanModule.lower() == <span class="string">'xss'</span>:</div><div class="line">            self.scanType = <span class="string">'11111111-1111-1111-1111-111111111116'</span></div><div class="line">        <span class="keyword">elif</span> ScanModule.lower() == <span class="string">'sql'</span>:</div><div class="line">            self.scanType = <span class="string">'11111111-1111-1111-1111-111111111113'</span></div><div class="line">        <span class="keyword">elif</span> ScanModule.lower() == <span class="string">'full'</span>:</div><div class="line">            self.scanType = <span class="string">'11111111-1111-1111-1111-111111111111'</span></div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            print(<span class="string">'scan type error'</span>)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">startScan</span><span class="params">(self)</span>:</span></div><div class="line">        data = &#123;<span class="string">"target_id"</span>: self.target_id_Queue.get(), <span class="string">"profile_id"</span>: <span class="string">"&#123;0&#125;"</span>.format(self.scanType),</div><div class="line">                <span class="string">"schedule"</span>: &#123;<span class="string">"disable"</span>: <span class="keyword">False</span>, <span class="string">"start_date"</span>: <span class="keyword">None</span>, <span class="string">"time_sensitive"</span>: <span class="keyword">False</span>&#125;&#125;</div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            response = requests.post(self.targetUrl + <span class="string">"/api/v1/scans"</span>, data=json.dumps(data), headers=self.headers, timeout=<span class="number">30</span>, verify=<span class="keyword">False</span>)</div><div class="line">            result = json.loads(response.content)</div><div class="line">            <span class="keyword">if</span> result[<span class="string">'target_id'</span>] <span class="keyword">and</span> response.status_code == <span class="number">201</span>:</div><div class="line">                print(<span class="string">'startScan success'</span>)</div><div class="line">            <span class="comment"># return result['target_id']</span></div><div class="line">            <span class="comment">#print('startScan success')</span></div><div class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</div><div class="line">            print(str(e))</div><div class="line">            <span class="keyword">return</span> <span class="keyword">False</span></div><div class="line">        <span class="keyword">return</span> <span class="keyword">True</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">add_task</span><span class="params">(self, url)</span>:</span></div><div class="line">        data = &#123;<span class="string">"address"</span>: url, <span class="string">"description"</span>: url, <span class="string">"criticality"</span>: <span class="string">"10"</span>&#125;</div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            response = requests.post(self.targetUrl + <span class="string">"/api/v1/targets"</span>, data=json.dumps(data), headers=self.headers, timeout=<span class="number">30</span>,</div><div class="line">                                     verify=<span class="keyword">False</span>)</div><div class="line">            result = json.loads(response.content)</div><div class="line">            </div><div class="line">            <span class="keyword">if</span> results.get(<span class="string">"target_id"</span>)==<span class="keyword">None</span>:</div><div class="line">            <span class="keyword">return</span></div><div class="line">            self.target_id_Queue.put(result[<span class="string">'target_id'</span>])</div><div class="line">            print(<span class="string">'add task success'</span>)</div><div class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</div><div class="line">            print(e)</div><div class="line">            <span class="keyword">return</span> <span class="keyword">False</span></div><div class="line">        <span class="keyword">return</span> <span class="keyword">True</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">deleteScan</span><span class="params">(self, scan_id)</span>:</span></div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            response = requests.delete(self.targetUrl + <span class="string">"/api/v1/scans/"</span> + str(scan_id), headers=self.headers, timeout=<span class="number">30</span>,</div><div class="line">                                       verify=<span class="keyword">False</span>)</div><div class="line">            <span class="keyword">if</span> response.status_code == <span class="number">204</span>:</div><div class="line">                print(<span class="string">'delete Scan Successfully!'</span>)</div><div class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</div><div class="line">            print(str(e))</div><div class="line">            <span class="keyword">return</span> <span class="keyword">False</span></div><div class="line">        <span class="keyword">return</span> <span class="keyword">True</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">deleteTarget</span><span class="params">(self, target_id)</span>:</span></div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            response = requests.delete(self.targetUrl + <span class="string">"/api/v1/targets/"</span> + str(target_id), headers=self.headers, timeout=<span class="number">30</span>,</div><div class="line">                                       verify=<span class="keyword">False</span>)</div><div class="line">            <span class="keyword">if</span> response.status_code == <span class="number">204</span>:</div><div class="line">                print(<span class="string">'delete target success!'</span>)</div><div class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</div><div class="line">            print(str(e))</div><div class="line">            <span class="keyword">return</span> <span class="keyword">False</span></div><div class="line">        <span class="keyword">return</span> <span class="keyword">True</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">stopScan</span><span class="params">(self, scan_id)</span>:</span></div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            response = requests.post(self.targetUrl + <span class="string">"/api/v1/scans/"</span> + str(scan_id + <span class="string">"/abort"</span>), headers=self.headers, timeout=<span class="number">30</span>,</div><div class="line">                                     verify=<span class="keyword">False</span>)</div><div class="line">            <span class="keyword">if</span> response.status_code == <span class="number">204</span>:</div><div class="line">                print(<span class="string">'stop Scan Successfully'</span>)</div><div class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</div><div class="line">            print(str(e))</div><div class="line">            <span class="keyword">return</span> <span class="keyword">False</span></div><div class="line">        <span class="keyword">return</span> <span class="keyword">True</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getTargetID</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            response = requests.get(self.targetUrl + <span class="string">"/api/v1/targets"</span>, headers=self.headers, timeout=<span class="number">30</span>,</div><div class="line">                                    verify=<span class="keyword">False</span>)</div><div class="line">            results = json.loads(response.content)</div><div class="line">            <span class="keyword">if</span> len(results[<span class="string">'targets'</span>]) == <span class="number">0</span>:</div><div class="line">                <span class="keyword">return</span> <span class="keyword">False</span></div><div class="line">            <span class="keyword">for</span> result <span class="keyword">in</span> results[<span class="string">'targets'</span>]:</div><div class="line">                <span class="comment"># print(result['target_id'])</span></div><div class="line">                self.target_id_Queue.put(result[<span class="string">'target_id'</span>])</div><div class="line">            <span class="comment"># return True</span></div><div class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</div><div class="line">            <span class="keyword">return</span> <span class="keyword">False</span></div><div class="line">        <span class="keyword">return</span> <span class="keyword">True</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">getScanStatus</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            response = requests.get(self.targetUrl + <span class="string">"/api/v1/scans"</span>, headers=self.headers, timeout=<span class="number">30</span>, verify=<span class="keyword">False</span>)</div><div class="line">            results = json.loads(response.content)</div><div class="line">            <span class="keyword">for</span> result <span class="keyword">in</span> results[<span class="string">'scans'</span>]:</div><div class="line">                print(result[<span class="string">'scan_id'</span>], result[<span class="string">'target'</span>][<span class="string">'address'</span>])</div><div class="line">                self.Scan_id_Queue.put(result[<span class="string">'scan_id'</span>])</div><div class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</div><div class="line">            <span class="keyword">return</span> <span class="keyword">False</span></div><div class="line">        <span class="keyword">return</span> <span class="keyword">True</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">startScanTask</span><span class="params">(self, url)</span>:</span></div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> (url.startswith(<span class="string">'http://'</span>) <span class="keyword">or</span> url.startswith(<span class="string">'https://'</span>)):</div><div class="line">            <span class="keyword">return</span></div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> self.add_task(url):</div><div class="line">            <span class="keyword">return</span></div><div class="line">        self.startScan()</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">deletHandler</span><span class="params">(self, op=<span class="string">'stopScan'</span>, args=<span class="string">'rmall'</span>, scan_id=<span class="string">''</span>)</span>:</span></div><div class="line">        <span class="keyword">if</span> args == <span class="string">'rmall'</span>:</div><div class="line">            <span class="keyword">if</span> op.lower() == <span class="string">'stopscan'</span>:</div><div class="line">                <span class="keyword">if</span> <span class="keyword">not</span> self.getScanStatus():</div><div class="line">                    <span class="keyword">return</span></div><div class="line">                <span class="keyword">while</span> <span class="keyword">not</span> self.Scan_id_Queue.empty():</div><div class="line">                    self.stopScan(self.Scan_id_Queue.get())</div><div class="line">            <span class="keyword">elif</span> op.lower() == <span class="string">'rmtarget'</span>:</div><div class="line">                <span class="keyword">if</span> <span class="keyword">not</span> self.getTargetID():</div><div class="line">                    <span class="keyword">return</span></div><div class="line">                <span class="keyword">while</span> <span class="keyword">not</span> self.target_id_Queue.empty():</div><div class="line">                    self.deleteTarget(self.target_id_Queue.get())</div><div class="line">            <span class="keyword">elif</span> op.lower() == <span class="string">'rmscan'</span>:</div><div class="line">                <span class="keyword">if</span> <span class="keyword">not</span> self.getScanStatus():</div><div class="line">                    <span class="keyword">return</span></div><div class="line">                <span class="keyword">while</span> <span class="keyword">not</span> self.Scan_id_Queue.empty():</div><div class="line">                    self.deleteScan(self.Scan_id_Queue.get())</div><div class="line">            <span class="keyword">else</span>:</div><div class="line">                <span class="keyword">return</span></div><div class="line">        <span class="keyword">elif</span> args == <span class="string">'rmone'</span>:</div><div class="line">            <span class="keyword">if</span> scan_id == <span class="string">''</span>:</div><div class="line">                <span class="keyword">return</span></div><div class="line">            <span class="keyword">if</span> op == <span class="string">'stopScan'</span>:</div><div class="line">                self.stopScan(scan_id)</div><div class="line">            <span class="keyword">elif</span> op == <span class="string">'rmTarget'</span>:</div><div class="line">                self.deleteTarget(scan_id)</div><div class="line">            <span class="keyword">elif</span> op == <span class="string">'rmScan'</span>:</div><div class="line">                self.deleteScan(scan_id)</div><div class="line">            <span class="keyword">else</span>:</div><div class="line">                <span class="keyword">return</span></div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            <span class="keyword">return</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setConfig</span><span class="params">(self, target_id, args)</span>:</span></div><div class="line">        data = &#123;</div><div class="line">            <span class="comment"># "excluded_paths": ["manager", "phpmyadmin", "testphp"],</span></div><div class="line">            <span class="comment"># "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36",</span></div><div class="line">            <span class="comment"># "custom_headers": ["Accept: */*", "Referer:" + url, "Connection: Keep-alive"],</span></div><div class="line">            <span class="comment"># "custom_cookies": [&#123;"url": url,</span></div><div class="line">            <span class="comment">#                     "cookie": "UM_distinctid=15da1bb9287f05-022f43184eb5d5-30667808-fa000-15da1bb9288ba9; PHPSESSID=dj9vq5fso96hpbgkdd7ok9gc83"&#125;],</span></div><div class="line">            <span class="comment"># "scan_speed": "moderate",  # sequential/slow/moderate/fast more and more fast</span></div><div class="line">            <span class="comment"># "technologies": ["PHP"],  # ASP,ASP.NET,PHP,Perl,Java/J2EE,ColdFusion/Jrun,Python,Rails,FrontPage,Node.js</span></div><div class="line">            <span class="comment"># 代理</span></div><div class="line">            <span class="string">"proxy"</span>: &#123;</div><div class="line">                <span class="string">"enabled"</span>: <span class="keyword">False</span>,</div><div class="line">                <span class="string">"address"</span>: <span class="string">"127.0.0.1"</span>,</div><div class="line">                <span class="string">"protocol"</span>: <span class="string">"http"</span>,</div><div class="line">                <span class="string">"port"</span>: <span class="number">8080</span>,</div><div class="line">                <span class="string">"username"</span>: <span class="string">"aaa"</span>,</div><div class="line">                <span class="string">"password"</span>: <span class="string">"bbb"</span></div><div class="line">            &#125;,</div><div class="line">            <span class="comment"># 无验证码登录</span></div><div class="line">            <span class="string">"login"</span>: &#123;</div><div class="line">                <span class="string">"kind"</span>: <span class="string">"automatic"</span>,</div><div class="line">                <span class="string">"credentials"</span>: &#123;</div><div class="line">                    <span class="string">"enabled"</span>: <span class="keyword">False</span>,</div><div class="line">                    <span class="string">"username"</span>: <span class="string">"test"</span>,</div><div class="line">                    <span class="string">"password"</span>: <span class="string">"test"</span></div><div class="line">                &#125;</div><div class="line">            &#125;,</div><div class="line">            <span class="comment"># 401认证</span></div><div class="line">            <span class="string">"authentication"</span>: &#123;</div><div class="line">                <span class="string">"enabled"</span>: <span class="keyword">False</span>,</div><div class="line">                <span class="string">"username"</span>: <span class="string">"test"</span>,</div><div class="line">                <span class="string">"password"</span>: <span class="string">"test"</span></div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">controller</span><span class="params">(self, args)</span>:</span></div><div class="line">        <span class="keyword">if</span> args[<span class="string">'op'</span>].lower() == <span class="string">"startscan"</span>:</div><div class="line">            self.startScanTask(args[<span class="string">'url'</span>])</div><div class="line">        <span class="keyword">elif</span> args[<span class="string">'op'</span>].lower() == <span class="string">'handler'</span>:</div><div class="line">            <span class="keyword">try</span>:</div><div class="line">                self.deletHandler(args[<span class="string">'h_op'</span>], args[<span class="string">'rm_op'</span>], args[<span class="string">'scan_id'</span>])</div><div class="line">            <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</div><div class="line">                self.deletHandler(args[<span class="string">'h_op'</span>])</div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            <span class="keyword">return</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line">    parse = argparse.ArgumentParser(description=<span class="string">'AWVS auto Scan'</span>)</div><div class="line">    parse.add_argument(<span class="string">'-f'</span>, dest=<span class="string">'file'</span>, action=<span class="string">"store"</span>)</div><div class="line">    parse.add_argument(<span class="string">'-m'</span>, dest=<span class="string">'module'</span>, action=<span class="string">'store'</span>)</div><div class="line">    parse.add_argument(<span class="string">'-tp'</span>, dest=<span class="string">'scantype'</span>, action=<span class="string">'store'</span>)</div><div class="line">    <span class="comment">#parse.add_argument('-dele', dest='dele', action='store')</span></div><div class="line">    parse.add_argument(<span class="string">'-delop'</span>, dest=<span class="string">'delop'</span>, action=<span class="string">'store'</span>)</div><div class="line">    parse.add_argument(<span class="string">'-k'</span>, dest=<span class="string">'key'</span>, action=<span class="string">'store'</span>)</div><div class="line">    arg = parse.parse_args()</div><div class="line"></div><div class="line">    <span class="keyword">if</span> arg.scantype:</div><div class="line">        av = AWVSScan(ScanModule=arg.scantype)</div><div class="line">    <span class="keyword">elif</span> arg.key:</div><div class="line">        av = AWVSScan(key=arg.key)</div><div class="line">    <span class="keyword">elif</span> arg.key <span class="keyword">and</span> arg.scantype:</div><div class="line">        av = AWVSScan(ScanModule=arg.scantype, key=arg.key)</div><div class="line">    <span class="keyword">else</span>:</div><div class="line">        av = AWVSScan()</div><div class="line">    <span class="keyword">if</span> arg.module == <span class="string">'st'</span>:</div><div class="line">        <span class="keyword">if</span> arg.file:</div><div class="line">            <span class="keyword">with</span> open(<span class="string">'&#123;0&#125;'</span>.format(arg.file), <span class="string">'r'</span>) <span class="keyword">as</span> f:</div><div class="line">                <span class="keyword">for</span> x <span class="keyword">in</span> f:</div><div class="line">                    <span class="keyword">if</span> <span class="keyword">not</span> x.startswith(<span class="string">'http://'</span>):</div><div class="line">                        av.pool.submit(av.controller(&#123;<span class="string">'op'</span>: <span class="string">'startScan'</span>,</div><div class="line">                                                      <span class="string">'url'</span>: <span class="string">'&#123;0&#125;'</span>.format(<span class="string">'http://'</span> + x.strip()),</div><div class="line">                                                      <span class="string">'h_op'</span>: <span class="string">'rmtarget'</span>&#125;))</div><div class="line">                    <span class="keyword">elif</span> <span class="string">'http://'</span> <span class="keyword">or</span> <span class="string">'https://'</span> <span class="keyword">in</span> x:</div><div class="line">                        av.pool.submit(av.controller(&#123;<span class="string">'op'</span>: <span class="string">'startscan'</span>, <span class="string">'url'</span>: <span class="string">'&#123;0&#125;'</span>.format(x.strip())&#125;))</div><div class="line">                    <span class="keyword">else</span>:</div><div class="line">                        <span class="keyword">break</span></div><div class="line">    <span class="keyword">elif</span> arg.module == <span class="string">'hd'</span>:</div><div class="line">        <span class="keyword">if</span> arg.delop:</div><div class="line">            av.pool.submit(av.controller(&#123;<span class="string">'op'</span>: <span class="string">'handler'</span>,</div><div class="line">                                          <span class="string">'h_op'</span>: <span class="string">'&#123;0&#125;'</span>.format(arg.delop)&#125;))</div><div class="line">    <span class="keyword">else</span>:</div><div class="line">        print(<span class="string">'usge: -k your key (must) -tp(xss,sql,full,Crawler,high,weakpwd) -f file name -m delete or addscan use(st,hd)   -delop(rmscan,rmtarget,stopscan)'</span>)</div></pre></td></tr></table></figure>
-<p>我用Fiddler抓包看到了有api，还发现有一个文件wvsc。这就十分的尴尬了。<br>比较不满意的一个点，每次都要请求cookie。其实可以语法糖的。一会再改。我就是不用class。想必API应该有一些option能设置各种参数比如扫描线程？</p>
-<p>在52破解上面看见一个批量用AWVS扫描的脚本，拿过来改了改。</p>
-<p>需要注意的点是文件名，还有你url的格式。处理’\n’还是”\r\n”.</p>
-<p>Servername和host 要改为你自己的。还有setlogin里面的email改为你自己的账号，password改为你自己的密码。首先要sha256加密一下。</p>
-<p>非常感谢这位兄弟分享出来怎么操作api。。我没有找到这个文档啊。。难道是我姿势不对？</p>
-<p>想用带option的？？自己改吧。。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div></pre></td><td class="code"><pre><div class="line">__author__ = &apos;yoo&apos;</div><div class="line">import requests</div><div class="line">import json</div><div class="line">import Queue</div><div class="line"></div><div class="line">queue = Queue.Queue()</div><div class="line">serverName = &quot;yoo-pc&quot;</div><div class="line">host = &quot;https://yoo-pc:3443&quot;</div><div class="line"></div><div class="line"></div><div class="line">def setLogin():</div><div class="line">    loginURL = &quot;&#123;0&#125;/api/v1/me/login&quot;.format(host)</div><div class="line">    header = &#123;</div><div class="line">        &apos;Content-Type&apos;: &apos;application/json;charset=utf-8&apos;</div><div class="line">    &#125;</div><div class="line">    data = &apos;&apos;&apos;&#123;&quot;email&quot;:&quot;test@gmail.com&quot;,&quot;password&quot;:&quot;e1dddc844ca8ad19718295dbf2f0ed6746b459c2e3582ef8bf909812a24d9fe7&quot;,&quot;remember_me&quot;:false&#125;&apos;&apos;&apos;</div><div class="line">    try:</div><div class="line">        res = requests.post(loginURL, data=data, headers=header, verify=False)</div><div class="line">        return res.headers[&quot;Set-Cookie&quot;], res.headers[&quot;X-Auth&quot;]</div><div class="line">    except BaseException:</div><div class="line">        print &quot;setLogin error&quot;</div><div class="line">        pass</div><div class="line"></div><div class="line"></div><div class="line">def newTarget(url):</div><div class="line">    cookie, x = setLogin()</div><div class="line">    reqURL = host + &quot;/api/v1/targets&quot;</div><div class="line">    targetURL = url</div><div class="line">    header = &#123;</div><div class="line">        &apos;Content-Type&apos;: &apos;application/json;charset=utf-8&apos;,</div><div class="line">        &apos;X-Auth&apos;: x,</div><div class="line">        &apos;Cookie&apos;: cookie,</div><div class="line">    &#125;</div><div class="line">    data = &apos;&#123;&quot;description&quot;:&quot;auto&quot;,&quot;address&quot;:&quot;&apos; + \</div><div class="line">        targetURL + &apos;&quot;,&quot;criticality&quot;:&quot;10&quot;&#125;&apos;</div><div class="line">    try:</div><div class="line">        res = requests.post(reqURL, data=data, headers=header, verify=False)</div><div class="line">        return json.loads(res.content)[&quot;target_id&quot;], cookie, x</div><div class="line">    except BaseException:</div><div class="line">        print &quot;setTarget error&quot;</div><div class="line"></div><div class="line"></div><div class="line">def startScan(url):</div><div class="line">    tarID, cookie, x = newTarget(url)</div><div class="line">    scanURl = host + &apos;/api/v1/scans&apos;</div><div class="line">    header = &#123;</div><div class="line">        &apos;Content-Type&apos;: &apos;application/json;charset=utf-8&apos;,</div><div class="line">        &apos;X-Auth&apos;: x,</div><div class="line">        &apos;Cookie&apos;: cookie,</div><div class="line">    &#125;</div><div class="line">    data = &apos;&#123;&quot;target_id&quot;:&apos; + &apos;\&quot;&apos; + tarID + &apos;\&quot;&apos; + \</div><div class="line">        &apos;,&quot;profile_id&quot;:&quot;11111111-1111-1111-1111-111111111111&quot;,&quot;schedule&quot;:&#123;&quot;disable&quot;:false,&quot;start_date&quot;:null,&quot;time_sensitive&quot;:false&#125;,&quot;ui_session_id&quot;:&quot;66666666666666666666666666666666&quot;&#125;&apos;</div><div class="line">    try:</div><div class="line">        res = requests.post(scanURl, data=data, headers=header, verify=False)</div><div class="line">        print &quot;====================================================&quot;</div><div class="line">        print&quot;                   start scan &quot;</div><div class="line">        print &quot;====================================================&quot;</div><div class="line">        print res.content</div><div class="line">        print &quot;====================================================&quot;</div><div class="line">        print&quot;                   finished&quot;</div><div class="line">        print &quot;====================================================&quot;</div><div class="line">    except BaseException:</div><div class="line">        print &quot;startScan failed&quot;</div><div class="line">if __name__ == &quot;__main__&quot;:</div><div class="line">    with open(&quot;urlKR.txt&quot;,&apos;r&apos;) as f :</div><div class="line">        for line in f :</div><div class="line">            if line.startswith(&quot;http://&quot;) or line.startswith(&quot;https://&quot;):</div><div class="line">                queue.put_nowait(line.replace(&apos;\n&apos;,&apos;&apos;))</div><div class="line">            else:</div><div class="line">                queue.put_nowait(&quot;http://&quot;+line.replace(&apos;\n&apos;,&apos;&apos;))</div><div class="line">    while 1:</div><div class="line">        if not queue.empty():</div><div class="line">            startScan(queue.get())</div><div class="line">        else:</div><div class="line">            break</div></pre></td></tr></table></figure>
-<p>gevent版本，但是加入进去还不是会被限制，只能同时扫几个。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div></pre></td><td class="code"><pre><div class="line">__author__ = <span class="string">'yoo'</span></div><div class="line"><span class="keyword">import</span> requests</div><div class="line"><span class="keyword">import</span> json</div><div class="line"><span class="keyword">import</span> Queue</div><div class="line"><span class="keyword">from</span> gevent.pool <span class="keyword">import</span> Pool</div><div class="line"><span class="keyword">from</span> gevent <span class="keyword">import</span> monkey</div><div class="line"></div><div class="line"></div><div class="line">monkey.patch_all()</div><div class="line">queue = Queue.Queue()</div><div class="line">serverName = <span class="string">"yoo-pc"</span></div><div class="line">host = <span class="string">"https://yoo-pc:3443"</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">setLogin</span><span class="params">()</span>:</span></div><div class="line">    loginURL = <span class="string">"&#123;0&#125;/api/v1/me/login"</span>.format(host)</div><div class="line">    header = &#123;</div><div class="line">        <span class="string">'Content-Type'</span>: <span class="string">'application/json;charset=utf-8'</span></div><div class="line">    &#125;</div><div class="line">    data = <span class="string">'''&#123;"email":"test@gmail.com","password":"e1dddc844ca8ad19718295dbf2f0ed6746b459c2e3582ef8bf909812a24d9fe7","remember_me":false&#125;'''</span></div><div class="line">    <span class="keyword">try</span>:</div><div class="line">        res = requests.post(loginURL, data=data, headers=header, verify=<span class="keyword">False</span>)</div><div class="line">        <span class="keyword">return</span> res.headers[<span class="string">"Set-Cookie"</span>], res.headers[<span class="string">"X-Auth"</span>]</div><div class="line">    <span class="keyword">except</span> BaseException:</div><div class="line">        <span class="keyword">print</span> <span class="string">"setLogin error"</span></div><div class="line">        <span class="keyword">pass</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">newTarget</span><span class="params">(url)</span>:</span></div><div class="line">    cookie, x = setLogin()</div><div class="line">    reqURL = host + <span class="string">"/api/v1/targets"</span></div><div class="line">    targetURL = url</div><div class="line">    header = &#123;</div><div class="line">        <span class="string">'Content-Type'</span>: <span class="string">'application/json;charset=utf-8'</span>,</div><div class="line">        <span class="string">'X-Auth'</span>: x,</div><div class="line">        <span class="string">'Cookie'</span>: cookie,</div><div class="line">    &#125;</div><div class="line">    data = <span class="string">'&#123;"description":"auto","address":"'</span> + \</div><div class="line">        targetURL + <span class="string">'","criticality":"10"&#125;'</span></div><div class="line">    <span class="keyword">try</span>:</div><div class="line">        res = requests.post(reqURL, data=data, headers=header, verify=<span class="keyword">False</span>)</div><div class="line">        <span class="keyword">return</span> json.loads(res.content)[<span class="string">"target_id"</span>], cookie, x</div><div class="line">    <span class="keyword">except</span> BaseException:</div><div class="line">        <span class="keyword">print</span> <span class="string">"setTarget error"</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">startScan</span><span class="params">(url)</span>:</span></div><div class="line">    tarID, cookie, x = newTarget(url)</div><div class="line">    scanURl = host + <span class="string">'/api/v1/scans'</span></div><div class="line">    header = &#123;</div><div class="line">        <span class="string">'Content-Type'</span>: <span class="string">'application/json;charset=utf-8'</span>,</div><div class="line">        <span class="string">'X-Auth'</span>: x,</div><div class="line">        <span class="string">'Cookie'</span>: cookie,</div><div class="line">    &#125;</div><div class="line">    data = <span class="string">'&#123;"target_id":'</span> + <span class="string">'\"'</span> + tarID + <span class="string">'\"'</span> + \</div><div class="line">        <span class="string">',"profile_id":"11111111-1111-1111-1111-111111111111","schedule":&#123;"disable":false,"start_date":null,"time_sensitive":false&#125;,"ui_session_id":"66666666666666666666666666666666"&#125;'</span></div><div class="line">    <span class="keyword">try</span>:</div><div class="line">        res = requests.post(scanURl, data=data, headers=header, verify=<span class="keyword">False</span>)</div><div class="line">        <span class="keyword">print</span> <span class="string">"===================================================="</span></div><div class="line">        <span class="keyword">print</span><span class="string">"                   start scan "</span></div><div class="line">        <span class="keyword">print</span> <span class="string">"===================================================="</span></div><div class="line">        <span class="keyword">print</span> res.content</div><div class="line">        <span class="keyword">print</span> <span class="string">"===================================================="</span></div><div class="line">        <span class="keyword">print</span><span class="string">"                   finished"</span></div><div class="line">        <span class="keyword">print</span> <span class="string">"===================================================="</span></div><div class="line">    <span class="keyword">except</span> BaseException:</div><div class="line">        <span class="keyword">print</span> <span class="string">"startScan failed"</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">readFile</span><span class="params">()</span>:</span></div><div class="line">    <span class="keyword">with</span> open(<span class="string">"hbcjw.txt"</span>, <span class="string">'r'</span>) <span class="keyword">as</span> f:</div><div class="line">        <span class="keyword">for</span> line <span class="keyword">in</span> f:</div><div class="line">            <span class="keyword">if</span> line.startswith(<span class="string">"http://"</span>) <span class="keyword">or</span> line.startswith(<span class="string">"https://"</span>):</div><div class="line">                queue.put_nowait(line.replace(<span class="string">'\n'</span>, <span class="string">''</span>))</div><div class="line">            <span class="keyword">else</span>:</div><div class="line">                queue.put_nowait(<span class="string">"http://"</span> + line.replace(<span class="string">'\n'</span>, <span class="string">''</span>))</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">Run</span><span class="params">(n)</span>:</span></div><div class="line">    <span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> queue.empty():</div><div class="line">            startScan(queue.get())</div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            <span class="keyword">break</span></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</div><div class="line">    pool = Pool(<span class="number">5</span>)</div><div class="line">    readFile()</div><div class="line">    pool.map(Run, xrange(<span class="number">3</span>))</div></pre></td></tr></table></figure>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">工具，AWVS</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/05/25/AWVS/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -760,10 +861,6 @@ ga('send', 'pageview');
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">工具，AWVS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">read and movies</a>
               </li>
              
@@ -772,19 +869,7 @@ ga('send', 'pageview');
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">vulnerability</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">linux,windows,privilege</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">Python crawl</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">sucks things</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -792,7 +877,23 @@ ga('send', 'pageview');
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">tools</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">reflect</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">linux,windows,privilege</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">sucks things</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">工具，AWVS</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -800,15 +901,11 @@ ga('send', 'pageview');
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">tools</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">about something</a>
+                <a href="javascript:void(0)" class="js-tag color4">vulnerability</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -816,11 +913,11 @@ ga('send', 'pageview');
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">pentester</a>
+                <a href="javascript:void(0)" class="js-tag color1">about something</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">program</a>
+                <a href="javascript:void(0)" class="js-tag color5">pentester</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -844,11 +941,15 @@ ga('send', 'pageview');
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">ctf</a>
+                <a href="javascript:void(0)" class="js-tag color3">program</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">编程约规</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">ctf</a>
               </li>
              
               <li class="article-tag-list-item">

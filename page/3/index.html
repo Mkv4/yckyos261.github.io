@@ -152,6 +152,153 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-木马实现技术概述" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/03/30/木马实现技术概述/">木马实现技术概述</a>
+    </h1>
+  
+
+        
+        <a href="/2017/03/30/木马实现技术概述/" class="archive-article-date">
+  	<time datetime="2017-03-30T09:49:19.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-30</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>木马应该带有哪些功能？我能想到一些。</p>
+<ul>
+<li>获取权限、修改安全策略、修改用户组</li>
+<li>获取系统信息、网络信息。</li>
+<li>端口映射、网络嗅探、对内网渗透的支持如socks转发功能。</li>
+<li>进程隐藏、网络连接隐藏、文件隐藏、进程管理</li>
+<li>键盘记录、下载传输文件、流量隐藏、对抗杀软、取证工具。</li>
+</ul>
+<p>细分一下，木马需要自启动，处理文件需要下载、上传、创建、显示目标文件、执行指定文件，显示文件的界面中的图标需要跟windows系统上自带的图片相契合。可能还需要监控屏幕、录音。</p>
+<p>但是一个木马应该要解决的首要问题应当是活下来；之后才能考虑完成任务。那么要活下来最关键的需要的能力是什么？隐藏自己。</p>
+<h2 id="进程隐藏"><a href="#进程隐藏" class="headerlink" title="进程隐藏"></a>进程隐藏</h2><p><strong>进程伪隐藏</strong></p>
+<p>目前不太适用，把木马进程注册为服务，通过系统的服务器管理启动。进程ID任然会存在。任务管理器中的服务会显示出来。</p>
+<p><strong>动态链接库隐藏</strong></p>
+<p><strong>自身的计算机进程隐藏起来；</strong>，举个例子，<br>HOOK API。程序 a 会调用一个api，hookapi就是当程序执行到一个call 进入到某个api后，修改api的起始地址，然后跳转到你的代码，执行，之后再跳回 api，api脱钩之后跳回恶意代码，最后恶意代码执行完毕之后跳回原本程序a。（其实这里可能会用到dll注入。）<br>一般使用全局钩取。钩取Ntdll.ZwResumeThread() API,之后运行的进程就会自动注入你的dll。注入dll不会产生进程。</p>
+<p>这样的方法有个问题，对cpu依赖比较大，cpu的jump指令可能不同。还有就是，资源竞争的情况下，同时竞争改写函数（即修改的api）。可能会出问题。</p>
+<p><strong>还有就是通过改变IAT表中的函数地址来hook。</strong></p>
+<p>一段代码：</p>
+<pre><code>Void ReplaceIATEntryInOneMod(PCSTRpszCalleeModName, PROC pfnCurrent,PROC pfnNew, HMODULE hmodCaller){
+ULONG ulSize; PIMAGE_IMPORT_DESCRIPTORpImportDesc=(PIMAGE_IMPORT_DESCRIPTOR) ImageDirectoryEntryToData(hmodCaller, TRUE,IMAGE_DIRECTORY_ENTRY_IMPORT,&amp;ulSize);
+If (pImportDesc==NULL)
+Return; 
+for (;pImportDesc-&gt;Name;pImportDesc++){
+ PSTR pszModName=(PSTR)
+((PBYTE)hmodCaller+pImportDesc-&gt;Name);
+if (lstrcmpiA(pszModName,pszCalleeModName)==0)
+break; }
+if(pImportDesc-&gt;Name==0)
+return; 
+PIMAGE_THUNK_DATA pThunk=(PIMAGE_THUNK_DATA)     ((PBYTE)hmodCaller+pImportDesc-&gt;FirstThunk);  for(;pThunk-&gt;ul.Function;pThunk++){
+PROC* ppfn=( PROC*)&amp;pThunk-&gt; ul.Function; 
+BOOL fFound=(*ppfn==pfnCurrent); 
+if (fFound){                          WriteProcessMemory(GetCurrentProcess(),ppfn,&amp;pfnNew,sizeof(pfnNew),NULL); Return; 
+}
+}
+
+}
+</code></pre><p><strong>远程线程注入</strong></p>
+<ul>
+<li><p>创建远程线程，CreateRemoteThread() API,</p>
+</li>
+<li><p>使用注册表的AppInit_DLLs</p>
+</li>
+</ul>
+<p>实现你要的功能。<br>此外还有些方式：</p>
+<ul>
+<li><p>利用注册表隐蔽启动，如[HKLM\Software\Microsoft\Windows\CurrentVersion\Run]<br>[HKLM\SYSTEM\ControlSet001\Control\SessionManager\KnownDLLs] KnownDLLs 子键存放着一些已知 DLL 的默认路径，修改路径可以达到加载恶意dll的目的。</p>
+</li>
+<li><p>利用注册表文件关联项进行隐蔽启动<br>HKEY_CLASSES_ROOT 和 HKLM\Software\CLASSES 目录下包含的子文件夹对应一种文件类型，修改即可达到关联启动的目的。</p>
+</li>
+</ul>
+<p>如，<br>[HKCR\textfile\shell\open\command] @=” notepad.exe %1\” %<em>“ [HKLM\Software\CLASSES\textfile\shell\open\command]@=”notepad.exe%1\” %</em>“ 如果将其改为 “notepad.exe 木马.exe %1 %*”，木马程序将在每次打开文本文件时调用 notepad.exe 文件后被执行。</p>
+<p>autostart文件，win.ini文件。system文件。</p>
+<h2 id="隐蔽通信"><a href="#隐蔽通信" class="headerlink" title="隐蔽通信"></a>隐蔽通信</h2><p>可能对方的网络中会装有各种防火墙或防护设施监控当前流量。或者管理员手工检测分析。</p>
+<p><strong>反向链接技术</strong></p>
+<p>顾名思义，不需要你控制端去连接被控端，被控端主动来连接控制端。大多数木马使用的都是这样的技术。</p>
+<p>现在木马比较喜欢用ICMP协议，因为不用打开通信端口。</p>
+<p>这里主要想说一下内网如何穿透出来。目前业界比较流行的方法是用UDP、DNS来绕过防火墙等。</p>
+<p>有一台公网服务器a，内网b 黑客 c。</p>
+<p>黑客想要连上木马，需要通过内网的b去链接公网服务器a，之后a转发数据到黑客c。这样就完成了一次通信。</p>
+<p>那么问题来了，怎么携带数据出去？</p>
+<p><strong>内网中的NAT穿透</strong></p>
+<p>现在比较流行的是利用DNS查询请求来携带数据，因为DNS的包是UDP，并且端口不容易被封。其实真正的木马除了53端口还会使用很多常见的端口。</p>
+<p>dns实现概述，自写一个server放在公网上接受dns查询，提取数据包；做转发。</p>
+<p>需要是现实的点有:标记源ip（内部） 源端口（内部） 目的IP 目的端口，要访问的目标ip（需要服务端做转发的）。因为穿透NAT的时候会做映射转换，要考虑完全锥形、受限锥形等问题；我以前写过这个问题，博客里有。UDP的。</p>
+<ul>
+<li><p>内部主机 A 向拥有公网 IP 的第 3 方服务器 S 发送一 个 UDP 包,NAT 设备 NA<br>记录了这次会话,一个由 A 的内部 IP 及端口号到 NA 的外部 IP 及端口号的映射被建立<br>(设 A 经过 转换后的公网 IP 及端口号为 EIPA:EPORTA), 此时 S 可以与 A<br>进行通信了。</p>
+</li>
+<li><p>(2)同理,B 向 S 发送一个 UDP 包,(设 B 经过转换后的公网 IP 及端口号为EIPB:EPORTB),此时,S 亦可以与 B 进行通信了。</p>
+</li>
+<li><p>(3)当 S 收到 A 或 B的协助连接申请后,分别将 A、B 经过 转换后的公网 IP 地址及端口号EIPA:EPORTA,EIPB:EPORTB 分别 发送给对方(将 A 的地址告知 B,将 B 的地址告知 A）</p>
+</li>
+<li><p>(4)A、B 互相发包连接。不妨假设 A 先向 B 经过转换后的 地址 EIPB:EPORTB 发 UDP包,若 NB 是完全锥型 NAT,该包会 被转发至 A,通信成功;但大多数的 NAT是受限型的,这时该 包虽然会被 NB 丢弃(因为该包是不请自来的),但已经成功在 NA上打了一个到 EIPB:EPORTB 的洞。 此时 B 向 EIPA:EPORTA 发 送 UDP 包, 由于 NA上已经被打上了到 EIPB:EPORTB 的洞,所 以即使是受限型的 NAT也会认可这个包的合法性, 从而将该包转发至私网内的 A。</p>
+</li>
+</ul>
+<p><strong>端口复用</strong></p>
+<p>端口复用首先需要判断端口是否打开，如果打开再进行下一步操作，需要判断发过来的数据包是否是给木马的，如果是，可以转发给木马。如果不是直接放行，这样的话可以在木马的数据包中加一个标记即可识别。</p>
+<p><strong>通信隐蔽</strong></p>
+<p>很明显——加密，但是不建议使用base64这类的加密，实在是有点明显。现在的c&amp;c有一个特点都是去请求某一个网址或者是Facebook，twitter上的某些文章。这样可以避免追踪。</p>
+<p>当被控端连接控制端之后，控制端向被控端发送数据，可以伪装目的ip和源ip；这样被控端只要嗅探一下就知道是控制端发来的消息。从而隐藏了自己。</p>
+<h2 id="文件隐藏"><a href="#文件隐藏" class="headerlink" title="文件隐藏"></a>文件隐藏</h2><p><strong>木马的自删除</strong></p>
+<p>复制源程序到指定目录，检测是否复制成功，成功之后删除程序，否则再复制。</p>
+<p><strong>属性修改</strong></p>
+<p>将自身的属性修改为隐藏，或者把自己放在某个隐藏文件之内。</p>
+<p><strong>DLL替换</strong></p>
+<p>用恶意的dll替换系统原本的dll，当然原本的dll的功能是需要保留的。</p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><p>你可能需要一些守护进程来守护你的钩子。像NSA一样做一些非常猛的插件化的东西，这样既可以躲避杀软又可以增加程序的可扩展性。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">program</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/03/30/木马实现技术概述/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
     <article id="post-linux" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -697,58 +844,6 @@ reg query HKCU /f password /t REG_SZ /s
 
 
   
-    <article id="post-40-000" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/01/18/40-000/">40,000$FB</a>
-    </h1>
-  
-
-        
-        <a href="/2017/01/18/40-000/" class="archive-article-date">
-  	<time datetime="2017-01-18T13:01:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-01-18</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a href="http://4lemon.ru/2017-01-17_facebook_imagetragick_remote_code_execution.html" target="_blank" rel="external">http://4lemon.ru/2017-01-17_facebook_imagetragick_remote_code_execution.html</a></p>
-<p>看完人家的突然觉得，其实很多时候根本就是没有认真找漏洞。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/01/18/40-000/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
@@ -846,10 +941,6 @@ reg query HKCU /f password /t REG_SZ /s
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">工具，AWVS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">read and movies</a>
               </li>
              
@@ -858,19 +949,7 @@ reg query HKCU /f password /t REG_SZ /s
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">vulnerability</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">linux,windows,privilege</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">Python crawl</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">sucks things</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -878,7 +957,23 @@ reg query HKCU /f password /t REG_SZ /s
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">tools</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">reflect</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">linux,windows,privilege</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">sucks things</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">工具，AWVS</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -886,15 +981,11 @@ reg query HKCU /f password /t REG_SZ /s
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">tools</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">about something</a>
+                <a href="javascript:void(0)" class="js-tag color4">vulnerability</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -902,11 +993,11 @@ reg query HKCU /f password /t REG_SZ /s
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">pentester</a>
+                <a href="javascript:void(0)" class="js-tag color1">about something</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">program</a>
+                <a href="javascript:void(0)" class="js-tag color5">pentester</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -930,11 +1021,15 @@ reg query HKCU /f password /t REG_SZ /s
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">ctf</a>
+                <a href="javascript:void(0)" class="js-tag color3">program</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">编程约规</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">ctf</a>
               </li>
              
               <li class="article-tag-list-item">
