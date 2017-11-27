@@ -15,7 +15,7 @@
 <meta property="og:url" content="im1gd.me/2017/11/27/yara/index.html">
 <meta property="og:site_name" content="持续的吃">
 <meta property="og:description" content="有一些特殊的需求，需要用调用yara的 api ，网上有demo的比较少，特此记录。 引入 #include “yara.h”  需要注意的是 要自行编译 lib  如果是用vs的话也是要指定include目录和导入编译的lib的。 其中有 rules.h 这个头文件 可以查看一下。 #define CALLBACK_MSG_RULE_MATCHING              1 #define">
-<meta property="og:updated_time" content="2017-11-27T13:25:57.668Z">
+<meta property="og:updated_time" content="2017-11-27T13:30:30.709Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="yara c api exmple">
 <meta name="twitter:description" content="有一些特殊的需求，需要用调用yara的 api ，网上有demo的比较少，特此记录。 引入 #include “yara.h”  需要注意的是 要自行编译 lib  如果是用vs的话也是要指定include目录和导入编译的lib的。 其中有 rules.h 这个头文件 可以查看一下。 #define CALLBACK_MSG_RULE_MATCHING              1 #define">
@@ -186,7 +186,8 @@ ga('send', 'pageview');
 <p>scan.h中提供了两种扫描模式，一种是fast scan  还有一种没记错的话是扫描内存。</p>
 <p>—分割—</p>
 <hr>
-<p>正式函数：<br>int callback_function(int message,void<em> message_data,void</em> user_data)//scanfile需要调用一个callback函数<br>{</p>
+<p>正式函数：</p>
+<p>int callback_function(int message,void<em> message_data,void</em> user_data)//scanfile需要调用一个callback函数<br>{</p>
 <pre><code>if(message==1)
 {
     printf(&quot;find\n&quot;);//扫到一个就不再扫了。
@@ -205,12 +206,8 @@ return 0;
 </code></pre><p>}</p>
 <p>int loadScanModule(const char <em> path_str)//主要逻辑。<br>{<br>            //        //输出匹配字符串。。。只是留个备份 实现起来好查阅。<br>        //YR_RULE </em> sub_rule;<br>        //YR_RULES <em>rule;<br>        //yr_rules_foreach(rule,sub_rule)<br>        //{<br>        //     YR_STRING</em> string;<br>        //yr_rule_strings_foreach(sub_rule, string)<br>  //    {<br>  //      YR_MATCH* match;</p>
 <p>  //      yr_string_matches_foreach(string, match)<br>  //      {<br>        //    printf(“%p”,match);<br>  //        //printf(“0x%” PRIx64 “:%s: “,<br>  //        //    match-&gt;base + match-&gt;offset,<br>  //        //    string-&gt;identifier);</p>
-<p>  //        //if (STRING_IS_HEX(string))<br>  //        //  print_hex_string(match-&gt;data, match-&gt;data_length);<br>  //        //else<br>  //        //  print_string(match-&gt;data, match-&gt;data_length);<br>  //      }<br>  //    }<br>        //<br>        //}<br>        ////yr_string_matches_foreach(str,match)<br>        ////{<br>        ////    ;//printf(“%p”,match);<br>        ////}</p>
-<pre><code>YR_COMPILER * compiler= NULL;
-FILE *file= NULL;
-YR_RULES *rule = NULL;
-
-if(yr_initialize()!=ERROR_SUCCESS)
+<p>  //        //if (STRING_IS_HEX(string))<br>  //        //  print_hex_string(match-&gt;data, match-&gt;data_length);<br>  //        //else<br>  //        //  print_string(match-&gt;data, match-&gt;data_length);<br>  //      }<br>  //    }<br>        //<br>        //}<br>        ////yr_string_matches_foreach(str,match)<br>        ////{<br>        ////    ;//printf(“%p”,match);<br>        ////}<br>    YR_COMPILER <em> compiler= NULL;<br>    FILE </em>file= NULL;<br>    YR_RULES *rule = NULL;</p>
+<pre><code>if(yr_initialize()!=ERROR_SUCCESS)
 {
     try
     {
