@@ -152,6 +152,88 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Onelous3T" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/03/Onelous3T/">Onelous3T install Xposed  before The IDA pro remotely debugging</a>
+    </h1>
+  
+
+        
+        <a href="/2016/12/03/Onelous3T/" class="archive-article-date">
+  	<time datetime="2016-12-03T07:52:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-12-03</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>ro.debuggable 在调试的时候需要是1，即为真。<br>网上流行的有几种方法，改boot.img、改apk，这两种自然是不选择的。<br>选择安装Xposed。</p>
+<ol>
+<li>安装sdk，和Xposed apk。</li>
+<li>首先安装apk，之后进入TWRP 刷入 sdk。</li>
+<li>完毕</li>
+<li>之后进入Xposed installer安装Xinstaller</li>
+<li>选择专家模式-&gt;其他，调试其他应用打开之后就能够调试了。</li>
+</ol>
+<hr>
+<p>在这之前使用ida 调试的时候总是出现jdb 提示致命错误。这样就能解决这个问题了。<br>顺便记录一下命令。</p>
+<ol>
+<li>ddms打开；</li>
+<li>adb push /这里是ida 目录下面的文件-&gt;android_server/ /data/local/tmp/</li>
+<li>进入shell 修改传入的文件的权限，chmod 777</li>
+<li>adb forward tcp:23946 tcp:23946转发端口</li>
+<li>adb shell am start -D -n xxxxactivity</li>
+<li>打开ida 选择 debug remotedebug ip 填本地，端口不用改，选项里面要选上在Library加载时候停止，还有程序入口停止。</li>
+<li>然后选择你的进程，之后会等一会，然后你还要再选一次上述说的选项，点开始，</li>
+<li>jdb -connect com.sun.jdi.SocketAttach:hostname=127.0.0.1,port=8700开启</li>
+</ol>
+<p>这就可以开始调试了。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Xposed</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/12/03/Onelous3T/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
     <article id="post-oneplus 3t root" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -585,59 +667,6 @@ ga('send', 'pageview');
 
 
   
-    <article id="post-拦截马逆向" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/08/23/拦截马逆向/">拦截马逆向</a>
-    </h1>
-  
-
-        
-        <a href="/2016/08/23/拦截马逆向/" class="archive-article-date">
-  	<time datetime="2016-08-23T13:03:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-08-23</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>这是我首次分析安卓木马，之前虽然看了一点书，但是好像没什么用。所以就来自己分析一下了，也没有学过java，但是学过C#。<br>
-        
-          <a class="article-more-a" href="/2016/08/23/拦截马逆向/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/08/23/拦截马逆向/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/4/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/6/">Next &raquo;</a>
@@ -739,27 +768,7 @@ ga('send', 'pageview');
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">工具，AWVS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Xposed</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">vulnerability</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">oneplus</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">sucks things</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">tools</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -767,7 +776,15 @@ ga('send', 'pageview');
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">blast</a>
+                <a href="javascript:void(0)" class="js-tag color4">vulnerability</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">工具，AWVS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">oneplus</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -775,7 +792,19 @@ ga('send', 'pageview');
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">tools</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">sucks things</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">about something</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -783,7 +812,7 @@ ga('send', 'pageview');
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">about something</a>
+                <a href="javascript:void(0)" class="js-tag color1">blast</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -799,15 +828,15 @@ ga('send', 'pageview');
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">感悟</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">program</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">一些思考</a>
+                <a href="javascript:void(0)" class="js-tag color3">感悟</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Sucksthings</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -815,7 +844,7 @@ ga('send', 'pageview');
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Sucksthings</a>
+                <a href="javascript:void(0)" class="js-tag color5">一些思考</a>
               </li>
              
               <li class="article-tag-list-item">

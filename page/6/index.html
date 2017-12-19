@@ -152,6 +152,59 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-拦截马逆向" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/08/23/拦截马逆向/">拦截马逆向</a>
+    </h1>
+  
+
+        
+        <a href="/2016/08/23/拦截马逆向/" class="archive-article-date">
+  	<time datetime="2016-08-23T13:03:55.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-08-23</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>这是我首次分析安卓木马，之前虽然看了一点书，但是好像没什么用。所以就来自己分析一下了，也没有学过java，但是学过C#。<br>
+        
+          <a class="article-more-a" href="/2016/08/23/拦截马逆向/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/08/23/拦截马逆向/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
     <article id="post-p2p" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1195,64 +1248,6 @@ SELECT CHR(32)||CHR(92)||CHR(93) FROM dual;    CHR() Function.
 
 
   
-    <article id="post-2016323" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/23/2016323/">2016323</a>
-    </h1>
-  
-
-        
-        <a href="/2016/03/23/2016323/" class="archive-article-date">
-  	<time datetime="2016-03-23T09:24:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-03-23</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="记录"><a href="#记录" class="headerlink" title="记录"></a>记录</h2><p>网站反爬虫<br>Headers反爬虫，Useragant，或者是referer直接在爬虫中伪造header就行。这类的比较熟悉，用过。<br>基于用户行为反爬虫：<br>检测用户行为例如短时间内进行多次的相同操作或者是检测同一IP，这类的没做过，但是用代理IP池就行。或者爬取一次sleep一下。这种在burp爆破的时候用过。<br>动态页面的反爬虫。Ajax请求得到的。但是ajax参数加密，调用了自己的接口。这类的当年爬学校的网站爆破学生账号有个跳转，怎么post数据都不行，只用了个selenium，原来还需要phantomJS，但是再去试密码的时候就不行了，学校网站已经有反应了，好像我举报过这个漏洞在乌云上。默认弱口令。账户依次增加。</p>
-<h2 id="如何防御mimikatz—读freebuf记录"><a href="#如何防御mimikatz—读freebuf记录" class="headerlink" title="如何防御mimikatz—读freebuf记录"></a>如何防御mimikatz—读freebuf记录</h2><p>我一直觉得，不懂攻击怎么懂防御。</p>
-<pre><code>crackmapexec.py IP-C  /wordlist/dict –mimikatz
-</code></pre><p>CrackMapExec他是用这个工具去远程调用，用的是生成的一堆字典。<br>第一次听说这个东西，又去搜了搜：<br><a href="https://github.com/byt3bl33d3r/CrackMapExec" target="_blank" rel="external">CrackMapExec</a>A swiss army knife for pentesting Windows/Active Directory environments瑞士军刀。啧啧啧。<br>看了看说明是用来枚举登录并且爬行开启了SMB共享的机子，还会使用Powershell自动注入Mimikatz/Shellcode/DLL’s 到内存中，<br>本来想看看invoke-Mimikatz.ps1的但是看不懂这个代码。<br>看完这篇总结思路如下，<br>升级域或林的功能级别到2012 R2；因为这里面有受保护的用户组加入之后看不到NTLMhash，但是没有打补丁的低版本是可以看到用户名和密码的。<br>安装KB2871997补丁，</p>
-<hr>
-<p>而我准备在云上搭建了环境开始测试。顺便练习一下mimikatz。好久以前就在ad上面看见mimikatz使用，终于试一把。我搭建了半天域环境。什么dns服务器什么域控。<img src="http://7u2pkp.com1.z0.glb.clouddn.com/%E5%9B%BE%E7%89%871.png" alt="图1"><img src="http://7u2pkp.com1.z0.glb.clouddn.com/%E5%9B%BE%E7%89%872.png" alt="图2"><img src="http://7u2pkp.com1.z0.glb.clouddn.com/%E5%9B%BE%E7%89%873.png" alt="图3"><br>别的改天再试试。</p>
-<hr>
-<h2 id="reference："><a href="#reference：" class="headerlink" title="reference："></a>reference：</h2><p><a href="http://yaabb163.blog.51cto.com/1975905/988365" target="_blank" rel="external">http://yaabb163.blog.51cto.com/1975905/988365</a><br><a href="http://www.cnblogs.com/wanggege/p/4605678.html" target="_blank" rel="external">http://www.cnblogs.com/wanggege/p/4605678.html</a><br><a href="https://adsecurity.org/?page_id=1821.cnblogs.com/wanggege/p/4605678.html" target="_blank" rel="external">https://adsecurity.org/?page_id=1821</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/03/23/2016323/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/5/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/7/">Next &raquo;</a>
@@ -1354,27 +1349,7 @@ SELECT CHR(32)||CHR(92)||CHR(93) FROM dual;    CHR() Function.
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">工具，AWVS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Xposed</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">vulnerability</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">oneplus</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">sucks things</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">tools</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1382,7 +1357,15 @@ SELECT CHR(32)||CHR(92)||CHR(93) FROM dual;    CHR() Function.
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">blast</a>
+                <a href="javascript:void(0)" class="js-tag color4">vulnerability</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">工具，AWVS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">oneplus</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1390,7 +1373,19 @@ SELECT CHR(32)||CHR(92)||CHR(93) FROM dual;    CHR() Function.
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">tools</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">sucks things</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">about something</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1398,7 +1393,7 @@ SELECT CHR(32)||CHR(92)||CHR(93) FROM dual;    CHR() Function.
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">about something</a>
+                <a href="javascript:void(0)" class="js-tag color1">blast</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1414,15 +1409,15 @@ SELECT CHR(32)||CHR(92)||CHR(93) FROM dual;    CHR() Function.
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">感悟</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">program</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">一些思考</a>
+                <a href="javascript:void(0)" class="js-tag color3">感悟</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Sucksthings</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1430,7 +1425,7 @@ SELECT CHR(32)||CHR(92)||CHR(93) FROM dual;    CHR() Function.
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Sucksthings</a>
+                <a href="javascript:void(0)" class="js-tag color5">一些思考</a>
               </li>
              
               <li class="article-tag-list-item">

@@ -152,6 +152,70 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-arxiv-org论文下载" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/01/29/arxiv-org论文下载/">arxiv.org论文下载</a>
+    </h1>
+  
+
+        
+        <a href="/2017/01/29/arxiv-org论文下载/" class="archive-article-date">
+  	<time datetime="2017-01-29T10:52:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-01-29</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>写了个下载arxiv.org论文的东西，比较丑陋，分成两部分，url采集和下载。本来想把这两部分整合在一起，发现总是有这样那样的问题，或许以后会好好思考一下怎么搞。。目前实现的只是最基本的功能，属于解决了温饱的问题。。<br>使用本软件，可能会导致你下载多了被封。那么你可能需要增加一个代理池。<br>这里有个问题，起始页面的PDF并没有下载，可以这样，规则输入url，然后输入的同时先把这个url写到txt。然后再去下载。其实老麻烦了，自己用的话，直接自己下载算了。<br>需要安装的依赖比较多，版本我自己也忘记了。。尴尬。<br>lxml ，requests，gevent.<br>这一部分是URL采集部分，采集之后会放到url.txt里，这里不能用多线程，只能一个一个采集。确实比较尴尬，但是他网站就是这样搞的，没办法。还用了尾调用。算法上来说真是十分垃圾了，不行，我要想办法优化一下。//只能这样了。。<br>需要补充的是我这个我只测试了下载信息安全里面的论文。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</div><div class="line"><span class="keyword">import</span> requests</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">reqPage</span><span class="params">(url)</span>:</span></div><div class="line">        headers = &#123;<span class="string">"user-agent"</span>:<span class="string">"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/534.57.2 (KHTML, like Gecko) Version/5.1.7 Safari/534.57.2 "</span>&#125;</div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            <span class="keyword">print</span> <span class="string">'[+]start req url[+]'</span></div><div class="line">            req = requests.get(url,headers=headers)</div><div class="line">            <span class="keyword">return</span> req.content</div><div class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</div><div class="line">            <span class="keyword">print</span> e</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">findNextUrl</span><span class="params">(url)</span>:</span></div><div class="line">        response = reqPage(url)</div><div class="line">        pageInfo = etree.HTML(response)</div><div class="line">        nextUrl = pageInfo.xpath(<span class="string">"//span[@class='arrow'][1]/a/@href"</span>)</div><div class="line">        url = nextUrl[<span class="number">0</span>]</div><div class="line">        <span class="keyword">print</span> url</div><div class="line">        <span class="keyword">with</span> open(<span class="string">'url.txt'</span>,<span class="string">'a+'</span>) <span class="keyword">as</span> f:</div><div class="line">            f.write(url+<span class="string">'\n'</span>)</div><div class="line">        <span class="keyword">return</span> getNextUrl(url)</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">getNextUrl</span><span class="params">(url)</span>:</span></div><div class="line">        <span class="keyword">return</span> findNextUrl(url)</div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line"> getNextUrl(<span class="string">"https://arxiv.org/abs/1701.07774"</span>)</div></pre></td></tr></table></figure>
+<p> 这一部分是下载器部分，会读取前面采集的url，然后去下载，用的是gevent，比较快。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">__author__ = <span class="string">'yangchen'</span></div><div class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</div><div class="line"><span class="keyword">import</span> requests</div><div class="line"><span class="keyword">import</span> Queue</div><div class="line"><span class="keyword">import</span> gevent</div><div class="line"><span class="keyword">from</span> gevent <span class="keyword">import</span> monkey</div><div class="line">monkey.patch_all()</div><div class="line"><span class="keyword">from</span> gevent.pool <span class="keyword">import</span> Pool</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">downloadPaper</span>:</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, url)</span>:</span></div><div class="line">        self.url = url.replace(<span class="string">'\n'</span>,<span class="string">''</span>)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">reqPage</span><span class="params">(self)</span>:</span></div><div class="line">        headers = &#123;</div><div class="line">            <span class="string">"user-agent"</span>: <span class="string">"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/534.57.2 (KHTML, like Gecko) Version/5.1.7 Safari/534.57.2 "</span>&#125;</div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            <span class="keyword">print</span> <span class="string">'[+]start req url[+]'</span></div><div class="line">            <span class="keyword">try</span>:</div><div class="line">                req = requests.get(self.url,headers=headers)</div><div class="line">                <span class="keyword">return</span> req.content</div><div class="line">            <span class="keyword">except</span>:</div><div class="line">                <span class="keyword">print</span> <span class="string">"null"</span></div><div class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</div><div class="line">            <span class="keyword">print</span> e</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parsePage</span><span class="params">(self, req)</span>:</span></div><div class="line">        <span class="keyword">print</span> <span class="string">'[+]start parse HTML[+]'</span></div><div class="line">        page = etree.HTML(req)</div><div class="line">        self.downloadUrl = page.xpath(<span class="string">'//ul/li[1]/a/@href'</span>)</div><div class="line">        self.title = page.xpath(<span class="string">"//h1[@class='title mathjax']/text()"</span>)</div><div class="line">        <span class="keyword">return</span> self.downloadUrl[<span class="number">0</span>], self.title[<span class="number">0</span>]</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">downPaper</span><span class="params">(self)</span>:</span></div><div class="line">        url, title = self.parsePage(self.reqPage())</div><div class="line">        finalurl = <span class="string">"https://arxiv.org/&#123;0&#125;"</span>.format(url)</div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            <span class="keyword">print</span> <span class="string">'''[+]downloading wait a moment ,plz[+]'''</span></div><div class="line">            pdf = requests.get(finalurl)</div><div class="line">            <span class="keyword">if</span> pdf.status_code == <span class="number">200</span>:</div><div class="line">                <span class="keyword">print</span> <span class="string">'[+]get url successfuly![+]'</span></div><div class="line">                <span class="keyword">with</span> open(<span class="string">'&#123;0&#125;.pdf'</span>.format(title.replace(<span class="string">'\n'</span>, <span class="string">''</span>)), <span class="string">'wb'</span>) <span class="keyword">as</span> f:</div><div class="line">                    f.write(pdf.content)</div><div class="line">                    <span class="keyword">print</span> <span class="string">"[+]download completed[+]"</span></div><div class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</div><div class="line">            <span class="keyword">print</span> e</div><div class="line">queue = Queue.Queue()</div><div class="line">urllist = []</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">readUrlFile</span><span class="params">()</span>:</span></div><div class="line">        <span class="keyword">with</span> open(<span class="string">"url.txt"</span>,<span class="string">'r'</span>) <span class="keyword">as</span> f:</div><div class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> f:</div><div class="line">                queue.put(i)</div><div class="line">                <span class="comment"># urllist.append(i)</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">mainFunction</span><span class="params">(u)</span>:</span></div><div class="line">    <span class="keyword">while</span> <span class="number">1</span>:</div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> queue.empty():</div><div class="line">            downloadPaper(queue.get()).downPaper()</div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            <span class="keyword">break</span></div><div class="line"><span class="keyword">if</span> __name__==<span class="string">'__main__'</span>:</div><div class="line">    readUrlFile()</div><div class="line">    pool = Pool(<span class="number">20</span>)</div><div class="line">    pool.map(mainFunction,xrange(<span class="number">20</span>))</div></pre></td></tr></table></figure>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Python crawl</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/01/29/arxiv-org论文下载/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
     <article id="post-生活在离文明近的地方" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -654,88 +718,6 @@ ga('send', 'pageview');
 
 
   
-    <article id="post-Onelous3T" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/03/Onelous3T/">Onelous3T install Xposed  before The IDA pro remotely debugging</a>
-    </h1>
-  
-
-        
-        <a href="/2016/12/03/Onelous3T/" class="archive-article-date">
-  	<time datetime="2016-12-03T07:52:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-12-03</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>ro.debuggable 在调试的时候需要是1，即为真。<br>网上流行的有几种方法，改boot.img、改apk，这两种自然是不选择的。<br>选择安装Xposed。</p>
-<ol>
-<li>安装sdk，和Xposed apk。</li>
-<li>首先安装apk，之后进入TWRP 刷入 sdk。</li>
-<li>完毕</li>
-<li>之后进入Xposed installer安装Xinstaller</li>
-<li>选择专家模式-&gt;其他，调试其他应用打开之后就能够调试了。</li>
-</ol>
-<hr>
-<p>在这之前使用ida 调试的时候总是出现jdb 提示致命错误。这样就能解决这个问题了。<br>顺便记录一下命令。</p>
-<ol>
-<li>ddms打开；</li>
-<li>adb push /这里是ida 目录下面的文件-&gt;android_server/ /data/local/tmp/</li>
-<li>进入shell 修改传入的文件的权限，chmod 777</li>
-<li>adb forward tcp:23946 tcp:23946转发端口</li>
-<li>adb shell am start -D -n xxxxactivity</li>
-<li>打开ida 选择 debug remotedebug ip 填本地，端口不用改，选项里面要选上在Library加载时候停止，还有程序入口停止。</li>
-<li>然后选择你的进程，之后会等一会，然后你还要再选一次上述说的选项，点开始，</li>
-<li>jdb -connect com.sun.jdi.SocketAttach:hostname=127.0.0.1,port=8700开启</li>
-</ol>
-<p>这就可以开始调试了。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Xposed</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/12/03/Onelous3T/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
@@ -837,27 +819,7 @@ ga('send', 'pageview');
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">工具，AWVS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Xposed</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">vulnerability</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">oneplus</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">sucks things</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">tools</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -865,7 +827,15 @@ ga('send', 'pageview');
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">blast</a>
+                <a href="javascript:void(0)" class="js-tag color4">vulnerability</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">工具，AWVS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">oneplus</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -873,7 +843,19 @@ ga('send', 'pageview');
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">tools</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">sucks things</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">about something</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -881,7 +863,7 @@ ga('send', 'pageview');
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">about something</a>
+                <a href="javascript:void(0)" class="js-tag color1">blast</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -897,15 +879,15 @@ ga('send', 'pageview');
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">感悟</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">program</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">一些思考</a>
+                <a href="javascript:void(0)" class="js-tag color3">感悟</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Sucksthings</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -913,7 +895,7 @@ ga('send', 'pageview');
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Sucksthings</a>
+                <a href="javascript:void(0)" class="js-tag color5">一些思考</a>
               </li>
              
               <li class="article-tag-list-item">

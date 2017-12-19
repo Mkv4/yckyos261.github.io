@@ -152,6 +152,69 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-阿里巴巴JAVA开发手册记录" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/12/阿里巴巴JAVA开发手册记录/">阿里巴巴JAVA开发手册记录</a>
+    </h1>
+  
+
+        
+        <a href="/2017/04/12/阿里巴巴JAVA开发手册记录/" class="archive-article-date">
+  	<time datetime="2017-04-12T02:01:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-12</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我摘录了一些放在别的语言里面也能用的规则。确实很精华。。<br>我看了看那些这牛那牛写的代码真是连最基本的可读性都没有。</p>
+<p>不要用_开始<br>类名使用 UpperCamelCase 风格，必须遵从驼峰形式<br>常量要定义，常量可以放在一个类中。要规定好类；<br>左大括号之前不换行，后换行，右大括号之前换行；右大括号之后有else等不换行。<br>左括号和后一个字符之间不出现空格;同样，右括号和前一个字符之间也不出现空 格。<br>if/for/while/switch/do 等保留字与左右括号之间都必须加空格。<br>任何运算符左右必须加一个空格。<br>方法参数在定义和传入时，多个参数逗号后边必须加空格<br>线程资源必须通过线程池提供，不允许在应用中自行显式创建线程<br>高并发时，同步调用应该去考量锁的性能损耗。能用无锁数据结构，就不要用锁;能 锁区块，就不要锁整个方法体;能用对象锁，就不要用类锁。<br>对多个资源、数据库表、对象同时加锁时，需要保持一致的加锁顺序，否则可能会造 成死锁。<br>创建线程或线程池时请指定有意义的线程名称，方便出错时回溯。<br>在一个 switch 块内，每个 case 要么通过 break/return 来终止，要么注释说明程序 将继续执行到哪一个 case 为止;在一个 switch 块内，都必须包含一个 default 语句并且放在 最后，即使它什么代码也没有。<br>在 if/else/for/while/do 语句中必须使用大括号，即使只有一行代码，避免使用下 面的形式:if (condition) statements;<br>推荐尽量少用 else， if-else 的方式可以改写成:<br>循环体中的语句要考量性能，以下操作尽量移至循环体外处理，如定义对象、变量、 获取数据库连接，进行不必要的 try-catch 操作(这个 try-catch 是否可以移至循环体外)。<br>在使用正则表达式时，利用好其预编译功能，可以有效加快正则匹配速度。 说明:不要在方法体内定义:Pattern pattern = Pattern.compile(规则);<br>异常不要用来做流程控制，条件控制，因为异常的处理效率比条件分支低。<br>对大段代码进行 try-catch，这是不负责任的表现。catch 时请分清稳定代码和非稳 定代码，稳定代码指的是无论如何不会出错的代码。对于非稳定代码的 catch 尽可能进行区分 异常类型，再做对应的异常处理。<br>捕获异常是为了处理它，不要捕获了却什么都不处理而抛弃之，如果不想处理它，请 将该异常抛给它的调用者。最外层的业务使用者，必须处理异常，将其转化为用户可以理解的 内容。<br>可被用户直接访问的功能必须进行权限控制校验。<br>用户敏感数据禁止直接展示，必须对展示数据脱敏<br>用户输入的 SQL 参数严格使用参数绑定或者 METADATA 字段值限定，防止 SQL 注入，<br>禁止字符串拼接 SQL 访问数据库<br>用户请求传入的任何参数必须做有效性验证。<br>禁止向 HTML 页面输出未经安全过滤或未正确转义的用户数据。<br>表单、AJAX 提交必须执行 CSRF 安全过滤。<br>URL 外部重定向传入的目标地址必须执行白名单过滤。<br>try {<br>    if (com.alibaba.fasttext.sec.url.CheckSafeUrl<br>       .getDefaultInstance().inWhiteList(targetUrl)){<br>    response.sendRedirect(targetUrl);<br>  }<br>} catch (IOException e) {<br>    logger.error(“Check returnURL error! targetURL=” + targetURL, e);<br>    throw e;<br>    Web 应用必须正确配置 Robots 文件，非 SEO URL 必须配置为禁止爬虫访问。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">编程约规</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/04/12/阿里巴巴JAVA开发手册记录/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
     <article id="post-说说吧" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -781,70 +844,6 @@ reg query HKCU /f password /t REG_SZ /s
 
 
   
-    <article id="post-arxiv-org论文下载" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/01/29/arxiv-org论文下载/">arxiv.org论文下载</a>
-    </h1>
-  
-
-        
-        <a href="/2017/01/29/arxiv-org论文下载/" class="archive-article-date">
-  	<time datetime="2017-01-29T10:52:15.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-01-29</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>写了个下载arxiv.org论文的东西，比较丑陋，分成两部分，url采集和下载。本来想把这两部分整合在一起，发现总是有这样那样的问题，或许以后会好好思考一下怎么搞。。目前实现的只是最基本的功能，属于解决了温饱的问题。。<br>使用本软件，可能会导致你下载多了被封。那么你可能需要增加一个代理池。<br>这里有个问题，起始页面的PDF并没有下载，可以这样，规则输入url，然后输入的同时先把这个url写到txt。然后再去下载。其实老麻烦了，自己用的话，直接自己下载算了。<br>需要安装的依赖比较多，版本我自己也忘记了。。尴尬。<br>lxml ，requests，gevent.<br>这一部分是URL采集部分，采集之后会放到url.txt里，这里不能用多线程，只能一个一个采集。确实比较尴尬，但是他网站就是这样搞的，没办法。还用了尾调用。算法上来说真是十分垃圾了，不行，我要想办法优化一下。//只能这样了。。<br>需要补充的是我这个我只测试了下载信息安全里面的论文。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</div><div class="line"><span class="keyword">import</span> requests</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">reqPage</span><span class="params">(url)</span>:</span></div><div class="line">        headers = &#123;<span class="string">"user-agent"</span>:<span class="string">"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/534.57.2 (KHTML, like Gecko) Version/5.1.7 Safari/534.57.2 "</span>&#125;</div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            <span class="keyword">print</span> <span class="string">'[+]start req url[+]'</span></div><div class="line">            req = requests.get(url,headers=headers)</div><div class="line">            <span class="keyword">return</span> req.content</div><div class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</div><div class="line">            <span class="keyword">print</span> e</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">findNextUrl</span><span class="params">(url)</span>:</span></div><div class="line">        response = reqPage(url)</div><div class="line">        pageInfo = etree.HTML(response)</div><div class="line">        nextUrl = pageInfo.xpath(<span class="string">"//span[@class='arrow'][1]/a/@href"</span>)</div><div class="line">        url = nextUrl[<span class="number">0</span>]</div><div class="line">        <span class="keyword">print</span> url</div><div class="line">        <span class="keyword">with</span> open(<span class="string">'url.txt'</span>,<span class="string">'a+'</span>) <span class="keyword">as</span> f:</div><div class="line">            f.write(url+<span class="string">'\n'</span>)</div><div class="line">        <span class="keyword">return</span> getNextUrl(url)</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">getNextUrl</span><span class="params">(url)</span>:</span></div><div class="line">        <span class="keyword">return</span> findNextUrl(url)</div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</div><div class="line"> getNextUrl(<span class="string">"https://arxiv.org/abs/1701.07774"</span>)</div></pre></td></tr></table></figure>
-<p> 这一部分是下载器部分，会读取前面采集的url，然后去下载，用的是gevent，比较快。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">__author__ = <span class="string">'yangchen'</span></div><div class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</div><div class="line"><span class="keyword">import</span> requests</div><div class="line"><span class="keyword">import</span> Queue</div><div class="line"><span class="keyword">import</span> gevent</div><div class="line"><span class="keyword">from</span> gevent <span class="keyword">import</span> monkey</div><div class="line">monkey.patch_all()</div><div class="line"><span class="keyword">from</span> gevent.pool <span class="keyword">import</span> Pool</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">downloadPaper</span>:</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, url)</span>:</span></div><div class="line">        self.url = url.replace(<span class="string">'\n'</span>,<span class="string">''</span>)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">reqPage</span><span class="params">(self)</span>:</span></div><div class="line">        headers = &#123;</div><div class="line">            <span class="string">"user-agent"</span>: <span class="string">"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/534.57.2 (KHTML, like Gecko) Version/5.1.7 Safari/534.57.2 "</span>&#125;</div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            <span class="keyword">print</span> <span class="string">'[+]start req url[+]'</span></div><div class="line">            <span class="keyword">try</span>:</div><div class="line">                req = requests.get(self.url,headers=headers)</div><div class="line">                <span class="keyword">return</span> req.content</div><div class="line">            <span class="keyword">except</span>:</div><div class="line">                <span class="keyword">print</span> <span class="string">"null"</span></div><div class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</div><div class="line">            <span class="keyword">print</span> e</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parsePage</span><span class="params">(self, req)</span>:</span></div><div class="line">        <span class="keyword">print</span> <span class="string">'[+]start parse HTML[+]'</span></div><div class="line">        page = etree.HTML(req)</div><div class="line">        self.downloadUrl = page.xpath(<span class="string">'//ul/li[1]/a/@href'</span>)</div><div class="line">        self.title = page.xpath(<span class="string">"//h1[@class='title mathjax']/text()"</span>)</div><div class="line">        <span class="keyword">return</span> self.downloadUrl[<span class="number">0</span>], self.title[<span class="number">0</span>]</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">downPaper</span><span class="params">(self)</span>:</span></div><div class="line">        url, title = self.parsePage(self.reqPage())</div><div class="line">        finalurl = <span class="string">"https://arxiv.org/&#123;0&#125;"</span>.format(url)</div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            <span class="keyword">print</span> <span class="string">'''[+]downloading wait a moment ,plz[+]'''</span></div><div class="line">            pdf = requests.get(finalurl)</div><div class="line">            <span class="keyword">if</span> pdf.status_code == <span class="number">200</span>:</div><div class="line">                <span class="keyword">print</span> <span class="string">'[+]get url successfuly![+]'</span></div><div class="line">                <span class="keyword">with</span> open(<span class="string">'&#123;0&#125;.pdf'</span>.format(title.replace(<span class="string">'\n'</span>, <span class="string">''</span>)), <span class="string">'wb'</span>) <span class="keyword">as</span> f:</div><div class="line">                    f.write(pdf.content)</div><div class="line">                    <span class="keyword">print</span> <span class="string">"[+]download completed[+]"</span></div><div class="line">        <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</div><div class="line">            <span class="keyword">print</span> e</div><div class="line">queue = Queue.Queue()</div><div class="line">urllist = []</div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">readUrlFile</span><span class="params">()</span>:</span></div><div class="line">        <span class="keyword">with</span> open(<span class="string">"url.txt"</span>,<span class="string">'r'</span>) <span class="keyword">as</span> f:</div><div class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> f:</div><div class="line">                queue.put(i)</div><div class="line">                <span class="comment"># urllist.append(i)</span></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">mainFunction</span><span class="params">(u)</span>:</span></div><div class="line">    <span class="keyword">while</span> <span class="number">1</span>:</div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> queue.empty():</div><div class="line">            downloadPaper(queue.get()).downPaper()</div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            <span class="keyword">break</span></div><div class="line"><span class="keyword">if</span> __name__==<span class="string">'__main__'</span>:</div><div class="line">    readUrlFile()</div><div class="line">    pool = Pool(<span class="number">20</span>)</div><div class="line">    pool.map(mainFunction,xrange(<span class="number">20</span>))</div></pre></td></tr></table></figure>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">Python crawl</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/01/29/arxiv-org论文下载/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
@@ -946,27 +945,7 @@ reg query HKCU /f password /t REG_SZ /s
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">工具，AWVS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Xposed</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">vulnerability</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">oneplus</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">sucks things</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">tools</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -974,7 +953,15 @@ reg query HKCU /f password /t REG_SZ /s
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">blast</a>
+                <a href="javascript:void(0)" class="js-tag color4">vulnerability</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">工具，AWVS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">oneplus</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -982,7 +969,19 @@ reg query HKCU /f password /t REG_SZ /s
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">tools</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">sucks things</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">about something</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -990,7 +989,7 @@ reg query HKCU /f password /t REG_SZ /s
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">about something</a>
+                <a href="javascript:void(0)" class="js-tag color1">blast</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1006,15 +1005,15 @@ reg query HKCU /f password /t REG_SZ /s
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">感悟</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">program</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">一些思考</a>
+                <a href="javascript:void(0)" class="js-tag color3">感悟</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Sucksthings</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1022,7 +1021,7 @@ reg query HKCU /f password /t REG_SZ /s
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Sucksthings</a>
+                <a href="javascript:void(0)" class="js-tag color5">一些思考</a>
               </li>
              
               <li class="article-tag-list-item">

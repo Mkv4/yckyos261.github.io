@@ -152,6 +152,62 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-一段demo代码" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/06/08/一段demo代码/">一段demo代码</a>
+    </h1>
+  
+
+        
+        <a href="/2017/06/08/一段demo代码/" class="archive-article-date">
+  	<time datetime="2017-06-08T07:07:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-06-08</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我发现我总喜欢写demo，特别粗糙，僵硬。但是我就是为了证明我的想法啊。<br>我读了gevent的源码和文档，写了一个东西，实测性能1.5w个请求大概200秒左右，在网速非常好的情况下。当然我的电脑给10个信号量和给&gt;10个信号量是一样的。</p>
+<p>python3下运行。</p>
+<p>这真的只是一个demo.输出结果我都没搞。<br>2017.6.20</p>
+<p>会出现一段UnicodeError: label empty or too long</p>
+<p>未发现解决方式。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div></pre></td><td class="code"><pre><div class="line">__author__ = <span class="string">'yoo'</span></div><div class="line"></div><div class="line"><span class="keyword">from</span> gevent <span class="keyword">import</span> monkey</div><div class="line">monkey.patch_all()</div><div class="line"><span class="keyword">from</span> gevent <span class="keyword">import</span> getcurrent</div><div class="line"><span class="keyword">from</span> gevent <span class="keyword">import</span> resolver_thread</div><div class="line"><span class="keyword">from</span> gevent.pool <span class="keyword">import</span> Pool</div><div class="line"><span class="keyword">from</span> gevent.queue <span class="keyword">import</span> Queue</div><div class="line"><span class="keyword">import</span> time</div><div class="line"><span class="keyword">from</span> gevent.event <span class="keyword">import</span> Event</div><div class="line"><span class="keyword">from</span> gevent.lock <span class="keyword">import</span> Semaphore</div><div class="line"></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestDNS</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, hostName, args)</span>:</span></div><div class="line">        self.resolver = resolver_thread.Resolver()</div><div class="line">        self.hostName = hostName</div><div class="line">        self.reqQueue = Queue()</div><div class="line">        self.resQueue = Queue()</div><div class="line">        self.path = args</div><div class="line">        self.pool = Pool()</div><div class="line">        self.time = time.time()</div><div class="line">        self.event = Event()</div><div class="line">        self.sem = Semaphore(<span class="number">10</span>)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sendReqDNS</span><span class="params">(self)</span>:</span></div><div class="line">        self.resolver.nameservers = [<span class="string">'223.5.5.5'</span>]</div><div class="line">        self.resolver.timeout = <span class="number">0.03</span></div><div class="line">        <span class="keyword">if</span> self.reqQueue.empty():</div><div class="line">            self.pool.killone(id(getcurrent()), block=<span class="keyword">False</span>)</div><div class="line">            self.sem.release()</div><div class="line">            exit(<span class="number">0</span>)</div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            results = self.resolver.gethostbyname_ex(self.reqQueue.get())</div><div class="line">            print(results)</div><div class="line">            self.resQueue.put_nowait(results)</div><div class="line">            self.pool.killone(id(getcurrent()))</div><div class="line">            self.sem.release()</div><div class="line">        <span class="keyword">except</span>:</div><div class="line">            self.pool.killone(id(getcurrent()))</div><div class="line">            self.sem.release()</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setResults</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">while</span> <span class="keyword">not</span> self.resQueue.empty():</div><div class="line">            <span class="keyword">with</span> open(<span class="string">'test.txt'</span>, <span class="string">'at'</span>) <span class="keyword">as</span> f:</div><div class="line">                f.write(str(self.resQueue.get_nowait()[<span class="number">0</span>]) + str(self.resQueue.get()[<span class="number">2</span>]) + <span class="string">'\n'</span>)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">readDicFile</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">with</span> open(self.path) <span class="keyword">as</span> f:</div><div class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> f:</div><div class="line">                self.reqQueue.put_nowait(i.strip() + <span class="string">"."</span> + self.hostName)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">addScan</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">while</span> <span class="keyword">not</span> self.reqQueue.empty():</div><div class="line">            <span class="keyword">if</span> <span class="keyword">not</span> self.sem.acquire():</div><div class="line">                <span class="keyword">return</span></div><div class="line">            self.pool.spawn(self.sendReqDNS)</div><div class="line">        print(time.time() - self.time)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">killGreenlet</span><span class="params">(self)</span>:</span></div><div class="line">        self.pool.kill()</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</div><div class="line">    ts = TestDNS(<span class="string">'czbank.com'</span>, <span class="string">'domain.txt'</span>)</div><div class="line">    ts.readDicFile()</div><div class="line">    ts.addScan()</div><div class="line">    <span class="comment">#ts.setResults()</span></div></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/06/08/一段demo代码/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
     <article id="post-Python3" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -655,69 +711,6 @@ ga('send', 'pageview');
 
 
   
-    <article id="post-阿里巴巴JAVA开发手册记录" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/04/12/阿里巴巴JAVA开发手册记录/">阿里巴巴JAVA开发手册记录</a>
-    </h1>
-  
-
-        
-        <a href="/2017/04/12/阿里巴巴JAVA开发手册记录/" class="archive-article-date">
-  	<time datetime="2017-04-12T02:01:03.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-12</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>我摘录了一些放在别的语言里面也能用的规则。确实很精华。。<br>我看了看那些这牛那牛写的代码真是连最基本的可读性都没有。</p>
-<p>不要用_开始<br>类名使用 UpperCamelCase 风格，必须遵从驼峰形式<br>常量要定义，常量可以放在一个类中。要规定好类；<br>左大括号之前不换行，后换行，右大括号之前换行；右大括号之后有else等不换行。<br>左括号和后一个字符之间不出现空格;同样，右括号和前一个字符之间也不出现空 格。<br>if/for/while/switch/do 等保留字与左右括号之间都必须加空格。<br>任何运算符左右必须加一个空格。<br>方法参数在定义和传入时，多个参数逗号后边必须加空格<br>线程资源必须通过线程池提供，不允许在应用中自行显式创建线程<br>高并发时，同步调用应该去考量锁的性能损耗。能用无锁数据结构，就不要用锁;能 锁区块，就不要锁整个方法体;能用对象锁，就不要用类锁。<br>对多个资源、数据库表、对象同时加锁时，需要保持一致的加锁顺序，否则可能会造 成死锁。<br>创建线程或线程池时请指定有意义的线程名称，方便出错时回溯。<br>在一个 switch 块内，每个 case 要么通过 break/return 来终止，要么注释说明程序 将继续执行到哪一个 case 为止;在一个 switch 块内，都必须包含一个 default 语句并且放在 最后，即使它什么代码也没有。<br>在 if/else/for/while/do 语句中必须使用大括号，即使只有一行代码，避免使用下 面的形式:if (condition) statements;<br>推荐尽量少用 else， if-else 的方式可以改写成:<br>循环体中的语句要考量性能，以下操作尽量移至循环体外处理，如定义对象、变量、 获取数据库连接，进行不必要的 try-catch 操作(这个 try-catch 是否可以移至循环体外)。<br>在使用正则表达式时，利用好其预编译功能，可以有效加快正则匹配速度。 说明:不要在方法体内定义:Pattern pattern = Pattern.compile(规则);<br>异常不要用来做流程控制，条件控制，因为异常的处理效率比条件分支低。<br>对大段代码进行 try-catch，这是不负责任的表现。catch 时请分清稳定代码和非稳 定代码，稳定代码指的是无论如何不会出错的代码。对于非稳定代码的 catch 尽可能进行区分 异常类型，再做对应的异常处理。<br>捕获异常是为了处理它，不要捕获了却什么都不处理而抛弃之，如果不想处理它，请 将该异常抛给它的调用者。最外层的业务使用者，必须处理异常，将其转化为用户可以理解的 内容。<br>可被用户直接访问的功能必须进行权限控制校验。<br>用户敏感数据禁止直接展示，必须对展示数据脱敏<br>用户输入的 SQL 参数严格使用参数绑定或者 METADATA 字段值限定，防止 SQL 注入，<br>禁止字符串拼接 SQL 访问数据库<br>用户请求传入的任何参数必须做有效性验证。<br>禁止向 HTML 页面输出未经安全过滤或未正确转义的用户数据。<br>表单、AJAX 提交必须执行 CSRF 安全过滤。<br>URL 外部重定向传入的目标地址必须执行白名单过滤。<br>try {<br>    if (com.alibaba.fasttext.sec.url.CheckSafeUrl<br>       .getDefaultInstance().inWhiteList(targetUrl)){<br>    response.sendRedirect(targetUrl);<br>  }<br>} catch (IOException e) {<br>    logger.error(“Check returnURL error! targetURL=” + targetURL, e);<br>    throw e;<br>    Web 应用必须正确配置 Robots 文件，非 SEO URL 必须配置为禁止爬虫访问。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">编程约规</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/04/12/阿里巴巴JAVA开发手册记录/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
@@ -819,27 +812,7 @@ ga('send', 'pageview');
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">工具，AWVS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Xposed</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">vulnerability</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">oneplus</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">sucks things</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">tools</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -847,7 +820,15 @@ ga('send', 'pageview');
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">blast</a>
+                <a href="javascript:void(0)" class="js-tag color4">vulnerability</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">工具，AWVS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">oneplus</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -855,7 +836,19 @@ ga('send', 'pageview');
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">tools</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">sucks things</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">about something</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -863,7 +856,7 @@ ga('send', 'pageview');
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">about something</a>
+                <a href="javascript:void(0)" class="js-tag color1">blast</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -879,15 +872,15 @@ ga('send', 'pageview');
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">感悟</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">program</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">一些思考</a>
+                <a href="javascript:void(0)" class="js-tag color3">感悟</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Sucksthings</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -895,7 +888,7 @@ ga('send', 'pageview');
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Sucksthings</a>
+                <a href="javascript:void(0)" class="js-tag color5">一些思考</a>
               </li>
              
               <li class="article-tag-list-item">

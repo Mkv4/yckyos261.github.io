@@ -233,6 +233,80 @@ ga('send', 'pageview');
 
 
   
+    <article id="post-nixiangguide" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/19/nixiangguide/">逆向学习粗略方向</a>
+    </h1>
+  
+
+        
+        <a href="/2017/12/19/nixiangguide/" class="archive-article-date">
+  	<time datetime="2017-12-19T02:14:35.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-12-19</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我分析了一些培训机构设置的目录课程得出的：<br>这五个是tk发的。</p>
+<p>1、分析现有 Linux 内核 Fuzzing 工具实现上的速度瓶颈，试提出改进方案，并予以实现。</p>
+<p>2、下载工具网络蚂蚁处理 HTTP 服务器返回的超长 Location 字段时存在溢出。尝试在 Windows 2000 或 XP 上利用该漏洞实现执行 Shellcode。</p>
+<p>3、以 Chrome 浏览器的历史漏洞为研究对象，尝试分析漏洞数量、严重性和代码编写者、代码提交时间等因素之间的关系。</p>
+<p>4、对比 IoTivity、Thread、AllJoyn 三种物联网协议和安全相关的设计特点，分析每种协议可能存在的安全缺陷，以及人们具体实现这些协议时可能犯的错误。</p>
+<p>5、分析最流行的几款 Web 后端漏洞自动化挖掘工具以及半自动辅助工具，总结这些工具的优缺点，并提出改进思路，给出一个优化后的 Web 后端漏洞挖掘工具设计方案</p>
+<p>培训机构的项目：</p>
+<p>让做的工具。<br>手机监控pc。<br>pe解析软件。–目的熟悉pe文件格式 内存映射等。<br>对api的监控 hook<br>分析某windbg功能。-熟悉异常处理过程 分发过程 可以参考软件调试。<br>驱动级别的任务管理器。-驱动编程各种api操控。<br>安卓加壳程序。dex文件修复/解析。–熟悉dex文件格式<br>手机安全管家。。熟悉手机上的hook以及各种机制。<br>ELF解析工具、Android加密壳。<br>音乐播放器，堆分布查看器，远程注入工具，内存优化工具，多功能任务管理器，OllyDBG2.x的反反调试插件，具有OllyDBG界面的调试器。<br>简单的智能启发式Fuzz Tools。<br>手机安全管家、DEX文件解析器。<br>ELF解析工具、Android加密壳。<br>PE文件解析器，用C++写的压缩壳，辅助脱壳（Dump）工具，驱动加载与测试工具，具备有基本功能的ARK。<br>主要的，<br>dex，odex文件格式，<br>Smali汇编语言。<br>Native hook<br>Elf文件格式。<br>发散性的加固 hook 注入<br>Windows系统基本原理 异常处理，线程调度 堆分页机制，xxx<br>驱动过滤 内核hook</p>
+<p>张银奎老师的培训目录。<br>【DAY 1】<br>第一部分：WindowsNT核心特征 （1.5小时）<br>要点：特殊的FS段，TEB，PCR，地址空间，32位、44位和48位线性地址空间，系统调用，WoW，系统组件，HAL、内核、执行体，重要的驱动程序（KS、DXGKRNL），系统进程（IDLE、SMSS.EXE、WinLogon.EXE），子系统、Win32K，Linux子系统，会话和会话隔离</p>
+<p>第二部分：WinDBG精要（1.5 小时）<br>要点：WinDBG的命令类型，常用命令，命令语法，调试符号，符号文件的种类，符号服务器，定制调试事件的方法和重要的调试命令，软件断点、硬件断点，复杂的断点命令，x86寄存器和反汇编技巧</p>
+<p>第三部分：内核调试引擎（1小时）<br>要点：两种软件哲学，内核调试引擎（结构，重要的函数全局变量，工作原理），五种连接方式，启用方法，PCR，双机用户态调试（Debug WinLogon and CSRSS）</p>
+<p>第四部分：调试启动过程 (1.5小时)<br>要点：现场跟踪Windows系统的启动过程，解析其中的重要步骤和关键细节：内核初始化，CPU初始化，执行体的阶段0和阶段1初始化，SMSS，CSRSS和WinLogon，UserInit以及Shell。</p>
+<p>第五部分：内存管理器 (1.5小时)<br>要点：内存管理的多级架构，内存管理器，大内存页及其使用，6大工作线程，内核池，分页内核和非分页内核池，PFN数据库，虚拟地址空间的管理（VAD），Verifier，实例分析</p>
+<p>【DAY 2】<br>第六部分：应用程序崩溃和用户态转储（1.5小时）<br>要点：异常处理，SEH，两轮异常分发，异常处理器，未处理异常，JIT调试和应用程序崩溃的完整过程，转储的基本知识，如何使用ADPLUS自动产生用户态转储，以及分析用户态转储的常用命令和技巧，真实案例分析</p>
+<p>第七部分：栈调试 (1.5小时)<br>要点：栈的创建，栈的自动增长机制，栈帧的组织方法，栈溢出攻击，GS机制，通过Windows 7系统的真实案例介绍基于Cookie的溢出检测机制，演示使用内核调试会话调试用户空间问题的技巧</p>
+<p>第八部分：多线程调试（1.5小时）<br>要点：进程与线程，使用WinDBG来调试多线程程序，同时调试多个进程，控制线程执行状态、观察同步对象、临界区，线程死锁，死锁案例分析；CPU的LOCK前缀，互锁递增，同步机制比较，死循环</p>
+<p>第九部分：堆调试（1.5小时）<br>要点：多层存储架构，内存管理器，内核态池，用户态堆，介绍调试内存有关的典型问题的方法和技巧，包括使用CRT堆和Win32堆的调试支持，分析内存泄漏、访问违例等，在探讨实践经验的同时会穿插重要的理论知识，包括Win32对和CRT堆的结构、内存管理常识、堆布局等，真实案例分析</p>
+<p>第十部分：使用SOS扩展调试.Net程序（1小时）<br>要点：使用WinDBG从操作系统层次来调试托管程序，了解托管模块的加载过程，托管程序的线程结构，及时编译（JIT）的工作过程和托管异常的工作原理；通过SOS扩展库来调试托管程序，包括加载SOS的方法、SOS的常用命令和如何观察托管堆上的对象等，案例分析</p>
+<p>【DAY 3】<br>第十一部分：I/O子系统和内核态驱动 (1.5 小时)<br>要点：I/O子系统架构，I/O管理器，驱动程序类型，设备树，ACPI，理解ACPI脚本，PCI总线概要，PnP，I/O子系统的建立过程，设备栈，PDO，FDO，IRP，常用的调试命令；驱动验证器：验证原理，验证项目，启用方法，使用WinDBG分析验证失败，WHCK测试，实例分析</p>
+<p>第十二部分：存储和文件系统(1 小时)<br>要点：存储子系统大局观，磁盘端口驱动，分区管理，卷，磁盘过滤驱动，三级设备栈，文件系统，文件系统的过滤驱动，Mini Filter，实际案例分析：因为文件过滤驱动而导致的系统死锁</p>
+<p>第十三部分：系统崩溃和死锁(1.5 小时)<br>要点：系统崩溃概览，Windows蓝屏崩溃（BSOD）的过程，系统转储，转储文件的产生过程，转储失败的原因，分析系统转储的方法，自动分析，自动分析的局限，真实案例解析：双误导致的崩溃，挂死在DPC，回退到错误现场的方法，从栈上寻找线索，系统挂死，典型原因，解决方法，窗口子系统挂死，资源锁，!locks，IRQL，挂死在高IRQL，中断风暴</p>
+<p>第十四部分：事件追踪和调优 (1.5小时)<br>要点：调优基础，采样和Instrumentation，ETW (Event Tracing for Windows) 机制的原理，WPT组件、工作原理，WPR 和 WPA，演示如何使用WindowsPerformance Toolkit (WPT) 来发现应用程序的热点和瓶颈，涵盖常用的调优工具，包括perfmon，任务管理器中的重要性能指标（Page Fault，Memory），xperf、xbootmgr、xperfview等，实例讨论：高 CPU 占用率，GPU 调优</p>
+<p>第十五部分： 使用vTune调优（1.5小时）<br>要点：vTune背景，版本历史，关键组件，收集数据的方法，基本热点（Hotspot）分析，高级热点分析，符号文件和符号文件设置，自定义分析模板，观察线程切换细节（上下文切换和preempt），观察中断，手工设置Marker，案例分析</p>
+<hr>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/12/19/nixiangguide/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+
+
+
+
+
+
+
+  
     <article id="post-jiangvsyi" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -783,62 +857,6 @@ return 0;
 
 
   
-    <article id="post-一段demo代码" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/06/08/一段demo代码/">一段demo代码</a>
-    </h1>
-  
-
-        
-        <a href="/2017/06/08/一段demo代码/" class="archive-article-date">
-  	<time datetime="2017-06-08T07:07:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-06-08</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>我发现我总喜欢写demo，特别粗糙，僵硬。但是我就是为了证明我的想法啊。<br>我读了gevent的源码和文档，写了一个东西，实测性能1.5w个请求大概200秒左右，在网速非常好的情况下。当然我的电脑给10个信号量和给&gt;10个信号量是一样的。</p>
-<p>python3下运行。</p>
-<p>这真的只是一个demo.输出结果我都没搞。<br>2017.6.20</p>
-<p>会出现一段UnicodeError: label empty or too long</p>
-<p>未发现解决方式。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div></pre></td><td class="code"><pre><div class="line">__author__ = <span class="string">'yoo'</span></div><div class="line"></div><div class="line"><span class="keyword">from</span> gevent <span class="keyword">import</span> monkey</div><div class="line">monkey.patch_all()</div><div class="line"><span class="keyword">from</span> gevent <span class="keyword">import</span> getcurrent</div><div class="line"><span class="keyword">from</span> gevent <span class="keyword">import</span> resolver_thread</div><div class="line"><span class="keyword">from</span> gevent.pool <span class="keyword">import</span> Pool</div><div class="line"><span class="keyword">from</span> gevent.queue <span class="keyword">import</span> Queue</div><div class="line"><span class="keyword">import</span> time</div><div class="line"><span class="keyword">from</span> gevent.event <span class="keyword">import</span> Event</div><div class="line"><span class="keyword">from</span> gevent.lock <span class="keyword">import</span> Semaphore</div><div class="line"></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestDNS</span><span class="params">(object)</span>:</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, hostName, args)</span>:</span></div><div class="line">        self.resolver = resolver_thread.Resolver()</div><div class="line">        self.hostName = hostName</div><div class="line">        self.reqQueue = Queue()</div><div class="line">        self.resQueue = Queue()</div><div class="line">        self.path = args</div><div class="line">        self.pool = Pool()</div><div class="line">        self.time = time.time()</div><div class="line">        self.event = Event()</div><div class="line">        self.sem = Semaphore(<span class="number">10</span>)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">sendReqDNS</span><span class="params">(self)</span>:</span></div><div class="line">        self.resolver.nameservers = [<span class="string">'223.5.5.5'</span>]</div><div class="line">        self.resolver.timeout = <span class="number">0.03</span></div><div class="line">        <span class="keyword">if</span> self.reqQueue.empty():</div><div class="line">            self.pool.killone(id(getcurrent()), block=<span class="keyword">False</span>)</div><div class="line">            self.sem.release()</div><div class="line">            exit(<span class="number">0</span>)</div><div class="line">        <span class="keyword">try</span>:</div><div class="line">            results = self.resolver.gethostbyname_ex(self.reqQueue.get())</div><div class="line">            print(results)</div><div class="line">            self.resQueue.put_nowait(results)</div><div class="line">            self.pool.killone(id(getcurrent()))</div><div class="line">            self.sem.release()</div><div class="line">        <span class="keyword">except</span>:</div><div class="line">            self.pool.killone(id(getcurrent()))</div><div class="line">            self.sem.release()</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setResults</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">while</span> <span class="keyword">not</span> self.resQueue.empty():</div><div class="line">            <span class="keyword">with</span> open(<span class="string">'test.txt'</span>, <span class="string">'at'</span>) <span class="keyword">as</span> f:</div><div class="line">                f.write(str(self.resQueue.get_nowait()[<span class="number">0</span>]) + str(self.resQueue.get()[<span class="number">2</span>]) + <span class="string">'\n'</span>)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">readDicFile</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">with</span> open(self.path) <span class="keyword">as</span> f:</div><div class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> f:</div><div class="line">                self.reqQueue.put_nowait(i.strip() + <span class="string">"."</span> + self.hostName)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">addScan</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">while</span> <span class="keyword">not</span> self.reqQueue.empty():</div><div class="line">            <span class="keyword">if</span> <span class="keyword">not</span> self.sem.acquire():</div><div class="line">                <span class="keyword">return</span></div><div class="line">            self.pool.spawn(self.sendReqDNS)</div><div class="line">        print(time.time() - self.time)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">killGreenlet</span><span class="params">(self)</span>:</span></div><div class="line">        self.pool.kill()</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</div><div class="line">    ts = TestDNS(<span class="string">'czbank.com'</span>, <span class="string">'domain.txt'</span>)</div><div class="line">    ts.readDicFile()</div><div class="line">    ts.addScan()</div><div class="line">    <span class="comment">#ts.setResults()</span></div></pre></td></tr></table></figure>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/06/08/一段demo代码/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -940,27 +958,7 @@ return 0;
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">工具，AWVS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Xposed</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">vulnerability</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">oneplus</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">sucks things</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">tools</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -968,7 +966,15 @@ return 0;
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">blast</a>
+                <a href="javascript:void(0)" class="js-tag color4">vulnerability</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">工具，AWVS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">oneplus</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -976,7 +982,19 @@ return 0;
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">tools</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">sucks things</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">about something</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -984,7 +1002,7 @@ return 0;
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">about something</a>
+                <a href="javascript:void(0)" class="js-tag color1">blast</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1000,15 +1018,15 @@ return 0;
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">感悟</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">program</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">一些思考</a>
+                <a href="javascript:void(0)" class="js-tag color3">感悟</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Sucksthings</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1016,7 +1034,7 @@ return 0;
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Sucksthings</a>
+                <a href="javascript:void(0)" class="js-tag color5">一些思考</a>
               </li>
              
               <li class="article-tag-list-item">
