@@ -160,72 +160,6 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-访谈记录" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/06/12/访谈记录/">访谈记录</a>
-    </h1>
-  
-
-        
-        <a href="/2017/06/12/访谈记录/" class="archive-article-date">
-  	<time datetime="2017-06-12T04:39:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-06-12</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>最近跟一些朋友交流了一下，得出的结论惊人的相似。</p>
-<p>做什么不重要，学习东西还是靠自己。</p>
-<p>当然能去甲方一定要去甲方。</p>
-<p>工作可能都会让你不爽，你应该看重的是钱和所做的工作。其他参看第一条。</p>
-<p>不要浮躁。想好自己要什么。</p>
-<p>不要脸的说，我就对自己的目标非常的清楚，所以我做的决定都是基于我的目标作出。有时候需要取舍。</p>
-<p>其实这些话，我毕业的时候我老师就跟我说过，去什么企业企业多厉害其实跟你自己没什么关系，主要是看你在这个企业里面做什么工作，你掌握什么样子的技术。</p>
-<p>不要看网上的博客，至少不要主看博客，那些只能当一个方向指引用，系统的还是需要看书来学习。看一百篇其实真的比不上系统的看一本书来的好。</p>
-<p>面试这种东西真是要看缘分的，或者说看运气。跟面试官聊得来那么可能很快就完了。</p>
-<p>我下一些论文来看，有个人看见了说，你怎么还看论文啊，不是很水吗。（我：震惊脸）</p>
-<p>一个很奇怪的现象，人们好像只是在乎怎么去做，比如渗透？用工具。其实很像一个什么都不懂的黑猩猩。</p>
-<p>我的想法是，如果一个事情我知道了原理，那么无论他怎么变化我还是可以很快速的想出解决办法。</p>
-<p>所以我真的很讨厌这种风气。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/06/12/访谈记录/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
     <article id="post-一段demo代码" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -666,6 +600,130 @@ ga('send', 'pageview');
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2017/05/01/狗瘟猫瘟/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-url去重" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/04/21/url去重/">URL去重笔记</a>
+    </h1>
+  
+
+        
+        <a href="/2017/04/21/url去重/" class="archive-article-date">
+  	<time datetime="2017-04-21T08:49:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-21</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Bloom-Filter"><a href="#Bloom-Filter" class="headerlink" title="Bloom Filter"></a>Bloom Filter</h2><p>首先你得了解哈希表。</p>
+<p>hash函数，用来根据key计算存储位置，很明显，这样有可能会有存储位置的冲突。比如 position = f(key) 类比 f(x)=y；</p>
+<p>当然hash函数的构造方法有很多。我也就不多提了。</p>
+<p><strong>Bloom Filter</strong></p>
+<p>1、在一个很长的二进制向量（可以设置为一个一维数组，但定义中是bit位）中把所有位置都初始化为0；</p>
+<p>2、假设有一个集合有S{x,y,z}三个元素，还有三个hash函数；</p>
+<p>3、分别用hash1(x),hash2(x),hash3(x),去计算x,y,z，这三个元素。</p>
+<p>4、得出来的结果会对应1中向量的某个位置，把对应的位置设置为1。</p>
+<ul>
+<li>查询<br>如果要查询结果是否重复则把待查询的数据，分别用相同的hash函数去计算结果，去1中查找对应位置 查看数据是否为1，如果像例子中的三个位置都查询到结果为1，那么就可以判断待查询结果已经存在。</li>
+</ul>
+<p>伪代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">Size = 666666;</div><div class="line">int array = new int [Size]</div><div class="line">foreach i in array </div><div class="line">   array[i]=0</div><div class="line">   </div><div class="line">getPositon:</div><div class="line">h1=hash(url,22)%Size//hash函数构造</div><div class="line">h2=hash(url,23)%Size</div><div class="line">h3=hash(url,24)%Size</div><div class="line">return h1,h2,h3</div><div class="line"></div><div class="line">addSet:</div><div class="line">foreach int i in getPositon</div><div class="line">array[i]=1</div><div class="line"></div><div class="line">checkIfCon:</div><div class="line">foreach int i in getPositon</div><div class="line">if array[i]==1</div><div class="line">	return True</div></pre></td></tr></table></figure>
+<p>Bloom Filter虽然会产生错判，但是他是针对集合内的元素产生错判，只要返回的是false能够说明元素确实不在集合中，反之有可能存在。还算是可以忍受的。</p>
+<ul>
+<li>出错率</li>
+</ul>
+<p>直接上结论，有三个相关的因素，几个中元素个数，数组大小，哈希函数个数。</p>
+<ul>
+<li>数组大小设计</li>
+</ul>
+<p>实际应用中保持一半以上数位的是空着的。</p>
+<p>标准布隆过滤器的缺点是不支持删除元素操作的，只支持查找和插入两种操作。</p>
+<p>所以有人就研究出了<strong>计数布隆过滤器</strong>：</p>
+<p>先通过哈希函数计算元素对应的位置，然后给位数组对应的k(k为哈希函数个数)个位置在原有值的基础上加1。删除元素时，首先也是进行哈希计算，之后给位数组对应的 k个位置的值分别减1。而在查找一个元素时，与普通布隆过滤器类似，只不过当 所有位置非0时，就判断这个元素已经存在于集合。</p>
+<p>多维布隆过滤器</p>
+<p>。。。。。。</p>
+<h2 id="MD5去重树"><a href="#MD5去重树" class="headerlink" title="MD5去重树"></a>MD5去重树</h2><p>(1) 将url进行16位的MD5压缩。MD5加密算法有16位和32位两种方式理论上来说16位的MD5加密的碰撞概率为1/264。因而不同的url生成的MD5密文相同的可能性非常之小这就保证了去重效果。虽然32位的去重效果更佳好,但却比16位的多耗一倍的空间,因此我们采用16位的数据加密;</p>
+<p>(2) 将生成的密文切割为16位的数组a。然后将a[0]的值与根节点下指向的节点值相比较,如果找到,我们称这个找到的节点为r[1],并将r[1]指向的下一节点与a[1]相比较,以此类推下去,直到a[15]比较结束位置。如果未找到则新建一个值为当前比较字符,后续节点值为下一字符的节点。这种搜索方式有点像计算机中找某个文件夹的方式,首先得找到具体的盘符如C:然后再找到C盘下面的文件夹,然后找此文件夹下面的文件夹直到找到最后一个文件位置。如果不存在则新建相应的文件夹。</p>
+<p>我想了想伪代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">url = ‘wwww.baidu.com/sdsdsds’ //url = list ...</div><div class="line">hash = hashlib.md5(url).hexdigest()[8:-8]</div><div class="line">array = [16]</div><div class="line">r = []</div><div class="line">for i in xrange(16):</div><div class="line">   for x in hash:</div><div class="line">       array[i] = x;</div><div class="line"> for x in xrang(16):</div><div class="line">    if array[i] == r[i]:</div><div class="line">         continue</div><div class="line">         </div><div class="line"> 	if array[i]!=r[i] or r[i]=0:</div><div class="line">         r[i] = array[i]</div><div class="line">         continue</div></pre></td></tr></table></figure>
+<p>按照道理应该要先建立一棵r树，再与后面的url比对。</p>
+<p>老实说，我也不知道我这个代码有没有写对，我感觉逻辑上是对的。</p>
+<h2 id="基于正文结构树的去重方法"><a href="#基于正文结构树的去重方法" class="headerlink" title="基于正文结构树的去重方法"></a>基于正文结构树的去重方法</h2><p><img src="http://7u2pkp.com1.z0.glb.clouddn.com/WechatIMG1.jpeg" alt=""></p>
+<p>正文的物理结构是对正文内容的一种层次划分，可以将其表示为一棵树的形式。其中标题为根节点，每个自然段按照其在全文结构中所处的层次表示为树的各层节点。由于段落内容通常较长，所以可以使用段落编号代替段落本身来生成正文结构树。段落编号是将正文中的各个自然段进行顺序编号，其中正文标题标号为零。这样既节省了存储空间也提高了建树效率。对正文结构树进行先序遍历将得到正文段落的顺序编号，层次遍历将得到正文的一个层次划分。</p>
+<p>每个标签赋予一定的权值，如h1标签</p>
+<p>小标题编号、HTML 标签和短段落标签的权重按照从高到低排列。如果多个类型标签用在同一篇文章中，则按照较高权值对其标识。</p>
+<ul>
+<li>正文结构树生成流程<br>1 扫描正文(这里的正文指经过噪音去除并保留周围 HTML 标签的网页正文)，生成段落 信息表;</li>
+</ul>
+<p>2 分析段落信息表，使用正文结构表现形式获取算法获取正文结构表现形式; </p>
+<p>3 根据结构表现形式，使用权值分配算法对正文中的每个自然段赋权值;</p>
+<p>4 使用正文结构树建树算法生成相应的正文结构树。</p>
+<ul>
+<li>建树算法(extrcatlg 算法)</li>
+</ul>
+<p>令T={I0,I1,I2,…,In}表示网页正文，其中I0为标题编号，Ii为正文第i自然段的编号。W={W0,W1,W2,…,Wn}为自然段对应的权值。网页正文可以按如下规则转化为一棵正文结构树。</p>
+<p>1若T为空，StrucTree为空;</p>
+<p>2若T非空，则令I0为正文结构树的根节点，I1为结构树的第一个孩子节点。后面的自然段编号按照其权值大小进行插入操作。</p>
+<p>插入操作遵行以下规则:</p>
+<p>规则1:如果Wi+1=Wi，则Ii+1作为Ii的右兄弟节点。</p>
+<p>规则2:如果Wi+1&lt;Wi，则Ii+1作为Ii的孩子节点。</p>
+<p>规则3:如果Wi+1&gt;Wi，则继续跟Ii的父节点比较。比较结果如果满足以上两个规则，则按照这两个规则进行递归操作。如果Ii的父节点为根节点，则插入一个节点I作为Ii的左兄弟节点，令其节点对应内容为“总括段”，将Ii+1作为I的子节点。</p>
+<p>3使用上述三个规则对段落编号依次进行操作，直到找到合适的位置将每个段落编号都插入到正文结构树中。</p>
+<h2 id="改进"><a href="#改进" class="headerlink" title="改进"></a>改进</h2><p>如果段落中存在某句、或者某词语存在重点标注的特点，那么则认定此句子或者词语的存在更为重要，其所在段落重要性尤为突出。这种现象表明了内容块的嵌套问题，即内层的的重要标签的权值可以像其所在内容块的外层标签权值传递(内层标签权值&gt;外层标签权值)。基于这个理论，如果段落中存在部分重要信息，那么其HTML标签权值按照相应算法依次向父节点、兄弟节点传递。<br><img src="http://7u2pkp.com1.z0.glb.clouddn.com/111113.jpeg" alt=""></p>
+<p>如图，叶子节点中的一个段落的部分句子、词语出现了基于强调的HTML标签，则将此标签权值赋予整个段落，其父节点、兄弟节点的段落权值依次改变，从而提高各个段落的影响因子。经过对重复网页特点地分析，转载工具为了反去重，不仅会对网页文本内容进行修改，而且也存在对网页正文格式做改动。例如上图所示。所以，此种嵌套标签权值传递方式仅适合结构没有受到丝毫改变的重复网页，导致大部分近似重复网页漏检。</p>
+<p>规则1:当检测到某个段落存在多组标签，并且各组开始标签之间、结束标签之间都没有其它中文字符，表明此段落由多组标签格式定义，而且全段落格式一致，则按照标签最大值对此段落赋权值。</p>
+<p>规则2:某一段落中有多组标签，但这些标签并不是用于此段落的所有文字，则按照检测到的最小标签权值为本段落赋权值。</p>
+<p>规则3:正文结构树进行匹配时，并不按照标签权值比较两棵树，仅是按照已经建立好的树的层次进行比较，此时忽略掉标签权值。</p>
+<h2 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h2><p>很多论文和他们的引用。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">爬虫</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/04/21/url去重/">展开全文 >></a>
         </p>
       
 
