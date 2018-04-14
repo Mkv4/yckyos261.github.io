@@ -44,17 +44,17 @@
     <link href="im1gd.me/2018/04/14/%E8%8A%82%E7%9C%81%E5%8A%B3%E5%8A%A8%E5%8A%9B/"/>
     <id>im1gd.me/2018/04/14/节省劳动力/</id>
     <published>2018-04-14T01:22:21.000Z</published>
-    <updated>2018-04-14T01:23:53.091Z</updated>
+    <updated>2018-04-14T02:11:08.302Z</updated>
     
-    <content type="html"><![CDATA[<p>可以打印http头和扫描端口。本意是直接放出源码的。这样直接改端口。</p><p>但是想了想还是算了。</p><p>链接: <a href="https://pan.baidu.com/s/1vVyI9OadxKoMZbqVLAuBsw" target="_blank" rel="external">https://pan.baidu.com/s/1vVyI9OadxKoMZbqVLAuBsw</a> 密码: ypbi</p>]]></content>
+    <content type="html"><![CDATA[<p>可以打印http头和指定端口的http title。本意是直接放出源码的。这样直接改端口。</p><p>但是想了想还是算了。</p><p><a href="https://github.com/yckyos261/Python/blob/master/httpClient.exe" target="_blank" rel="external">https://github.com/yckyos261/Python/blob/master/httpClient.exe</a></p>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;p&gt;可以打印http头和扫描端口。本意是直接放出源码的。这样直接改端口。&lt;/p&gt;
+        &lt;p&gt;可以打印http头和指定端口的http title。本意是直接放出源码的。这样直接改端口。&lt;/p&gt;
 &lt;p&gt;但是想了想还是算了。&lt;/p&gt;
-&lt;p&gt;链接: &lt;a href=&quot;https://pan.baidu.com/s/1vVyI9OadxKoMZbqVLAuBsw&quot; target=&quot;_blank&quot;
+&lt;p&gt;&lt;a href=&quot;https://github.com/yckyos261/Python/blob/master/httpClien
       
     
     </summary>
