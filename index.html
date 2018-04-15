@@ -301,7 +301,8 @@ go func() {
         dns.Queries &lt;- sub
     }
 }()
-</code></pre><p>建议可以看看代码。<br>下面是修改过的。</p>
+</code></pre><p>log.Debug(“no more queries”) 实测有时候会报这个。<br>可能是api返回有点慢，然后直接就过了。<br>所以—我改了下超时时间。。</p>
+<p>建议可以看看代码。<br>下面是修改过的。</p>
 <p><a href="https://github.com/yckyos261/Python/blob/master/dnsbrute.exe" title="修改过的" target="_blank" rel="external">https://github.com/yckyos261/Python/blob/master/dnsbrute.exe</a></p>
 
       
