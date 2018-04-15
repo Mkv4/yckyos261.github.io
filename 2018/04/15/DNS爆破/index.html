@@ -6,19 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="im1gd.me">
-  <title>Linux、Windows提权命令速记 | 持续的吃</title>
+  <title>DNS爆破 | 持续的吃</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Linux查看你所处的环境； cat /etc/issue env  cat /etc/profile  /etc/bashrc ~/.bashrc ~/.bash_profile ~/bash_logout 查看服务权限 ps -ef 查看计划任务； crontab -l  cat /etc/contab 查看ip ifconfig -a  cat /etc/network/interfaces">
-<meta name="keywords" content="linux,windows,privilege">
+  <meta name="description" content="最近在学go。 大概一个月之前发现了这个工具。  https://github.com/Q2h1Cg/dnsbrute  可以学习的点：判断是否是泛解析。 结果和速度：准确 能耗少。 可以增加递归爆破，go真是天生适合干这种事情。 想了想还是推荐给各位吧。 我目前只改了一点： go mixInAPIDict(*domain, *dict, outchan)  dns.Configure(*doma">
+<meta name="keywords" content="安全研究，渗透测试，编程，极客，开发，security，pentester">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Linux、Windows提权命令速记">
-<meta property="og:url" content="im1gd.me/2017/03/30/linux/index.html">
+<meta property="og:title" content="DNS爆破">
+<meta property="og:url" content="im1gd.me/2018/04/15/DNS爆破/index.html">
 <meta property="og:site_name" content="持续的吃">
-<meta property="og:description" content="Linux查看你所处的环境； cat /etc/issue env  cat /etc/profile  /etc/bashrc ~/.bashrc ~/.bash_profile ~/bash_logout 查看服务权限 ps -ef 查看计划任务； crontab -l  cat /etc/contab 查看ip ifconfig -a  cat /etc/network/interfaces">
-<meta property="og:updated_time" content="2017-03-30T06:43:24.000Z">
+<meta property="og:description" content="最近在学go。 大概一个月之前发现了这个工具。  https://github.com/Q2h1Cg/dnsbrute  可以学习的点：判断是否是泛解析。 结果和速度：准确 能耗少。 可以增加递归爆破，go真是天生适合干这种事情。 想了想还是推荐给各位吧。 我目前只改了一点： go mixInAPIDict(*domain, *dict, outchan)  dns.Configure(*doma">
+<meta property="og:updated_time" content="2018-04-15T11:43:05.985Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Linux、Windows提权命令速记">
-<meta name="twitter:description" content="Linux查看你所处的环境； cat /etc/issue env  cat /etc/profile  /etc/bashrc ~/.bashrc ~/.bash_profile ~/bash_logout 查看服务权限 ps -ef 查看计划任务； crontab -l  cat /etc/contab 查看ip ifconfig -a  cat /etc/network/interfaces">
+<meta name="twitter:title" content="DNS爆破">
+<meta name="twitter:description" content="最近在学go。 大概一个月之前发现了这个工具。  https://github.com/Q2h1Cg/dnsbrute  可以学习的点：判断是否是泛解析。 结果和速度：准确 能耗少。 可以增加递归爆破，go真是天生适合干这种事情。 想了想还是推荐给各位吧。 我目前只改了一点： go mixInAPIDict(*domain, *dict, outchan)  dns.Configure(*doma">
   
     <link rel="alternative" href="/atom.xml" title="持续的吃" type="application/atom+xml">
   
@@ -159,145 +159,48 @@ ga('send', 'pageview');
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-linux" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-DNS爆破" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Linux、Windows提权命令速记
+      DNS爆破
     </h1>
   
 
         
-        <a href="/2017/03/30/linux/" class="archive-article-date">
-  	<time datetime="2017-03-30T06:02:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-30</time>
+        <a href="/2018/04/15/DNS爆破/" class="archive-article-date">
+  	<time datetime="2018-04-15T11:39:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-15</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h2 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h2><p>查看你所处的环境；</p>
-<pre><code>cat /etc/issue
-env 
-cat /etc/profile  /etc/bashrc ~/.bashrc ~/.bash_profile ~/bash_logout
-</code></pre><p>查看服务权限</p>
-<pre><code>ps -ef
-</code></pre><p>查看计划任务；</p>
-<pre><code>crontab -l
-
-cat /etc/contab
-</code></pre><p>查看ip</p>
-<pre><code>ifconfig -a 
-cat /etc/network/interfaces
-</code></pre><p>查看网络配置；</p>
-<pre><code>cat /etc/networks
-cat /etc/hosts
-cat /etc/resolv.conf 
-iptables -l
-</code></pre><p>查看打开的端口；</p>
-<pre><code>netstat -antup
-</code></pre><p>查看其它用户</p>
-<pre><code>cat /etc/passwd
-last 
-</code></pre><p>如果你有权限你可以查看敏感文件</p>
-<pre><code>cat /etc/shadow
-ls -al /var/mail/
-ls -alR  /root/
-ls -alR /home/
-</code></pre><p>查看历史记录</p>
-<pre><code>cat ~/.bash_history
-试试 sshkey
-ls -al ~/.ssh/
-</code></pre><p>查看当前用户能否用sudo执行命令；</p>
-<pre><code>sudo -l
-User &lt;username&gt; may run the following commands: 
-(ALL : ALL) NOPASSWD: ALL
-(ALL) NOPASSWD: /opt/scripts/*
-(ALL) NOPASSWD: /opt/admin/custom_binary
-</code></pre><p>有些命令或写的不太好的脚本脚本需要用户把他们的密码之类的东西当做命令行参数输入，所有这样的输入都会被保存在命令行历史记录中。运行如下命令</p>
-<pre><code>cat ~/.bash_history
-cat ~/.ksh_history
-</code></pre><p>有时候管理员忽视了他们的ssh 私钥的安全性，运行如下命令查找当前用户有没有把ssh 私钥存在系统中：</p>
-<pre><code>ls –al ~/.ssh/id_rsa ~/.ssh/id_dsa
-</code></pre><p>如果有的话，你知道人们总是喜欢在不同的账户，比如说root、不同服务器之间重复使用同样一个key；<br>还有一些情况，人们还喜欢把服务器的账号密码写死在一个脚本或者记录文件中。搜索有password字符串的文件；</p>
-<pre><code>grep –R –i “password” /
-</code></pre><p>查看你有没有权限去访问一些敏感文件或日志；</p>
-<pre><code>cat /etc/syslog.conf
-cat /etc/apache2/apache2.conf
-cat /var/log/syslog
-cat /var/log/apache2/access.log
-</code></pre><p>有时候二进制文件是以文件所有者的权限执行的.比如有一个叫passwd的二进制文件，用来改当前用户的密码；因为设置了SUID，所以他是以文件的所有者的权限执行的；</p>
-<pre><code>ls –l /usr/bin/passwd
--rwsr-xr-x 1 root root 53112 Nov 19 2014 /usr/bin/passwd
-</code></pre><p>寻找所有设置了SUID/GUID的二进制文件；</p>
-<pre><code>find / -type f \( -perm -4000 -o -perm -2000 \) -exec ls -l {} \;
-</code></pre><p>这类的问题件一般都是有很多的漏洞的；我们可以很轻松的就利用了。不管你是用命令注入还是别的方法。<br>有漏洞的服务：<br>许多服务的配置都是不安全的；比如SQL server是以root权限运行的；<br>一些服务还有会额外的插件；很多时候这些插件也是有漏洞的。<br>寻找用root 权限运行的程序</p>
-<pre><code>ps –ef | grep root
-</code></pre><p>寻找所有安装了的文件并记住他们的版本号，然后去寻找公开漏洞；</p>
-<pre><code>dpkg –l
-rpm -qa
-</code></pre><p>最后尝试内核漏洞；</p>
-<pre><code>uname -a
-</code></pre><p>上网上找漏洞；<br>补充一个：www.kernel-exploits.com</p>
-<h2 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h2><pre><code>systeminfo
-hostname
-echo %username%
-</code></pre><p>系统中还有谁；</p>
-<pre><code>net users
-</code></pre><p>查看用户的详情</p>
-<pre><code>net user %username%
-</code></pre><p>寻找网络接口，ip地址</p>
-<pre><code>ipconfig /all
-</code></pre><p>路由表：</p>
-<pre><code>route print
-</code></pre><p>查看arp缓存</p>
-<pre><code>arp-a
-</code></pre><p>开启的端口和活动的网络连接</p>
-<pre><code>netstat -ano
-</code></pre><p>防火墙和配置</p>
-<pre><code>netsh firewall show state 
-netsh firewall show config
-</code></pre><p>计划任务</p>
-<pre><code>schtasks /query /fo LIST /v
-</code></pre><p>当前运行的进程</p>
-<pre><code>tasklist /SVC
-</code></pre><p>开启一个服务</p>
-<pre><code>net start
-</code></pre><p>查看已经安装的硬件驱动</p>
-<pre><code>DRIVERQUERY
-</code></pre><p>在一个有很多服务器的环境中，管理员一定是想找到一个自动部署的方法；<br>有些地方会存放有配置文件而配置文件中又可能会有管理员密码。</p>
-<pre><code>c:\sysprep.inf
- c:\sysprep\sysprep.xml
- %WINDIR%\Panther\Unattend\Unattended.xml
- %WINDIR%\Panther\Unattended.xml
-</code></pre><p>Group.xml 这个网上有详细的讲解，怎么破解，怎么操作。。</p>
-<pre><code>Services\Services.xml
-  ScheduledTasks\ScheduledTasks.xml
-  Printers\Printers.xml
-  Drives\Drives.xml
-  DataSources\DataSources.xml
-</code></pre><p>如果AlwaysInstallElevated开启了，可以允许任意用户以NT AUTHORITY\SYSTEM权限安装msi文件。</p>
-<pre><code>reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer\AlwaysInstallElevated
-   reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer\AlwaysInstallElevated
-</code></pre><p>   如果DWORD值为1，即可使用这个方式。<br> 寻找包含关键词的文件。详细利用推荐查看三好学生师傅的博客，3gstudent.github.io</p>
-<pre><code>dir /s *pass* == *cred* == *vnc* ==*.config*
-
-findstr /si password *.xml *.ini *.txt
-reg query HKLM /f password /t REG_SZ /s 
-reg query HKCU /f password /t REG_SZ /s
-</code></pre><p>检查服务权限，有时候服务配置能够被任意用户修改。当一个低权限用户修改服务配置之加一些命令，或可以反弹一个系统权限的shell出来。<br>再次推荐：<a href="https://3gstudent.github.io/" target="_blank" rel="external">3gstudent.github.io</a></p>
-<p>如果这些都失败了，只能尝试kernel exploit<br>查看补丁；</p>
+        <p>最近在学go。</p>
+<p>大概一个月之前发现了这个工具。</p>
 <blockquote>
-<p>wmic qfe get Caption,Description,HotFixID,InstalledOn<br> wmic qfe get Caption,Description,HotFixID,InstalledOn | findstr /C:”KB…” /C:”KB…”<br>查找</p>
-<p>–  KiTrap0D (KB979682)<br>–  MS11-011 (KB2393802)<br>–  MS10-059 (KB982799)</p>
-<p>–  MS10-021 (KB979683)<br>–  MS11-080 (KB2592799)</p>
+<p><a href="https://github.com/Q2h1Cg/dnsbrute" target="_blank" rel="external">https://github.com/Q2h1Cg/dnsbrute</a></p>
 </blockquote>
-<p>是否被修补。</p>
-<h2 id="后渗透"><a href="#后渗透" class="headerlink" title="后渗透"></a>后渗透</h2><p>procdump.exe dump lsass.exe<br>或者使用mimikatz<br>遍历所有的日志，配置寻找敏感信息。<br>如：密码，ssh private key，数据库连接信息。数据库备份一般是没有加密的，里面会有很多的敏感信息。</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://helix.stormhub.org/data/Advanced%20Topics%20in%20Security/Lecture%20slides/Lecture%2010%20-%20Privilege%20Escalation.pdf" target="_blank" rel="external">https://helix.stormhub.org/data/Advanced%20Topics%20in%20Security/Lecture%20slides/Lecture%2010%20-%20Privilege%20Escalation.pdf</a></p>
+<p>可以学习的点：判断是否是泛解析。</p>
+<p>结果和速度：准确 能耗少。</p>
+<p>可以增加递归爆破，go真是天生适合干这种事情。</p>
+<p>想了想还是推荐给各位吧。</p>
+<p>我目前只改了一点：</p>
+<pre><code>go mixInAPIDict(*domain, *dict, outchan)
+
+dns.Configure(*domain, *server, *rate, *retry)
+
+// 输入
+go func() {
+    for sub := range outchan {
+        dns.Queries &lt;- sub
+    }
+}()
+</code></pre><p>建议可以看看代码。<br>下面是修改过的。</p>
+<p><a href="https://github.com/yckyos261/Python/blob/master/dnsbrute.exe" title="修改过的" target="_blank" rel="external">https://github.com/yckyos261/Python/blob/master/dnsbrute.exe</a></p>
 
       
 
@@ -327,17 +230,6 @@ reg query HKCU /f password /t REG_SZ /s
     <div class="article-info article-info-index">
       
       
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">linux,windows,privilege</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
       
 
       
@@ -388,7 +280,7 @@ reg query HKCU /f password /t REG_SZ /s
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http:im1gd.me/2017/03/30/linux/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http:im1gd.me/2018/04/15/DNS爆破/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -402,18 +294,18 @@ reg query HKCU /f password /t REG_SZ /s
   
 <nav id="article-nav">
   
-    <a href="/2017/03/30/木马实现技术概述/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2087/07/12/脑壳痛/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          木马实现技术概述
+          自留地
         
       </div>
     </a>
   
   
-    <a href="/2017/03/26/lalalaland/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">lalaland</div>
+    <a href="/2018/04/14/节省劳动力/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">节省劳动力</div>
       <i class="icon-circle-right"></i>
     </a>
   

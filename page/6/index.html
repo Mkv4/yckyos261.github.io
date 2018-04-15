@@ -160,6 +160,73 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-DNS隧道穿透防火墙" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/09/07/DNS隧道穿透防火墙/">DNS隧道穿透防火墙</a>
+    </h1>
+  
+
+        
+        <a href="/2016/09/07/DNS隧道穿透防火墙/" class="archive-article-date">
+  	<time datetime="2016-09-07T09:01:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-09-07</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="DNS解析过程"><a href="#DNS解析过程" class="headerlink" title="DNS解析过程"></a>DNS解析过程</h2><p>我依稀的记得有两种查询方式来的，但是记不清了，网上又都是一种迭代查询。<br>1 查询本地缓存（浏览器缓存，本机缓存），2再查询路由器，3查询本地域名缓存。在很多书里面前两部都是省略的。4，查询根域名服务器，查询结果返回给本地域名服务器，本地域名服务器根据返回的结果，再去查询顶级域名服务器如.com等。然后再根据顶级域名返回的二级域名服务器地址去查找，然后重复这个步骤，直到查询成功。<br>
+        
+          <a class="article-more-a" href="/2016/09/07/DNS隧道穿透防火墙/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">DNS Tunnel</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/09/07/DNS隧道穿透防火墙/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-NAT穿透" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1204,82 +1271,6 @@ SELECT CHR(32)||CHR(92)||CHR(93) FROM dual;    CHR() Function.
 
 
   
-    <article id="post-2016329" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/29/2016329/">2016329</a>
-    </h1>
-  
-
-        
-        <a href="/2016/03/29/2016329/" class="archive-article-date">
-  	<time datetime="2016-03-29T10:44:29.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-03-29</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="记录"><a href="#记录" class="headerlink" title="记录"></a>记录</h2><p><a href="http://drops.wooyun.org/tips/13125" target="_blank" rel="external">http://drops.wooyun.org/tips/13125</a><br><img src="http://7u2pkp.com1.z0.glb.clouddn.com/22%E5%9B%BE%E7%89%871.png" alt="运行psr"><br>运行测试<br><img src="http://7u2pkp.com1.z0.glb.clouddn.com/22%E5%9B%BE%E7%89%872.png" alt="测试记录可行否"><br><img src="http://7u2pkp.com1.z0.glb.clouddn.com/22%E5%9B%BE%E7%89%873.png" alt="命令编码纯手打"><br>照葫芦画瓢<br><img src="http://7u2pkp.com1.z0.glb.clouddn.com/%E5%9B%BE%E7%89%874.png" alt="想偷懒直接复制出错了"><br>报错<br><img src="http://7u2pkp.com1.z0.glb.clouddn.com/%E5%9B%BE%E7%89%875.png" alt="生成"><br>成功<br>记录里面有点了什么东西，确实需要自己创建目录才能生成，不知道是不是权限的问题，但是我用的是管理员权限啊。<br>这个值得学习的技巧是编码后调用powershell，但是好像早有这样的思路了。</p>
-<hr>
-<p>记录一下这个思路：<br><a href="http://blog.nsfocus.net/usb-based-data-stealing-malware/" target="_blank" rel="external">http://blog.nsfocus.net/usb-based-data-stealing-malware/</a><br>软件中植入恶意插件，反正总而言之是要让这个程序能够运行起来，<br>然后加载程序，这里会做一个校验要在同一个父进程下面才行。配置文件<br>然后做反病毒软件的检查；配置文件当做payload，然后提取Payload注入进程。<br>多级保护很强的防护手段。</p>
-<hr>
-<p>对了，今天我环境搭好了，假装我不知道拓扑晚上玩玩渗透吧。。有域控啊。</p>
-<pre><code>psr.exe [/start |/stop][/output &lt;fullfilepath&gt;] [/sc (0|1)] [/maxsc &lt;value&gt;]
-[/sketch (0|1)] [/slides (0|1)] [/gui (0|1)]
-[/arcetl (0|1)] [/arcxml (0|1)] [/arcmht (0|1)]
-[/stopevent &lt;eventname&gt;] [/maxlogsize &lt;value&gt;] [/recordpid &lt;pid&gt;]
-聽
-/start Start Recording. (Outputpath flag SHOULD be specified)
-/stop Stop Recording.
-/sc Capture screenshots for recorded steps.
-/maxsc Maximum number of recent screen captures.
-/maxlogsize Maximum log file size (in MB) before wrapping occurs.
-/gui Display control GUI.
-/arcetl Include raw ETW file in archive output.
-/arcxml Include MHT file in archive output.
-/recordpid Record all actions associated with given PID.
-/sketch Sketch UI if no screenshot was saved.
-/slides Create slide show HTML pages.
-/output Store output of record session in given path.
-/stopevent Event to signal after output files are generated.
-</code></pre>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/03/29/2016329/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/5/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/7/">Next &raquo;</a>
@@ -1377,11 +1368,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">read and movies</a>
+                <a href="javascript:void(0)" class="js-tag color1">DNS Tunnel</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">DNS Tunnel</a>
+                <a href="javascript:void(0)" class="js-tag color1">read and movies</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1393,6 +1384,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">工具，AWVS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">vulnerability</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">linux,windows,privilege</a>
               </li>
              
@@ -1401,19 +1400,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">vulnerability</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">oneplus</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">reflect</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">工具，AWVS</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1453,19 +1444,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">懒人</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Sucksthings</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">一些思考</a>
+                <a href="javascript:void(0)" class="js-tag color3">懒人</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">编程约规</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">一些思考</a>
               </li>
              
               <li class="article-tag-list-item">

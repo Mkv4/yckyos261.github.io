@@ -259,6 +259,81 @@ ga('send', 'pageview');
 
 
   
+    <article id="post-DNS爆破" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/04/15/DNS爆破/">DNS爆破</a>
+    </h1>
+  
+
+        
+        <a href="/2018/04/15/DNS爆破/" class="archive-article-date">
+  	<time datetime="2018-04-15T11:39:02.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-04-15</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近在学go。</p>
+<p>大概一个月之前发现了这个工具。</p>
+<blockquote>
+<p><a href="https://github.com/Q2h1Cg/dnsbrute" target="_blank" rel="external">https://github.com/Q2h1Cg/dnsbrute</a></p>
+</blockquote>
+<p>可以学习的点：判断是否是泛解析。</p>
+<p>结果和速度：准确 能耗少。</p>
+<p>可以增加递归爆破，go真是天生适合干这种事情。</p>
+<p>想了想还是推荐给各位吧。</p>
+<p>我目前只改了一点：</p>
+<pre><code>go mixInAPIDict(*domain, *dict, outchan)
+
+dns.Configure(*domain, *server, *rate, *retry)
+
+// 输入
+go func() {
+    for sub := range outchan {
+        dns.Queries &lt;- sub
+    }
+}()
+</code></pre><p>建议可以看看代码。<br>下面是修改过的。</p>
+<p><a href="https://github.com/yckyos261/Python/blob/master/dnsbrute.exe" title="修改过的" target="_blank" rel="external">https://github.com/yckyos261/Python/blob/master/dnsbrute.exe</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/04/15/DNS爆破/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-节省劳动力" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -830,75 +905,6 @@ return 0;
 
 
   
-    <article id="post-书记录" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/12/书记录/">书记录</a>
-    </h1>
-  
-
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>我爬了一个网站，把里面的书都爬下来了。</p>
-<p>文件名称：kindle人精品资源区1-10打包下载:<a href="http://pan.baidu.com/s/1o8kwIka:网盘密码：百度网盘密码：p3if" target="_blank" rel="external">http://pan.baidu.com/s/1o8kwIka:网盘密码：百度网盘密码：p3if</a><br><a href="https://www.amazon.cn/gp/product/B06XFRH5M1?ie=UTF8&amp;camp=536&amp;creativeASIN=B06XFRH5M1&amp;linkCode=xm2&amp;tag=im1gd-23" target="_blank" rel="external">人民的名义</a><br>
-        
-          <a class="article-more-a" href="/2017/07/12/书记录/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-        <div class="article-pop-out tagcloud">
-          <i class="icon-tuding"></i>
-          <a class="article-tag-list-link color3">置顶</a>
-        </div>
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">资源</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/07/12/书记录/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
@@ -996,11 +1002,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">read and movies</a>
+                <a href="javascript:void(0)" class="js-tag color1">DNS Tunnel</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">DNS Tunnel</a>
+                <a href="javascript:void(0)" class="js-tag color1">read and movies</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1012,6 +1018,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">工具，AWVS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">vulnerability</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">linux,windows,privilege</a>
               </li>
              
@@ -1020,19 +1034,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">vulnerability</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">oneplus</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">reflect</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">工具，AWVS</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1072,19 +1078,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">懒人</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Sucksthings</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">一些思考</a>
+                <a href="javascript:void(0)" class="js-tag color3">懒人</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">编程约规</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">一些思考</a>
               </li>
              
               <li class="article-tag-list-item">
