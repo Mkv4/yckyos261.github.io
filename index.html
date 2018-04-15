@@ -285,11 +285,13 @@ ga('send', 'pageview');
 <p><a href="https://github.com/Q2h1Cg/dnsbrute" target="_blank" rel="external">https://github.com/Q2h1Cg/dnsbrute</a></p>
 </blockquote>
 <p>可以学习的点：判断是否是泛解析。</p>
-<p>结果和速度：准确 能耗少。</p>
-<p>可以增加递归爆破，go真是天生适合干这种事情。</p>
+<p>结果和速度：与其他工具对比-准确 与其他工具对比-性能消耗少。</p>
+<p>其他-<br>可以增加递归爆破，go真是天生适合干这种事情。</p>
 <p>想了想还是推荐给各位吧。</p>
 <p>我目前只改了一点：</p>
-<pre><code>go mixInAPIDict(*domain, *dict, outchan)
+<pre><code>outchan := make(chan string)
+
+go mixInAPIDict(*domain, *dict, outchan)//很明显这个函数里面也要改的。
 
 dns.Configure(*domain, *server, *rate, *retry)
 
