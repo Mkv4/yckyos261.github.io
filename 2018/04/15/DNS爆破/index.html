@@ -15,7 +15,7 @@
 <meta property="og:url" content="im1gd.me/2018/04/15/DNS爆破/index.html">
 <meta property="og:site_name" content="持续的吃">
 <meta property="og:description" content="最近在学go。 大概一个月之前发现了这个工具。  https://github.com/Q2h1Cg/dnsbrute  可以学习的点：判断是否是泛解析。收发包。。 结果和速度：与其他工具对比-准确 与其他工具对比-性能消耗少。 其他-可以增加递归爆破，go真是天生适合干这种事情。 想了想还是推荐给各位吧。 我目前只改了一点： outchan := make(chan string)  go mi">
-<meta property="og:updated_time" content="2018-04-20T06:41:30.785Z">
+<meta property="og:updated_time" content="2018-04-20T06:42:17.927Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="DNS爆破">
 <meta name="twitter:description" content="最近在学go。 大概一个月之前发现了这个工具。  https://github.com/Q2h1Cg/dnsbrute  可以学习的点：判断是否是泛解析。收发包。。 结果和速度：与其他工具对比-准确 与其他工具对比-性能消耗少。 其他-可以增加递归爆破，go真是天生适合干这种事情。 想了想还是推荐给各位吧。 我目前只改了一点： outchan := make(chan string)  go mi">
@@ -202,7 +202,7 @@ go func() {
     }
 }()
 </code></pre><p>log.Debug(“no more queries”) 实测有时候会报这个。<br>可能是api返回有点慢，然后直接就过了。<br>所以—我改了下超时时间。。</p>
-<p>我加了递归爆破，但是发现有个bug，由于黑名单机制。</p>
+<p>我加了递归爆破，但是发现有个bug，由于黑名单机制，每次都会有一个多出来的域名。</p>
 <p>建议可以看看代码。<br>下面是修改过的。</p>
 <p><a href="https://github.com/yckyos261/Python/blob/master/dnsbrute.exe" title="修改过的" target="_blank" rel="external">https://github.com/yckyos261/Python/blob/master/dnsbrute.exe</a></p>
 
