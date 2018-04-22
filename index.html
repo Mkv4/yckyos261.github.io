@@ -184,7 +184,7 @@ ga('send', 'pageview');
 <blockquote>
 <p><a href="https://github.com/Q2h1Cg/dnsbrute" target="_blank" rel="external">https://github.com/Q2h1Cg/dnsbrute</a></p>
 </blockquote>
-<p>可以学习的点：判断是否是泛解析。收发包。。</p>
+<p>可以学习的点：收发包。。</p>
 <p>结果和速度：与其他工具对比-准确 与其他工具对比-性能消耗少。</p>
 <p>其他-<br>可以增加递归爆破，go真是天生适合干这种事情。</p>
 <p>想了想还是推荐给各位吧。</p>
@@ -202,6 +202,7 @@ go func() {
     }
 }()
 </code></pre><p>log.Debug(“no more queries”) 实测有时候会报这个。<br>可能是api返回有点慢，然后直接就过了。<br>所以—我改了下超时时间。。</p>
+<p>上面加的后来我都改回去了。尴尬。</p>
 <p>我加了递归爆破，但是发现有个bug，由于黑名单机制，每次都会有一个多出来的域名。这其实是个非常严重的问题，但是我看了看别的工具也是黑名单机制，这就很尴尬。</p>
 <p>建议可以看看代码。<br>下面是修改过的。</p>
 <p><a href="https://github.com/yckyos261/Python/blob/master/dnsbrute.exe" title="修改过的" target="_blank" rel="external">https://github.com/yckyos261/Python/blob/master/dnsbrute.exe</a></p>
