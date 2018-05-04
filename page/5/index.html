@@ -160,6 +160,77 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-subdomain" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/20/subdomain/">Subdomain</a>
+    </h1>
+  
+
+        
+        <a href="/2016/12/20/subdomain/" class="archive-article-date">
+  	<time datetime="2016-12-20T11:56:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-12-20</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>修改了一下<a href="http://www.cnseay.com/4482/" target="_blank" rel="external">http://www.cnseay.com/4482/</a> 的Layer子域名挖掘机4.2纪念版</p>
+<hr>
+<p>地址:<a href="https://github.com/yckyos261/Csharp/blob/master/Layer%E5%AD%90%E5%9F%9F%E5%90%8D%E6%8C%96%E6%8E%98%E6%9C%BA4.2%E4%BF%AE%E6%94%B9%E7%89%88.rar" target="_blank" rel="external">修改版</a><br>增加功能，导出单纯IP地址，导出80端口存活子域名；因为在实际测试中发现有的子域名并不能访问，要么是内网，要么是端口问题；<br>本来想删除所有的域名导出，但是发现有的域名虽然显示没有端口但是还是能打开网页。所以就保留了。<br>别的功能，把名字改了一下，去掉升级；<br>对了，导出的IP去重过了。直接导入nmap就能扫描。嘿嘿嘿。。。<br>感谢作者开源。虽然代码看的我一愣一愣的。</p>
+<h2 id="更新-2017-5-3"><a href="#更新-2017-5-3" class="headerlink" title="更新 2017-5.3"></a>更新 2017-5.3</h2><p>我一直发现了泛解析会有很多很长的ip没法处理。。</p>
+<p>我一直懒着。。终于今天改了一下。。。</p>
+<p>这次是真的 去重了。。</p>
+<p>链接: <a href="https://pan.baidu.com/s/1slTSAoH" target="_blank" rel="external">https://pan.baidu.com/s/1slTSAoH</a> 密码: fgkt</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">blast</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/12/20/subdomain/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-slowdown" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -650,71 +721,6 @@ ga('send', 'pageview');
 
 
   
-    <article id="post-阿里移动安全第一题" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/09/20/阿里移动安全第一题/">阿里移动安全第一题</a>
-    </h1>
-  
-
-        
-        <a href="/2016/09/20/阿里移动安全第一题/" class="archive-article-date">
-  	<time datetime="2016-09-20T10:20:21.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-09-20</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>看了manifest文件之后知道了Mainactivity<br>然后就去到onCreate里面。<img src="http://7u2pkp.com1.z0.glb.clouddn.com/ali%E5%9B%BE%E7%89%871.png" alt="此处输入图片的描述"><br>这里有个方法，跟过去。<br><img src="http://7u2pkp.com1.z0.glb.clouddn.com/Ali%E5%9B%BE%E7%89%872.png" alt="此处输入图片的描述"><br>这里从一张图片里面取出啥东西来，我并没有找到文件，我用的是jeb，然后我就解压了apk然后就找到了这个图片。<br>然后应该仿造这个读取方法去读取这个图片。。然后我就先停一下吧。。<br>回过头来看逻辑<br><img src="http://7u2pkp.com1.z0.glb.clouddn.com/ali%E5%9B%BE%E7%89%873.png" alt="此处输入图片的描述"><br>这里比较了v4和v2，而v4是从图片里面取出来的，v2是图片里面取出来的v5，然后和v3用户输入的。。做了一个运算。<br><img src="http://7u2pkp.com1.z0.glb.clouddn.com/ali4.png" alt="此处输入图片的描述"><br>然后得来的。。<br>那么现在逻辑就比较清楚了。现在主要的问题就转换成从图片取出来数据，然后和用户的运算之后跟从图片里面取出来的比较了。<br>那么现在问题就很明白了，让用户输入的东西做运算之后可以等于最后比较的结果，然后这样逆推回去就是算法了。，。<br>这里分析一下，假设v2=v4了。那么进入的是else语句；<br><img src="http://7u2pkp.com1.z0.glb.clouddn.com/ali%E5%9B%BE%E7%89%875.png" alt="此处输入图片的描述"><br>查了查弹出来个对话框。<br>好了再回过头来看从图片里面取出了什么，<br><img src="http://7u2pkp.com1.z0.glb.clouddn.com/ali%E5%9B%BE%E7%89%876.png" alt="此处输入图片的描述"><br>新建了一个byte 然后把v0中91265偏移处的18个字节拷入新建的数组v1中<br>然后v1做一个转换，换成utf-8格式<br>另一个转换也类似。<br>至此整个逻辑都比较清楚了。<br>其实看见网上的解析的时候就想起来了代码中的log不能乱用，但是还是一步一步的来分析。<br>主要也是网上的writeup写的实在是不敢恭维，看得人云里雾里的。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">ctf</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/09/20/阿里移动安全第一题/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/4/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="page-number current">5</span><a class="page-number" href="/page/6/">6</a><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/6/">Next &raquo;</a>
@@ -812,19 +818,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">DNS Tunnel</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">read and movies</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Xposed</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Python crawl</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -832,7 +826,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">vulnerability</a>
+                <a href="javascript:void(0)" class="js-tag color2">Xposed</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">DNS Tunnel</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">Python crawl</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -844,15 +846,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">oneplus</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">reflect</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">tools</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -860,7 +854,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">tools</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">oneplus</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">爬虫</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">vulnerability</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -872,11 +878,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">pentester</a>
+                <a href="javascript:void(0)" class="js-tag color4">say</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">say</a>
+                <a href="javascript:void(0)" class="js-tag color5">pentester</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -888,19 +894,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Sucksthings</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">懒人</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">编程约规</a>
+                <a href="javascript:void(0)" class="js-tag color2">Sucksthings</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">一些思考</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">编程约规</a>
               </li>
              
               <li class="article-tag-list-item">
