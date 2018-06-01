@@ -160,71 +160,6 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-有感" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/09/28/有感/">有感</a>
-    </h1>
-  
-
-        
-        <a href="/2016/09/28/有感/" class="archive-article-date">
-  	<time datetime="2016-09-28T12:34:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-09-28</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>大多数时候的不甘或许是源于自己对自己的不满意，换句话说，没有能够很好的认识自己。<br>有目标，真的就回有个奔头，有希望。<br>有很多时间，也没有时间，但是完成一些想法是够了。<br>羞愧过后的冲动或许只是为了避免羞愧和受到的打击，并不是为了那个目标。<br>要克服惰性，真的需要很大的毅力。<br>山川湖海厨房与爱，琐碎无趣，无可避免。又或者怡然自得。处理好。<br>先活着。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">say</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/09/28/有感/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
     <article id="post-阿里移动安全第一题" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -633,6 +568,74 @@ ga('send', 'pageview');
 
 
   
+    <article id="post-爬天涯莲蓬鬼话脚本" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/04/01/爬天涯莲蓬鬼话脚本/">爬天涯莲蓬鬼话脚本</a>
+    </h1>
+  
+
+        
+        <a href="/2016/04/01/爬天涯莲蓬鬼话脚本/" class="archive-article-date">
+  	<time datetime="2016-04-01T06:00:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-04-01</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>4.14更新<br>输入名字直接命名<br>增加了一些错误处理措施<br>2017 1<br>突然发现我家ip怎么被封了。然后就增加了一个代理<br>还有一个user-agent<br>抓一个页面歇两秒。<br>还是很粗糙。。</p>
+<hr>
+<p>使用说明：<br>-u 网址 -p 页数<br>这有个问题就是，文件名字没有设置为你下载的文件的名字。我有时间会再改的。除了这个功能还可以加上起始页和终止页，那样就不用随时都从第一页开始下载影响用户体验，我自己每次都要改起始页。。<br>我还在想，要是能够多线程下载那样速度就会快很多，但是怎么把任务分割，最后合并起来这是一个问题。<br>最简单的想法是一个线程下几页，然后怎么合并呢，会不会出现顺序错乱之类的。这个稍微复杂些。<br>总觉得自己用没有必要那么复杂。但是懒人的本性又驱动我去一劳永逸。<br>代理之类的我做过，但是反倒速度变慢受影响，所以也就删除了。<br>我没有很好的解决，里面还有些html元素的问题，你需要用editplus之类的东西去掉。。<br>这已经算比较方便了吧。<br>总比你坐在电脑面前一页一页的去看要爽很多。<br>理论上是支持爬天涯所有的帖子的，但是我只看鬼故事别的没爬过。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">#! /usr/bin/env python</span></div><div class="line">__author__ = <span class="string">'yoyoyo'</span></div><div class="line"><span class="keyword">import</span> requests</div><div class="line"><span class="keyword">import</span> sys</div><div class="line"><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup</div><div class="line"><span class="keyword">import</span> Queue</div><div class="line"><span class="keyword">import</span> time</div><div class="line"><span class="keyword">import</span> argparse</div><div class="line">reload(sys)</div><div class="line">sys.setdefaultencoding(<span class="string">'utf8'</span>)</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">downTianya</span><span class="params">()</span>:</span></div><div class="line">    parse = argparse.ArgumentParser(</div><div class="line">        description=<span class="string">"for tianya; by_yoo usage:-u target.com"</span>)</div><div class="line">    parse.add_argument(<span class="string">"-u"</span>, <span class="string">"--url"</span>, help=<span class="string">"input url"</span>, dest=<span class="string">'url'</span>)</div><div class="line">    parse.add_argument(<span class="string">'-p'</span>, dest=<span class="string">'pages'</span>)</div><div class="line">    parse.add_argument(<span class="string">'-n'</span>, dest=<span class="string">'name'</span>)</div><div class="line">    <span class="comment"># args = '-u http://bbs.tianya.cn/post-16-1126849-1.shtml -p 166 -n dazongshi'.split()</span></div><div class="line">    args = parse.parse_args()</div><div class="line">    <span class="keyword">global</span> name</div><div class="line">    name = args.name</div><div class="line">    <span class="keyword">if</span> args.url == <span class="keyword">None</span> <span class="keyword">or</span> args.pages == <span class="keyword">None</span> <span class="keyword">or</span> args.name == <span class="keyword">None</span>:</div><div class="line">        <span class="keyword">print</span> <span class="string">"Use -u your target url -p pages -n name"</span></div><div class="line">        time.sleep(<span class="number">3</span>)</div><div class="line">        sys.exit(<span class="number">1</span>)</div><div class="line">    <span class="keyword">if</span> args.url:</div><div class="line">        url = args.url</div><div class="line">        pages = int(args.pages) + <span class="number">1</span></div><div class="line">        url_test = str(url[<span class="number">0</span>:<span class="number">-7</span>])</div><div class="line">        url = <span class="string">'http://www.tianyatool.com/cgi-bin/bbs.pl?url='</span> + \</div><div class="line">            url_test + <span class="string">'&#123;0&#125;.shtml'</span></div><div class="line">        <span class="comment"># proxy = &#123;"http": "http://127.0.0.1:8087", "https": "https://127.0.0.1:8087"&#125;</span></div><div class="line">        table = []</div><div class="line">        proxy=&#123;</div><div class="line">            <span class="string">'http'</span>: <span class="string">"socks5://127.0.0.1:1080"</span></div><div class="line">        &#125;</div><div class="line">        head = &#123;<span class="string">"user-agent"</span>:<span class="string">"Mobile	Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19"</span></div><div class="line"></div><div class="line">        &#125;</div><div class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">1</span>, pages):</div><div class="line">            table.append(url.format(i))</div><div class="line">        <span class="keyword">for</span> x <span class="keyword">in</span> table:</div><div class="line">            <span class="keyword">try</span>:</div><div class="line">                r = requests.get(x,proxies=proxy,headers=head)</div><div class="line">                time.sleep(<span class="number">2</span>)</div><div class="line">                <span class="keyword">if</span> r.status_code == <span class="number">200</span>:</div><div class="line">                    writeToFile(r)</div><div class="line">                    <span class="keyword">print</span> <span class="string">"----------&#123;0&#125;------------"</span>.format(x)</div><div class="line">            <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</div><div class="line">                <span class="keyword">print</span> str(x)</div><div class="line">                <span class="keyword">print</span> e</div><div class="line">                time.sleep(<span class="number">4</span>)</div><div class="line">                sys.exit(<span class="number">1</span>)</div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            <span class="keyword">try</span>:</div><div class="line">                time.sleep(<span class="number">6</span>)</div><div class="line">                r1 = requests.get(x)</div><div class="line">                <span class="keyword">if</span> r1.status_code == <span class="number">200</span>:</div><div class="line">                    writeToFile(r1)</div><div class="line">                    <span class="keyword">print</span> <span class="string">"----&#123;0&#125;-----"</span>.format(x)</div><div class="line">                <span class="keyword">else</span>:</div><div class="line">                    <span class="keyword">print</span> x</div><div class="line">            <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</div><div class="line">                <span class="keyword">print</span> x + <span class="string">"    "</span> + str(e)</div><div class="line">                time.sleep(<span class="number">2</span>)</div><div class="line">                sys.exit(<span class="number">1</span>)</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">writeToFile</span><span class="params">(r)</span>:</span></div><div class="line">    bu = BeautifulSoup(r.content, <span class="string">"html.parser"</span>)</div><div class="line">    detail = bu.findAll(<span class="string">'div'</span>, &#123;<span class="string">"class"</span>: <span class="string">"bbs-content"</span>&#125;)</div><div class="line">    <span class="keyword">for</span> len1 <span class="keyword">in</span> xrange(len(detail)):</div><div class="line">        <span class="keyword">with</span> open(<span class="string">'&#123;0&#125;.txt'</span>.format(name), <span class="string">'a+'</span>) <span class="keyword">as</span> f:</div><div class="line">            f.write(str(detail[len1]).encode(<span class="string">'utf-8'</span>) + <span class="string">"\n"</span>)</div><div class="line"></div><div class="line"></div><div class="line">downTianya()</div></pre></td></tr></table></figure>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">懒人</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/04/01/爬天涯莲蓬鬼话脚本/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/5/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/7/">Next &raquo;</a>
@@ -730,7 +733,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">DNS Tunnel</a>
+                <a href="javascript:void(0)" class="js-tag color3">工具，AWVS</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -738,19 +741,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Xposed</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">工具，AWVS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">sucks things</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">Python crawl</a>
+                <a href="javascript:void(0)" class="js-tag color1">DNS Tunnel</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -758,11 +749,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">reflect</a>
+                <a href="javascript:void(0)" class="js-tag color2">Xposed</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">tools</a>
+                <a href="javascript:void(0)" class="js-tag color3">Python crawl</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">sucks things</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -770,15 +765,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">blast</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">oneplus</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">about something</a>
+                <a href="javascript:void(0)" class="js-tag color3">reflect</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">blast</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">tools</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -786,7 +785,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">pentester</a>
+                <a href="javascript:void(0)" class="js-tag color1">about something</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -794,15 +793,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">pentester</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">say</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">感悟</a>
+                <a href="javascript:void(0)" class="js-tag color3">program</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">program</a>
+                <a href="javascript:void(0)" class="js-tag color3">感悟</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -818,11 +821,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">ctf</a>
+                <a href="javascript:void(0)" class="js-tag color5">编程约规</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">编程约规</a>
+                <a href="javascript:void(0)" class="js-tag color4">ctf</a>
               </li>
              
               <li class="article-tag-list-item">
