@@ -160,6 +160,60 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-怪不好意思的" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/05/12/怪不好意思的/">怪不好意思的</a>
+    </h1>
+  
+
+        
+        <a href="/2017/05/12/怪不好意思的/" class="archive-article-date">
+  	<time datetime="2017-05-12T14:05:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-12</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>但是我不删。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/05/12/怪不好意思的/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-不要去创业公司" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -326,8 +380,7 @@ ga('send', 'pageview');
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>杭州有个政策申请落户只要你是硕士你就能落户，不需要其他的条件，但是如果你是本科生你只能交一年社保走人才引进，如果应届生落户只要招到公司即可。<br>在杭州办居住证的话需要你有一年连续的社保，这个条件是最简单的了，办完居住证你可以在杭州办护照等等。<br>查询政策可以发现杭州还有个政策就是办人才居住证，只要你是本科以上的学历，只需要找个公司给你交一个月社保就可以办下来证。<br>用这个人才居住证可以去申请居住证。如果你没有人才居住证只有居住证的话你只能等两年交满了社保你才能去摇号。如果你有一个人才居住证立马就能去摇号。<br>需要注意的是如果是专科办人才居住证条件就需要很多。<br>那么从这里其实可以看出来，不说杭州，整个社会其实都是需要你学历高的需要你是个人才。但是现在很多人都在鼓吹学历无用。我也不知道是为什么。<br>我好像有犹豫过关于读研的问题，也知道去读书就是给老师打工。但是从来没有犹豫过知识是否越多越好、学历越高越好。<br>其实分析一些政策就可以看到，整个国家是需要你去工作，去创造价值，他的政策就是这样逼迫你的。好像也不能说逼迫。</p>
-<p>时刻提醒自己，有的时候要对自己要求高一点。</p>
+        <p>时刻提醒自己，有的时候要对自己要求高一点。</p>
 <p>现在的“小资”姑且这么叫，算不算另说。都喜欢健身跑步，取日本，喜欢有趣的灵魂。书到底看过基本？连做人都要别人教你做，教你要健身，要小资。。呵呵呵呵呵。</p>
 <p>好代码的标准是什么？有一条是不是应该是好读懂。是的，绝对是。</p>
 <p>读了ysrc的hids想学习学习。到目前为止有个感觉就是能用开源代码的他们都用开源代码。不管那个库有多老。。</p>
@@ -826,189 +879,6 @@ if (fFound){                          WriteProcessMemory(GetCurrentProcess(),ppf
 
 
   
-    <article id="post-linux" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/03/30/linux/">Linux、Windows提权命令速记</a>
-    </h1>
-  
-
-        
-        <a href="/2017/03/30/linux/" class="archive-article-date">
-  	<time datetime="2017-03-30T06:02:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-30</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h2><p>查看你所处的环境；</p>
-<pre><code>cat /etc/issue
-env 
-cat /etc/profile  /etc/bashrc ~/.bashrc ~/.bash_profile ~/bash_logout
-</code></pre><p>查看服务权限</p>
-<pre><code>ps -ef
-</code></pre><p>查看计划任务；</p>
-<pre><code>crontab -l
-
-cat /etc/contab
-</code></pre><p>查看ip</p>
-<pre><code>ifconfig -a 
-cat /etc/network/interfaces
-</code></pre><p>查看网络配置；</p>
-<pre><code>cat /etc/networks
-cat /etc/hosts
-cat /etc/resolv.conf 
-iptables -l
-</code></pre><p>查看打开的端口；</p>
-<pre><code>netstat -antup
-</code></pre><p>查看其它用户</p>
-<pre><code>cat /etc/passwd
-last 
-</code></pre><p>如果你有权限你可以查看敏感文件</p>
-<pre><code>cat /etc/shadow
-ls -al /var/mail/
-ls -alR  /root/
-ls -alR /home/
-</code></pre><p>查看历史记录</p>
-<pre><code>cat ~/.bash_history
-试试 sshkey
-ls -al ~/.ssh/
-</code></pre><p>查看当前用户能否用sudo执行命令；</p>
-<pre><code>sudo -l
-User &lt;username&gt; may run the following commands: 
-(ALL : ALL) NOPASSWD: ALL
-(ALL) NOPASSWD: /opt/scripts/*
-(ALL) NOPASSWD: /opt/admin/custom_binary
-</code></pre><p>有些命令或写的不太好的脚本脚本需要用户把他们的密码之类的东西当做命令行参数输入，所有这样的输入都会被保存在命令行历史记录中。运行如下命令</p>
-<pre><code>cat ~/.bash_history
-cat ~/.ksh_history
-</code></pre><p>有时候管理员忽视了他们的ssh 私钥的安全性，运行如下命令查找当前用户有没有把ssh 私钥存在系统中：</p>
-<pre><code>ls –al ~/.ssh/id_rsa ~/.ssh/id_dsa
-</code></pre><p>如果有的话，你知道人们总是喜欢在不同的账户，比如说root、不同服务器之间重复使用同样一个key；<br>还有一些情况，人们还喜欢把服务器的账号密码写死在一个脚本或者记录文件中。搜索有password字符串的文件；</p>
-<pre><code>grep –R –i “password” /
-</code></pre><p>查看你有没有权限去访问一些敏感文件或日志；</p>
-<pre><code>cat /etc/syslog.conf
-cat /etc/apache2/apache2.conf
-cat /var/log/syslog
-cat /var/log/apache2/access.log
-</code></pre><p>有时候二进制文件是以文件所有者的权限执行的.比如有一个叫passwd的二进制文件，用来改当前用户的密码；因为设置了SUID，所以他是以文件的所有者的权限执行的；</p>
-<pre><code>ls –l /usr/bin/passwd
--rwsr-xr-x 1 root root 53112 Nov 19 2014 /usr/bin/passwd
-</code></pre><p>寻找所有设置了SUID/GUID的二进制文件；</p>
-<pre><code>find / -type f \( -perm -4000 -o -perm -2000 \) -exec ls -l {} \;
-</code></pre><p>这类的问题件一般都是有很多的漏洞的；我们可以很轻松的就利用了。不管你是用命令注入还是别的方法。<br>有漏洞的服务：<br>许多服务的配置都是不安全的；比如SQL server是以root权限运行的；<br>一些服务还有会额外的插件；很多时候这些插件也是有漏洞的。<br>寻找用root 权限运行的程序</p>
-<pre><code>ps –ef | grep root
-</code></pre><p>寻找所有安装了的文件并记住他们的版本号，然后去寻找公开漏洞；</p>
-<pre><code>dpkg –l
-rpm -qa
-</code></pre><p>最后尝试内核漏洞；</p>
-<pre><code>uname -a
-</code></pre><p>上网上找漏洞；<br>补充一个：www.kernel-exploits.com</p>
-<h2 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h2><pre><code>systeminfo
-hostname
-echo %username%
-</code></pre><p>系统中还有谁；</p>
-<pre><code>net users
-</code></pre><p>查看用户的详情</p>
-<pre><code>net user %username%
-</code></pre><p>寻找网络接口，ip地址</p>
-<pre><code>ipconfig /all
-</code></pre><p>路由表：</p>
-<pre><code>route print
-</code></pre><p>查看arp缓存</p>
-<pre><code>arp-a
-</code></pre><p>开启的端口和活动的网络连接</p>
-<pre><code>netstat -ano
-</code></pre><p>防火墙和配置</p>
-<pre><code>netsh firewall show state 
-netsh firewall show config
-</code></pre><p>计划任务</p>
-<pre><code>schtasks /query /fo LIST /v
-</code></pre><p>当前运行的进程</p>
-<pre><code>tasklist /SVC
-</code></pre><p>开启一个服务</p>
-<pre><code>net start
-</code></pre><p>查看已经安装的硬件驱动</p>
-<pre><code>DRIVERQUERY
-</code></pre><p>在一个有很多服务器的环境中，管理员一定是想找到一个自动部署的方法；<br>有些地方会存放有配置文件而配置文件中又可能会有管理员密码。</p>
-<pre><code>c:\sysprep.inf
- c:\sysprep\sysprep.xml
- %WINDIR%\Panther\Unattend\Unattended.xml
- %WINDIR%\Panther\Unattended.xml
-</code></pre><p>Group.xml 这个网上有详细的讲解，怎么破解，怎么操作。。</p>
-<pre><code>Services\Services.xml
-  ScheduledTasks\ScheduledTasks.xml
-  Printers\Printers.xml
-  Drives\Drives.xml
-  DataSources\DataSources.xml
-</code></pre><p>如果AlwaysInstallElevated开启了，可以允许任意用户以NT AUTHORITY\SYSTEM权限安装msi文件。</p>
-<pre><code>reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer\AlwaysInstallElevated
-   reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer\AlwaysInstallElevated
-</code></pre><p>   如果DWORD值为1，即可使用这个方式。<br> 寻找包含关键词的文件。详细利用推荐查看三好学生师傅的博客，3gstudent.github.io</p>
-<pre><code>dir /s *pass* == *cred* == *vnc* ==*.config*
-
-findstr /si password *.xml *.ini *.txt
-reg query HKLM /f password /t REG_SZ /s 
-reg query HKCU /f password /t REG_SZ /s
-</code></pre><p>检查服务权限，有时候服务配置能够被任意用户修改。当一个低权限用户修改服务配置之加一些命令，或可以反弹一个系统权限的shell出来。<br>再次推荐：<a href="https://3gstudent.github.io/" target="_blank" rel="external">3gstudent.github.io</a></p>
-<p>如果这些都失败了，只能尝试kernel exploit<br>查看补丁；</p>
-<blockquote>
-<p>wmic qfe get Caption,Description,HotFixID,InstalledOn<br> wmic qfe get Caption,Description,HotFixID,InstalledOn | findstr /C:”KB…” /C:”KB…”<br>查找</p>
-<p>–  KiTrap0D (KB979682)<br>–  MS11-011 (KB2393802)<br>–  MS10-059 (KB982799)</p>
-<p>–  MS10-021 (KB979683)<br>–  MS11-080 (KB2592799)</p>
-</blockquote>
-<p>是否被修补。</p>
-<h2 id="后渗透"><a href="#后渗透" class="headerlink" title="后渗透"></a>后渗透</h2><p>procdump.exe dump lsass.exe<br>或者使用mimikatz<br>遍历所有的日志，配置寻找敏感信息。<br>如：密码，ssh private key，数据库连接信息。数据库备份一般是没有加密的，里面会有很多的敏感信息。</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://helix.stormhub.org/data/Advanced%20Topics%20in%20Security/Lecture%20slides/Lecture%2010%20-%20Privilege%20Escalation.pdf" target="_blank" rel="external">https://helix.stormhub.org/data/Advanced%20Topics%20in%20Security/Lecture%20slides/Lecture%2010%20-%20Privilege%20Escalation.pdf</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">linux,windows,privilege</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/03/30/linux/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/2/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/4/">Next &raquo;</a>
@@ -1106,7 +976,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">工具，AWVS</a>
+                <a href="javascript:void(0)" class="js-tag color1">read and movies</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1118,15 +988,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">vulnerability</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">read and movies</a>
+                <a href="javascript:void(0)" class="js-tag color3">工具，AWVS</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">Python crawl</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">sucks things</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">vulnerability</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1138,19 +1012,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">sucks things</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">blast</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">tools</a>
+                <a href="javascript:void(0)" class="js-tag color3">reflect</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">reflect</a>
+                <a href="javascript:void(0)" class="js-tag color1">tools</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1174,19 +1044,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">program</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">感悟</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">懒人</a>
+                <a href="javascript:void(0)" class="js-tag color3">program</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Sucksthings</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">懒人</a>
               </li>
              
               <li class="article-tag-list-item">

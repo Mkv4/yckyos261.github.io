@@ -160,6 +160,189 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-linux" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/03/30/linux/">Linux、Windows提权命令速记</a>
+    </h1>
+  
+
+        
+        <a href="/2017/03/30/linux/" class="archive-article-date">
+  	<time datetime="2017-03-30T06:02:18.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-30</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h2><p>查看你所处的环境；</p>
+<pre><code>cat /etc/issue
+env 
+cat /etc/profile  /etc/bashrc ~/.bashrc ~/.bash_profile ~/bash_logout
+</code></pre><p>查看服务权限</p>
+<pre><code>ps -ef
+</code></pre><p>查看计划任务；</p>
+<pre><code>crontab -l
+
+cat /etc/contab
+</code></pre><p>查看ip</p>
+<pre><code>ifconfig -a 
+cat /etc/network/interfaces
+</code></pre><p>查看网络配置；</p>
+<pre><code>cat /etc/networks
+cat /etc/hosts
+cat /etc/resolv.conf 
+iptables -l
+</code></pre><p>查看打开的端口；</p>
+<pre><code>netstat -antup
+</code></pre><p>查看其它用户</p>
+<pre><code>cat /etc/passwd
+last 
+</code></pre><p>如果你有权限你可以查看敏感文件</p>
+<pre><code>cat /etc/shadow
+ls -al /var/mail/
+ls -alR  /root/
+ls -alR /home/
+</code></pre><p>查看历史记录</p>
+<pre><code>cat ~/.bash_history
+试试 sshkey
+ls -al ~/.ssh/
+</code></pre><p>查看当前用户能否用sudo执行命令；</p>
+<pre><code>sudo -l
+User &lt;username&gt; may run the following commands: 
+(ALL : ALL) NOPASSWD: ALL
+(ALL) NOPASSWD: /opt/scripts/*
+(ALL) NOPASSWD: /opt/admin/custom_binary
+</code></pre><p>有些命令或写的不太好的脚本脚本需要用户把他们的密码之类的东西当做命令行参数输入，所有这样的输入都会被保存在命令行历史记录中。运行如下命令</p>
+<pre><code>cat ~/.bash_history
+cat ~/.ksh_history
+</code></pre><p>有时候管理员忽视了他们的ssh 私钥的安全性，运行如下命令查找当前用户有没有把ssh 私钥存在系统中：</p>
+<pre><code>ls –al ~/.ssh/id_rsa ~/.ssh/id_dsa
+</code></pre><p>如果有的话，你知道人们总是喜欢在不同的账户，比如说root、不同服务器之间重复使用同样一个key；<br>还有一些情况，人们还喜欢把服务器的账号密码写死在一个脚本或者记录文件中。搜索有password字符串的文件；</p>
+<pre><code>grep –R –i “password” /
+</code></pre><p>查看你有没有权限去访问一些敏感文件或日志；</p>
+<pre><code>cat /etc/syslog.conf
+cat /etc/apache2/apache2.conf
+cat /var/log/syslog
+cat /var/log/apache2/access.log
+</code></pre><p>有时候二进制文件是以文件所有者的权限执行的.比如有一个叫passwd的二进制文件，用来改当前用户的密码；因为设置了SUID，所以他是以文件的所有者的权限执行的；</p>
+<pre><code>ls –l /usr/bin/passwd
+-rwsr-xr-x 1 root root 53112 Nov 19 2014 /usr/bin/passwd
+</code></pre><p>寻找所有设置了SUID/GUID的二进制文件；</p>
+<pre><code>find / -type f \( -perm -4000 -o -perm -2000 \) -exec ls -l {} \;
+</code></pre><p>这类的问题件一般都是有很多的漏洞的；我们可以很轻松的就利用了。不管你是用命令注入还是别的方法。<br>有漏洞的服务：<br>许多服务的配置都是不安全的；比如SQL server是以root权限运行的；<br>一些服务还有会额外的插件；很多时候这些插件也是有漏洞的。<br>寻找用root 权限运行的程序</p>
+<pre><code>ps –ef | grep root
+</code></pre><p>寻找所有安装了的文件并记住他们的版本号，然后去寻找公开漏洞；</p>
+<pre><code>dpkg –l
+rpm -qa
+</code></pre><p>最后尝试内核漏洞；</p>
+<pre><code>uname -a
+</code></pre><p>上网上找漏洞；<br>补充一个：www.kernel-exploits.com</p>
+<h2 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h2><pre><code>systeminfo
+hostname
+echo %username%
+</code></pre><p>系统中还有谁；</p>
+<pre><code>net users
+</code></pre><p>查看用户的详情</p>
+<pre><code>net user %username%
+</code></pre><p>寻找网络接口，ip地址</p>
+<pre><code>ipconfig /all
+</code></pre><p>路由表：</p>
+<pre><code>route print
+</code></pre><p>查看arp缓存</p>
+<pre><code>arp-a
+</code></pre><p>开启的端口和活动的网络连接</p>
+<pre><code>netstat -ano
+</code></pre><p>防火墙和配置</p>
+<pre><code>netsh firewall show state 
+netsh firewall show config
+</code></pre><p>计划任务</p>
+<pre><code>schtasks /query /fo LIST /v
+</code></pre><p>当前运行的进程</p>
+<pre><code>tasklist /SVC
+</code></pre><p>开启一个服务</p>
+<pre><code>net start
+</code></pre><p>查看已经安装的硬件驱动</p>
+<pre><code>DRIVERQUERY
+</code></pre><p>在一个有很多服务器的环境中，管理员一定是想找到一个自动部署的方法；<br>有些地方会存放有配置文件而配置文件中又可能会有管理员密码。</p>
+<pre><code>c:\sysprep.inf
+ c:\sysprep\sysprep.xml
+ %WINDIR%\Panther\Unattend\Unattended.xml
+ %WINDIR%\Panther\Unattended.xml
+</code></pre><p>Group.xml 这个网上有详细的讲解，怎么破解，怎么操作。。</p>
+<pre><code>Services\Services.xml
+  ScheduledTasks\ScheduledTasks.xml
+  Printers\Printers.xml
+  Drives\Drives.xml
+  DataSources\DataSources.xml
+</code></pre><p>如果AlwaysInstallElevated开启了，可以允许任意用户以NT AUTHORITY\SYSTEM权限安装msi文件。</p>
+<pre><code>reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer\AlwaysInstallElevated
+   reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer\AlwaysInstallElevated
+</code></pre><p>   如果DWORD值为1，即可使用这个方式。<br> 寻找包含关键词的文件。详细利用推荐查看三好学生师傅的博客，3gstudent.github.io</p>
+<pre><code>dir /s *pass* == *cred* == *vnc* ==*.config*
+
+findstr /si password *.xml *.ini *.txt
+reg query HKLM /f password /t REG_SZ /s 
+reg query HKCU /f password /t REG_SZ /s
+</code></pre><p>检查服务权限，有时候服务配置能够被任意用户修改。当一个低权限用户修改服务配置之加一些命令，或可以反弹一个系统权限的shell出来。<br>再次推荐：<a href="https://3gstudent.github.io/" target="_blank" rel="external">3gstudent.github.io</a></p>
+<p>如果这些都失败了，只能尝试kernel exploit<br>查看补丁；</p>
+<blockquote>
+<p>wmic qfe get Caption,Description,HotFixID,InstalledOn<br> wmic qfe get Caption,Description,HotFixID,InstalledOn | findstr /C:”KB…” /C:”KB…”<br>查找</p>
+<p>–  KiTrap0D (KB979682)<br>–  MS11-011 (KB2393802)<br>–  MS10-059 (KB982799)</p>
+<p>–  MS10-021 (KB979683)<br>–  MS11-080 (KB2592799)</p>
+</blockquote>
+<p>是否被修补。</p>
+<h2 id="后渗透"><a href="#后渗透" class="headerlink" title="后渗透"></a>后渗透</h2><p>procdump.exe dump lsass.exe<br>或者使用mimikatz<br>遍历所有的日志，配置寻找敏感信息。<br>如：密码，ssh private key，数据库连接信息。数据库备份一般是没有加密的，里面会有很多的敏感信息。</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://helix.stormhub.org/data/Advanced%20Topics%20in%20Security/Lecture%20slides/Lecture%2010%20-%20Privilege%20Escalation.pdf" target="_blank" rel="external">https://helix.stormhub.org/data/Advanced%20Topics%20in%20Security/Lecture%20slides/Lecture%2010%20-%20Privilege%20Escalation.pdf</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">linux,windows,privilege</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/03/30/linux/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-lalalaland" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -598,126 +781,6 @@ ga('send', 'pageview');
 
 
   
-    <article id="post-PHPMailer" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/01/11/PHPMailer/">PHPMailer Remote Code Execution</a>
-    </h1>
-  
-
-        
-        <a href="/2017/01/11/PHPMailer/" class="archive-article-date">
-  	<time datetime="2017-01-11T03:46:26.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-01-11</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><a href="http://blog.fortinet.com/2017/01/05/analysis-of-phpmailer-remote-code-execution-vulnerability-cve-2016-10033" target="_blank" rel="external">http://blog.fortinet.com/2017/01/05/analysis-of-phpmailer-remote-code-execution-vulnerability-cve-2016-10033</a><br>This vulnerability affects PHPMailer versions before 5.2.18.<br>这个漏洞影响的是PHPmailer 5.2.18之前的版本。</p>
-<p>When sending an email with PHPMailer, the normal process is, 1) PHPMailer gets user requests, 2) PHPMailer validates the user supplied data, 3) PHPMailer sends the data to the PHP mail() function to send the email.<br>通过PHPMailer发送一封邮件的流程是，PHPMailer取得用户的请求，验证用户提供的数据，最后把数据发送到PHP mail（） 函数发送邮件。</p>
-<blockquote>
-<pre><code>public function setFrom($address, $name = &apos;&apos;, $auto = true)
-{
-    $address = trim($address);
-    $name = trim(preg_replace(&apos;/[\r\n]+/&apos;, &apos;&apos;, $name)); //Strip breaks and trim
-    // Don&apos;t validate now addresses with IDN. Will be done in send().
-    if (($pos = strrpos($address, &apos;@&apos;)) === false or
-        (!$this-&gt;has8bitChars(substr($address, ++$pos)) or !$this-&gt;idnSupported()) and
-        !$this-&gt;validateAddress($address)) {
-        $error_message = $this-&gt;lang(&apos;invalid_address&apos;) . &quot; (setFrom) $address&quot;;
-        $this-&gt;setError($error_message);
-        $this-&gt;edebug($error_message);
-        if ($this-&gt;exceptions) {
-            throw new phpmailerException($error_message);
-        }
-        return false;
-    }
-    $this-&gt;From = $address;
-    $this-&gt;FromName = $name;
-    if ($auto) {
-        if (empty($this-&gt;Sender)) {
-            $this-&gt;Sender = $address;
-        }
-    }
-    return true;
-}
-</code></pre></blockquote>
-<p>这里面有个if 语句 有很多 or 还有一个and 。!$this-&gt;idnSupported()) and<br>            !$this-&gt;validateAddress($address)) 这个成立。就会进入if语句,</p>
-<p><strong>但是要的是不进入if语句，所以要想办法不满足if中的条件。</strong></p>
-<p>This validator <strong>uses standard validation methods</strong>, like PHP’s built-in FILTER_VALIDATE_EMAIL, pcres from squiloople.com, and html5 default patterns for email type.</p>
-<p>For example, the $address with value “attacker -InjectedParam @example.com” will be rejected. <strong>But these methods follow RFC3696, which means the email address can contain spaces when quoted with “””, so an $address with value “”attacker -InjectedParam”@example.com” will pass through the filter.</strong></p>
-<p>重点是这句话，上述这些方法都是遵循了RFC3696，这就意味着，当在后面跟随着一个“””时，email地址能够出现空格。<br>After the validation stage, PHPMailer will send the email elements, such as receiver address, subject, body, header, and sender address to the PHP mail() function to send the email. The code is shown below.<br>其实这里会出现一个疑问，为何输入一个”就会能够输入空格？那就要看他的validateAddress函数里面怎么写的。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div></pre></td><td class="code"><pre><div class="line"> * Check that a string looks like an email address.</div><div class="line"> * @param string $address The email address to check</div><div class="line"> * @param string|callable $patternselect A selector for the validation pattern to use :</div><div class="line"> * * `auto` Pick best pattern automatically;</div><div class="line"> * * `pcre8` Use the squiloople.com pattern, requires PCRE &gt; 8.0, PHP &gt;= 5.3.2, 5.2.14;</div><div class="line"> * * `pcre` Use old PCRE implementation;</div><div class="line"> * * `php` Use PHP built-in FILTER_VALIDATE_EMAIL;</div><div class="line"> * * `html5` Use the pattern given by the HTML5 spec for &apos;email&apos; type form input elements.</div><div class="line"> * * `noregex` Don&apos;t use a regex: super fast, really dumb.</div><div class="line"> * Alternatively you may pass in a callable to inject your own validator, for example:</div><div class="line"> * PHPMailer::validateAddress(&apos;user@example.com&apos;, function($address) &#123;</div><div class="line"> *     return (strpos($address, &apos;@&apos;) !== false);</div><div class="line"> * &#125;);</div><div class="line"> * You can also set the PHPMailer::$validator static to a callable, allowing built-in methods to use your validator.</div><div class="line"> * @return boolean</div><div class="line"> * @static</div><div class="line"> * @access public</div><div class="line"> */</div><div class="line">public static function validateAddress($address, $patternselect = null)</div><div class="line">&#123;</div><div class="line">    if (is_null($patternselect)) &#123;</div><div class="line">        $patternselect = self::$validator;</div><div class="line">    &#125;</div><div class="line">    if (is_callable($patternselect)) &#123;</div><div class="line">        return call_user_func($patternselect, $address);</div><div class="line">    &#125;</div><div class="line">    //Reject line breaks in addresses; it&apos;s valid RFC5322, but not RFC5321</div><div class="line">    if (strpos($address, &quot;\n&quot;) !== false or strpos($address, &quot;\r&quot;) !== false) &#123;</div><div class="line">        return false;</div><div class="line">    &#125;</div><div class="line">    if (!$patternselect or $patternselect == &apos;auto&apos;) &#123;</div><div class="line">        //Check this constant first so it works when extension_loaded() is disabled by safe mode</div><div class="line">        //Constant was added in PHP 5.2.4</div><div class="line">        if (defined(&apos;PCRE_VERSION&apos;)) &#123;</div><div class="line">            //This pattern can get stuck in a recursive loop in PCRE &lt;= 8.0.2</div><div class="line">            if (version_compare(PCRE_VERSION, &apos;8.0.3&apos;) &gt;= 0) &#123;</div><div class="line">                $patternselect = &apos;pcre8&apos;;</div><div class="line">            &#125; else &#123;</div><div class="line">                $patternselect = &apos;pcre&apos;;</div><div class="line">            &#125;</div><div class="line">        &#125; elseif (function_exists(&apos;extension_loaded&apos;) and extension_loaded(&apos;pcre&apos;)) &#123;</div><div class="line">            //Fall back to older PCRE</div><div class="line">            $patternselect = &apos;pcre&apos;;</div><div class="line">        &#125; else &#123;</div><div class="line">            //Filter_var appeared in PHP 5.2.0 and does not require the PCRE extension</div><div class="line">            if (version_compare(PHP_VERSION, &apos;5.2.0&apos;) &gt;= 0) &#123;</div><div class="line">                $patternselect = &apos;php&apos;;</div><div class="line">            &#125; else &#123;</div><div class="line">                $patternselect = &apos;noregex&apos;;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    switch ($patternselect) &#123;</div><div class="line">        case &apos;pcre8&apos;:</div><div class="line">            /**</div><div class="line">             * Uses the same RFC5322 regex on which FILTER_VALIDATE_EMAIL is based, but allows dotless domains.</div><div class="line">             * @link http://squiloople.com/2009/12/20/email-address-validation/</div><div class="line">             * @copyright 2009-2010 Michael Rushton</div><div class="line">             * Feel free to use and redistribute this code. But please keep this copyright notice.</div><div class="line">             */</div><div class="line">            return (boolean)preg_match(</div><div class="line">                &apos;/^(?!(?&gt;(?1)&quot;?(?&gt;\\\[ -~]|[^&quot;])&quot;?(?1))&#123;255,&#125;)(?!(?&gt;(?1)&quot;?(?&gt;\\\[ -~]|[^&quot;])&quot;?(?1))&#123;65,&#125;@)&apos; .</div><div class="line">                &apos;((?&gt;(?&gt;(?&gt;((?&gt;(?&gt;(?&gt;\x0D\x0A)?[\t ])+|(?&gt;[\t ]*\x0D\x0A)?[\t ]+)?)(\((?&gt;(?2)&apos; .</div><div class="line">                &apos;(?&gt;[\x01-\x08\x0B\x0C\x0E-\&apos;*-\[\]-\x7F]|\\\[\x00-\x7F]|(?3)))*(?2)\)))+(?2))|(?2))?)&apos; .</div><div class="line">                &apos;([!#-\&apos;*+\/-9=?^-~-]+|&quot;(?&gt;(?2)(?&gt;[\x01-\x08\x0B\x0C\x0E-!#-\[\]-\x7F]|\\\[\x00-\x7F]))*&apos; .</div><div class="line">                &apos;(?2)&quot;)(?&gt;(?1)\.(?1)(?4))*(?1)@(?!(?1)[a-z0-9-]&#123;64,&#125;)(?1)(?&gt;([a-z0-9](?&gt;[a-z0-9-]*[a-z0-9])?)&apos; .</div><div class="line">                &apos;(?&gt;(?1)\.(?!(?1)[a-z0-9-]&#123;64,&#125;)(?1)(?5))&#123;0,126&#125;|\[(?:(?&gt;IPv6:(?&gt;([a-f0-9]&#123;1,4&#125;)(?&gt;:(?6))&#123;7&#125;&apos; .</div><div class="line">                &apos;|(?!(?:.*[a-f0-9][:\]])&#123;8,&#125;)((?6)(?&gt;:(?6))&#123;0,6&#125;)?::(?7)?))|(?&gt;(?&gt;IPv6:(?&gt;(?6)(?&gt;:(?6))&#123;5&#125;:&apos; .</div><div class="line">                &apos;|(?!(?:.*[a-f0-9]:)&#123;6,&#125;)(?8)?::(?&gt;((?6)(?&gt;:(?6))&#123;0,4&#125;):)?))?(25[0-5]|2[0-4][0-9]|1[0-9]&#123;2&#125;&apos; .</div><div class="line">                &apos;|[1-9]?[0-9])(?&gt;\.(?9))&#123;3&#125;))\])(?1)$/isD&apos;,</div><div class="line">                $address</div><div class="line">            );</div><div class="line">        case &apos;pcre&apos;:</div><div class="line">            //An older regex that doesn&apos;t need a recent PCRE</div><div class="line">            return (boolean)preg_match(</div><div class="line">                &apos;/^(?!(?&gt;&quot;?(?&gt;\\\[ -~]|[^&quot;])&quot;?)&#123;255,&#125;)(?!(?&gt;&quot;?(?&gt;\\\[ -~]|[^&quot;])&quot;?)&#123;65,&#125;@)(?&gt;&apos; .</div><div class="line">                &apos;[!#-\&apos;*+\/-9=?^-~-]+|&quot;(?&gt;(?&gt;[\x01-\x08\x0B\x0C\x0E-!#-\[\]-\x7F]|\\\[\x00-\xFF]))*&quot;)&apos; .</div><div class="line">                &apos;(?&gt;\.(?&gt;[!#-\&apos;*+\/-9=?^-~-]+|&quot;(?&gt;(?&gt;[\x01-\x08\x0B\x0C\x0E-!#-\[\]-\x7F]|\\\[\x00-\xFF]))*&quot;))*&apos; .</div><div class="line">                &apos;@(?&gt;(?![a-z0-9-]&#123;64,&#125;)(?&gt;[a-z0-9](?&gt;[a-z0-9-]*[a-z0-9])?)(?&gt;\.(?![a-z0-9-]&#123;64,&#125;)&apos; .</div><div class="line">                &apos;(?&gt;[a-z0-9](?&gt;[a-z0-9-]*[a-z0-9])?))&#123;0,126&#125;|\[(?:(?&gt;IPv6:(?&gt;(?&gt;[a-f0-9]&#123;1,4&#125;)(?&gt;:&apos; .</div><div class="line">                &apos;[a-f0-9]&#123;1,4&#125;)&#123;7&#125;|(?!(?:.*[a-f0-9][:\]])&#123;8,&#125;)(?&gt;[a-f0-9]&#123;1,4&#125;(?&gt;:[a-f0-9]&#123;1,4&#125;)&#123;0,6&#125;)?&apos; .</div><div class="line">                &apos;::(?&gt;[a-f0-9]&#123;1,4&#125;(?&gt;:[a-f0-9]&#123;1,4&#125;)&#123;0,6&#125;)?))|(?&gt;(?&gt;IPv6:(?&gt;[a-f0-9]&#123;1,4&#125;(?&gt;:&apos; .</div><div class="line">                &apos;[a-f0-9]&#123;1,4&#125;)&#123;5&#125;:|(?!(?:.*[a-f0-9]:)&#123;6,&#125;)(?&gt;[a-f0-9]&#123;1,4&#125;(?&gt;:[a-f0-9]&#123;1,4&#125;)&#123;0,4&#125;)?&apos; .</div><div class="line">                &apos;::(?&gt;(?:[a-f0-9]&#123;1,4&#125;(?&gt;:[a-f0-9]&#123;1,4&#125;)&#123;0,4&#125;):)?))?(?&gt;25[0-5]|2[0-4][0-9]|1[0-9]&#123;2&#125;&apos; .</div><div class="line">                &apos;|[1-9]?[0-9])(?&gt;\.(?&gt;25[0-5]|2[0-4][0-9]|1[0-9]&#123;2&#125;|[1-9]?[0-9]))&#123;3&#125;))\])$/isD&apos;,</div><div class="line">                $address</div><div class="line">            );</div><div class="line">        case &apos;html5&apos;:</div><div class="line">            /**</div><div class="line">             * This is the pattern used in the HTML5 spec for validation of &apos;email&apos; type form input elements.</div><div class="line">             * @link http://www.whatwg.org/specs/web-apps/current-work/#e-mail-state-(type=email)</div><div class="line">             */</div><div class="line">            return (boolean)preg_match(</div><div class="line">                &apos;/^[a-zA-Z0-9.!#$%&amp;\&apos;*+\/=?^_`&#123;|&#125;~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]&#123;0,61&#125;&apos; .</div><div class="line">                &apos;[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]&#123;0,61&#125;[a-zA-Z0-9])?)*$/sD&apos;,</div><div class="line">                $address</div><div class="line">            );</div><div class="line">        case &apos;noregex&apos;:</div><div class="line">            //No PCRE! Do something _very_ approximate!</div><div class="line">            //Check the address is 3 chars or longer and contains an @ that&apos;s not the first or last char</div><div class="line">            return (strlen($address) &gt;= 3</div><div class="line">                and strpos($address, &apos;@&apos;) &gt;= 1</div><div class="line">                and strpos($address, &apos;@&apos;) != strlen($address) - 1);</div><div class="line">        case &apos;php&apos;:</div><div class="line">        default:</div><div class="line">            return (boolean)filter_var($address, FILTER_VALIDATE_EMAIL);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>可以参考这个：<a href="https://www.leavesongs.com/PENETRATION/how-to-analyze-long-regex.html" target="_blank" rel="external">1</a></p>
-<p>到这里就能绕过前面的if语句了。<br>然后address会赋值给this-&gt;sender;然后发送，<br>那现在还有个问题，到底是在哪里能够执行命令？</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">public function postSend()</div><div class="line">    &#123;</div><div class="line">        try &#123;</div><div class="line">            // Choose the mailer and send through it</div><div class="line">            switch ($this-&gt;Mailer) &#123;</div><div class="line">                case &apos;sendmail&apos;:</div><div class="line">                case &apos;qmail&apos;:</div><div class="line">                    return $this-&gt;sendmailSend($this-&gt;MIMEHeader, $this-&gt;MIMEBody);</div><div class="line">                case &apos;smtp&apos;:</div><div class="line">                    return $this-&gt;smtpSend($this-&gt;MIMEHeader, $this-&gt;MIMEBody);</div><div class="line">                case &apos;mail&apos;:</div><div class="line">                    return $this-&gt;mailSend($this-&gt;MIMEHeader, $this-&gt;MIMEBody);</div><div class="line">                default:</div><div class="line">                    $sendMethod = $this-&gt;Mailer.&apos;Send&apos;;</div><div class="line">                    if (method_exists($this, $sendMethod)) &#123;</div><div class="line">                        return $this-&gt;$sendMethod($this-&gt;MIMEHeader, $this-&gt;MIMEBody);</div><div class="line">                    &#125;</div><div class="line">                    return $this-&gt;mailSend($this-&gt;MIMEHeader, $this-&gt;MIMEBody);</div><div class="line">            &#125;</div></pre></td></tr></table></figure>
-<p>这里会调用mailSend()<br>doCallback<br>call_user_func_array但是我并没有找到能够写入文件的，<br>倒是发现了一个sendmailSend()。</p>
-<p>The issue here is that PHPMailer doesn’t sterilize these email values before sending them to the mail() function.(这里的问题是邮件的数据在发送到mail函数之前没有做任何的过滤“消毒”措施) It just returns the  and then sends the $result to the mail() function with the same set of parameters. This issue enables the subsequent attacks.</p>
-<p>For example, when sending the request with email address:<br> mail() function will execute /usr/bin/sendmail with 4 arguments, （mail函数将执行：）“/usr/bin/sendmail”, “-t”, “-i” and “-fattacker -InjectedParam@example.com”.</p>
-<p>However, an attacker could break the fourth argument by injecting a parameter with “\””. （但攻击者可以通过注入一个“\””来终端第四个参数）For example, using the email address:</p>
-<p>This email address will let the sendmail function execute 6 arguments, “/usr/bin/sendmail”, “-t”, “-i”, “-fattacker”, “-InjectedParam1” and “-InjectedParam2”@example.com”.</p>
-<hr>
-<p>理一下顺序，上面说了，发一封邮件，检查邮件的参数/数据是否合法，然后发送到php 的mail()函数发送。<br>setForm是检查格式的函数，最终做完检查之后会把adrress赋值给this-Sender<br>send()里面调用了postsend和presend，在postsend中发现有sendmailSend和mailSend，sendmailSend中有fputs</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">if (!@$mail = popen($sendmail, &apos;w&apos;)) 而其中的sendmail来自上面 </div><div class="line">$sendmail = sprintf($sendmailFmt, escapeshellcmd($this-&gt;Sendmail), $this-&gt;Sender);//这是改过的代码了。</div><div class="line"></div><div class="line">if (!empty($this-&gt;Sender) and self::isShellSafe($this-&gt;Sender)) &#123;//这里是改过的代码了,有一个isshellsafe</div><div class="line">            if ($this-&gt;Mailer == &apos;qmail&apos;) &#123;</div><div class="line">            $sendmail = sprintf(&apos;%s -f%s&apos;, escapeshellcmd($this-&gt;Sendmail), escapeshellarg($this-&gt;Sender));//老代码中是这样写的</div><div class="line">                // $sendmailFmt = &apos;%s -f%s&apos;;</div><div class="line">            &#125; else &#123;</div><div class="line">            $sendmail = sprintf(&apos;%s -oi -f%s -t&apos;, escapeshellcmd($this-&gt;Sendmail), escapeshellarg($this-&gt;Sender));</div><div class="line">               // $sendmailFmt = &apos;%s -oi -f%s -t&apos;;</div><div class="line">            &#125;</div><div class="line">        &#125; else &#123;</div><div class="line">            if ($this-&gt;Mailer == &apos;qmail&apos;) &#123;</div><div class="line">            $sendmail = sprintf(&apos;%s&apos;, escapeshellcmd($this-&gt;Sendmail));</div><div class="line">                //$sendmailFmt = &apos;%s&apos;;</div><div class="line">            &#125; else &#123;</div><div class="line">            $sendmail = sprintf(&apos;%s -oi -t&apos;, escapeshellcmd($this-&gt;Sendmail));</div><div class="line">                //$sendmailFmt = &apos;%s -oi -t&apos;;</div><div class="line">            &#125;</div><div class="line">        &#125;</div></pre></td></tr></table></figure>
-<hr>
-<p>值得注意的是这里有一个qmail，</p>
-<p>判断是否是qmail，如果是，this-&gt;mailer= qmail</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">public function isQmail()</div><div class="line">    &#123;</div><div class="line">        $ini_sendmail_path = ini_get(&apos;sendmail_path&apos;);</div><div class="line">        if (!stristr($ini_sendmail_path, &apos;qmail&apos;)) &#123;</div><div class="line">            $this-&gt;Sendmail = &apos;/var/qmail/bin/qmail-inject&apos;;</div><div class="line">        &#125; else &#123;</div><div class="line">            $this-&gt;Sendmail = $ini_sendmail_path;</div><div class="line">        &#125;</div><div class="line">        $this-&gt;Mailer = &apos;qmail&apos;;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
-<p>好吧原文中有一句话，The mail() function will execute /usr/bin/sendmail.并没有找到sendmail是怎么写的。想必跟sendmailSend差不多吧。</p>
-<p>我觉得一个好的分析，应当是条理清晰的，搞清楚为什么造成漏洞，需要哪些条件，怎么去利用漏洞。但是看起来好像你分析清楚了怎么造成，那就会去利用了的感觉。很多分析，连怎么造成漏洞的都没有搞的逻辑清晰。像高数里面的易得一样。<br>其实这里还有一个问题，怎才能触发qmail的漏洞？在send（）中有调用postsend;设想一下，找到调用postsend的地方，然后调用它，让发送的case=qmail就能触发了。<br><a href="http://paper.seebug.org/161/" target="_blank" rel="external">http://paper.seebug.org/161/</a></p>
-<p>搞了半天发现这个，有一句话解答了我疑惑。</p>
-<blockquote>
-<p>这里$param作为mail的第五个参数，该参数用于指定sendmail的额外参数，其中sendmail的-X参数会将流量记录到文件中从而写文件实现 RCE，至于具体利用详见 Roundcube RCE。</p>
-</blockquote>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">vulnerability</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/01/11/PHPMailer/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/3/">&laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/5/">Next &raquo;</a>
@@ -815,7 +878,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">工具，AWVS</a>
+                <a href="javascript:void(0)" class="js-tag color1">read and movies</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -827,15 +890,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">vulnerability</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">read and movies</a>
+                <a href="javascript:void(0)" class="js-tag color3">工具，AWVS</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">Python crawl</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">sucks things</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">vulnerability</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -847,19 +914,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">sucks things</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">blast</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">tools</a>
+                <a href="javascript:void(0)" class="js-tag color3">reflect</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">reflect</a>
+                <a href="javascript:void(0)" class="js-tag color1">tools</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -883,19 +946,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">program</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">感悟</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">懒人</a>
+                <a href="javascript:void(0)" class="js-tag color3">program</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Sucksthings</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">懒人</a>
               </li>
              
               <li class="article-tag-list-item">
