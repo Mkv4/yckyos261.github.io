@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="im1gd.me/"/>
-  <updated>2018-08-20T05:48:16.038Z</updated>
+  <updated>2018-08-20T09:39:58.681Z</updated>
   <id>im1gd.me/</id>
   
   <author>
@@ -21,9 +21,9 @@
     <link href="im1gd.me/2018/08/20/%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E7%94%A8Go/"/>
     <id>im1gd.me/2018/08/20/为什么要用Go/</id>
     <published>2018-08-20T05:26:08.000Z</published>
-    <updated>2018-08-20T05:48:16.038Z</updated>
+    <updated>2018-08-20T09:39:58.681Z</updated>
     
-    <content type="html"><![CDATA[<p>写C++觉得麻烦（不会写），Python虽然简单了，但是跨平台费劲，还是要装一堆依赖。虽然比C++装依赖的痛苦好了一些。</p><p>Go就比较方便了。一次编译绿色运行。</p><p>但是Go的代码并不是传说中的那么好写。还是有坑的。</p>]]></content>
+    <content type="html"><![CDATA[<p>写C++觉得麻烦（不会写），Python虽然简单了，但是跨平台费劲，还是要装一堆依赖。虽然比C++装依赖的痛苦好了一些。</p><p>Go就比较方便了。一次编译绿色运行。</p><p>但是Go的代码并不是传说中的那么好写。还是有坑的。</p><p>嗯，我觉得最骚的还是一不小心找了个拆二代当女朋友，而且这个女朋友人还特别的好。城市化进程的红利啊。。其实么，给你点钱把你祖祖辈辈都能住的房子收了，然后呢，让你去郊区去吧。呵呵。</p>]]></content>
     
     <summary type="html">
     
@@ -32,7 +32,7 @@
         &lt;p&gt;写C++觉得麻烦（不会写），Python虽然简单了，但是跨平台费劲，还是要装一堆依赖。虽然比C++装依赖的痛苦好了一些。&lt;/p&gt;
 &lt;p&gt;Go就比较方便了。一次编译绿色运行。&lt;/p&gt;
 &lt;p&gt;但是Go的代码并不是传说中的那么好写。还是有坑的。&lt;/p&gt;
-
+&lt;p&gt;嗯，我觉得最骚的还是
       
     
     </summary>
