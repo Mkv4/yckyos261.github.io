@@ -160,6 +160,213 @@ ga('send', 'pageview');
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-yara" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/11/27/yara/">yara c api exmple</a>
+    </h1>
+  
+
+        
+        <a href="/2017/11/27/yara/" class="archive-article-date">
+  	<time datetime="2017-11-27T13:17:43.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-11-27</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>有一些特殊的需求，需要用调用yara的 api ，网上有demo的比较少，特此记录。</p>
+<p>引入 #include “yara.h” </p>
+<p>需要注意的是 要自行编译 lib  如果是用vs的话也是要指定include目录和导入编译的lib的。</p>
+<p>其中有 rules.h 这个头文件 可以查看一下。</p>
+<p>#define CALLBACK_MSG_RULE_MATCHING              1</p>
+<p>#define CALLBACK_MSG_RULE_NOT_MATCHING          2</p>
+<p>#define CALLBACK_MSG_SCAN_FINISHED              3</p>
+<p>#define CALLBACK_MSG_IMPORT_MODULE              4</p>
+<p>#define CALLBACK_MSG_MODULE_IMPORTED            5</p>
+<p>#define CALLBACK_CONTINUE   0</p>
+<p>#define CALLBACK_ABORT      1</p>
+<p>#define CALLBACK_ERROR      2</p>
+<p>scan.h中提供了两种扫描模式，一种是fast scan  还有一种没记错的话是扫描内存。</p>
+<p>—分割—</p>
+<hr>
+<p>正式函数：</p>
+<pre><code>int callback_function(int message,void* message_data,void* user_data)//scanfile需要调用一个callback函数
+{
+
+if(message==1)
+{
+    printf(&quot;find\n&quot;);//扫到一个就不再扫了。
+    isVirus = 8;
+    return CALLBACK_ABORT;
+}
+if(message == 2)
+{
+    return CALLBACK_CONTINUE;
+}
+if(message==3)
+{
+    printf(&quot;done&quot;);
+}
+return 0;}
+int loadScanModule(const char * path_str)
+{
+            //        //输出匹配字符串。。。只是留个备份 实现起来好查阅。
+        //YR_RULE * sub_rule;
+        //YR_RULES *rule;
+        //yr_rules_foreach(rule,sub_rule)
+        //{
+        //     YR_STRING* string;
+        //yr_rule_strings_foreach(sub_rule, string)
+  //    {
+  //      YR_MATCH* match;
+
+  //      yr_string_matches_foreach(string, match)
+  //      {
+        //    printf(&quot;%p&quot;,match);
+  //        //printf(&quot;0x%&quot; PRIx64 &quot;:%s: &quot;,
+  //        //    match-&gt;base + match-&gt;offset,
+  //        //    string-&gt;identifier);
+
+  //        //if (STRING_IS_HEX(string))
+  //        //  print_hex_string(match-&gt;data, match-&gt;data_length);
+  //        //else
+  //        //  print_string(match-&gt;data, match-&gt;data_length);
+  //      }
+  //    }
+        //    
+        //}
+        ////yr_string_matches_foreach(str,match)
+        ////{
+        ////    ;//printf(&quot;%p&quot;,match);
+        ////}
+YR_COMPILER * compiler= NULL;
+FILE *file= NULL;
+YR_RULES *rule = NULL;
+
+if(yr_initialize()!=ERROR_SUCCESS)
+{
+    try
+    {
+        yr_finalize();
+    }
+    catch(...)
+    {
+        ;
+    }
+
+    return 0;
+}
+if(yr_rules_load(&quot;./rule.dat&quot;,&amp;rule)==ERROR_SUCCESS)//地址要传过来吧，还是默认？算了还是默认吧，毛病都惯出来了。
+{
+    //加载配置成功。处理扫描；
+     yr_rules_scan_file(rule, path_str,SCAN_FLAGS_FAST_MODE, callback_function, NULL, 0); 
+     yr_finalize();
+     return 0;
+}
+
+
+if(yr_compiler_create(&amp;compiler)!=ERROR_SUCCESS)
+{
+    try
+    {
+        yr_compiler_destroy(compiler);
+    }
+    catch(...)
+    {
+        ;
+    }
+    yr_finalize();
+    return 0;
+}
+
+readConfig read_config;//这里明显是要你自己实现一个读取配置文件的功能了。
+file=fopen(read_config.ScanConfigFile.c_str(),&quot;r&quot;);//这个应该要可以配置这类的。
+
+if(!file)
+{
+    //fclose(file);
+    file=NULL;
+    yr_compiler_destroy(compiler);
+    yr_finalize();
+    return 0;
+}
+
+if(yr_compiler_add_file(compiler,file,NULL,NULL)!=ERROR_SUCCESS)
+{
+    fclose(file);
+    file=NULL;
+    yr_compiler_destroy(compiler);
+    yr_finalize();
+    return 0;
+}
+
+if(yr_compiler_get_rules(compiler,&amp;rule)!=ERROR_SUCCESS)
+{
+    fclose(file);
+    file=NULL;
+    try
+    {
+        yr_rules_destroy(rule);
+    }
+    catch(...)
+    {
+        ;
+    }
+    yr_compiler_destroy(compiler);
+    yr_finalize();
+    return 0;
+}
+
+ yr_rules_scan_file(rule, path_str,SCAN_FLAGS_FAST_MODE, callback_function, NULL, 0); 
+
+ yr_rules_save(rule,&quot;./rule.dat&quot;);//如果不存在 扫描之后存到某个固定地址。下次也就能直接加载了。
+
+ fclose(file);
+ file=NULL;
+ yr_rules_destroy(rule);
+ yr_compiler_destroy(compiler);
+ yr_finalize();
+return 0;
+}
+</code></pre>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/11/27/yara/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-WebShellScanner" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -612,70 +819,6 @@ ga('send', 'pageview');
 
 
   
-    <article id="post-一个理论指导实践的事例" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/05/13/一个理论指导实践的事例/">一个理论指导实践的事例</a>
-    </h1>
-  
-
-        
-        <a href="/2017/05/13/一个理论指导实践的事例/" class="archive-article-date">
-  	<time datetime="2017-05-13T11:20:13.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-05-13</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>我今天写一个程序，场景是高并发。</p>
-<p>在我的思维中，我从来不想用锁。为甚？？因为加了锁实在是非常影响速度。</p>
-<p>一直以来也都顺风顺水，可能写的程序实在是过于低级。</p>
-<p>但是！今天终于遇见了一个死锁。</p>
-<p>一开始我是不知道为什么的。。情况是程序不会停止内存消耗飙升。</p>
-<p>找来找去也不知道为什么，刚开始有点怀疑死锁了。这个念头也只是闪了一下。</p>
-<p>加了信号量后发现问题不见了。。能正常显示，但是内存还是消耗高。。</p>
-<p>这个故事告诉我什么。。不是学的东西用不上，是我太低级。。</p>
-<p>今天遇上的问题，有虽然放在队列从队列取，但是居然还是有重复的！！！我现在也不知道为啥。我要继续调bug。。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">gevent.hub.LoopExit: (&apos;This operation would block forever&apos;, &lt;Hub at 0x107c3bd70 select default pending=0 ref=0&gt;)</div></pre></td></tr></table></figure>
-<p>我想了想有可能是由于接收包的时候有很多包晚到达重复到达了。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/05/13/一个理论指导实践的事例/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
@@ -773,11 +916,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">read and movies</a>
+                <a href="javascript:void(0)" class="js-tag color1">DNS Tunnel</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">DNS Tunnel</a>
+                <a href="javascript:void(0)" class="js-tag color1">read and movies</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -793,7 +936,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">sucks things</a>
+                <a href="javascript:void(0)" class="js-tag color4">linux,windows,privilege</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -801,15 +944,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">linux,windows,privilege</a>
+                <a href="javascript:void(0)" class="js-tag color3">sucks things</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">oneplus</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">blast</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -818,6 +957,10 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">tools</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">blast</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -841,19 +984,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">感悟</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">program</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Sucksthings</a>
+                <a href="javascript:void(0)" class="js-tag color3">懒人</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">懒人</a>
+                <a href="javascript:void(0)" class="js-tag color3">感悟</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">Sucksthings</a>
               </li>
              
               <li class="article-tag-list-item">
